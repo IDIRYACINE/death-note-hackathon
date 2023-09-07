@@ -7,6 +7,7 @@ import MainLayout from '@/layouts/MainLayout';
 function App({ Component, pageProps }: AppProps) {
   return (
     <MainLayout>
+      
       <Component {...pageProps} />
     </MainLayout>
 

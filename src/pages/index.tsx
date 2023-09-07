@@ -4,14 +4,11 @@ import { GetServerSideProps } from "next/types";
 
 export default function Home() {
   return (
-    <div
-      className='flex min-h-screen flex-col items-center justify-center p-24 bg-black'
-    >
-      <StartScreen />
 
-    </div>
+    <StartScreen />
+
   )
 }
 
 
-export const getServerSideProps:GetServerSideProps = getServerSideLocales
+export const getServerSideProps: GetServerSideProps = getServerSideLocales

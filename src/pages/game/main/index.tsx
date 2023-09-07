@@ -1,4 +1,11 @@
+import MainMenu from "@/components/main-menu/MainMenu";
+import { getServerSideLocales } from "@/lib/locales";
+import { GetServerSideProps } from "next/types";
 
 export default function Page() {
-    return <div>Main Menu</div>
+    return (
+        <MainMenu/>
+    )
 }
+
+export const getServerSideProps: GetServerSideProps = getServerSideLocales

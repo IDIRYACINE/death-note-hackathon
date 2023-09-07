@@ -1,3 +1,9 @@
 {
-    "start_game" : "Start Game"
+    "start_game" : "Start Game",
+    "connect_game" : "Connect to game",
+    "settings" : "Settings",
+    "exit" : "Exit",
+    "create_game" : "Create game",
+    "logout" : "Logout",
+    "rules" : "Rules"
 }

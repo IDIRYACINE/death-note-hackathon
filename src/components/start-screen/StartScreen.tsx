@@ -1,14 +1,15 @@
 import { useTranslation } from 'next-i18next';
 import { Button, Space, Typography } from 'antd';
-import { useNavigateMainMenu } from '@/lib/navigation-hooks';
+import { useNavigateGame } from '@/lib/navigation-hooks';
 
+import Logo from '@/components/commons/Logo';
 
 export default function StartScreen() {
 
     const { t } = useTranslation();
     const { Title } = Typography;
 
-    const navigation = useNavigateMainMenu()
+    const navigation = useNavigateGame()
 
     function navigate(){
         navigation.navigate()
@@ -17,9 +18,7 @@ export default function StartScreen() {
 
     return (
         <Space direction="vertical" size="small" className="flex items-center">
-            <Title italic={true} type={'secondary'}>
-                Death Note
-            </Title>
+            <Logo />
             <Button onClick={navigate} className="flex flex-col justify-center items-center" type="text" size="large">
                 <Title className="blink mb-0" level={2} type={'secondary'}>
                     {t('start_game')}
