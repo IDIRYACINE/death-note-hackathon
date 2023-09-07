@@ -4,9 +4,9 @@ import type { AppProps } from 'next/app'
 import React from 'react';
 import { ConfigProvider } from 'antd';
 import theme from '@/theme/ThemeConfig';
+import { appWithTranslation } from 'next-i18next';
 
-
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <ConvexClientProvider>
       <ConfigProvider theme={theme}>
@@ -15,3 +15,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ConvexClientProvider>
   )
 }
+
+export default appWithTranslation(App)
