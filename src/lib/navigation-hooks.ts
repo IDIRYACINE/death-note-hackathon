@@ -20,7 +20,8 @@ interface NavigationMainMenuHook {
     navigateJoinGame: () => void
     navigateSettings: () => void
     navigateLogout: () => void
-    navigateRules: () => void
+    navigateRules: () => void,
+    navigateMainMenu: () => void
 }
 
 export function useNavigateMainMenu() : NavigationMainMenuHook{
@@ -31,6 +32,7 @@ export function useNavigateMainMenu() : NavigationMainMenuHook{
         navigateJoinGame: () => router.push(joinGamePath),
         navigateSettings: () => router.push(settingsPath),
         navigateLogout: () => router.push(startScreenPath),
-        navigateRules: () => router.push(rulesPath)
+        navigateRules: () => router.push(rulesPath),
+        navigateMainMenu : () => router.push(mainMenuPath)
     }
 }

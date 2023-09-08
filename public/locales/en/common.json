@@ -5,5 +5,12 @@
     "exit" : "Exit",
     "create_game" : "Create game",
     "logout" : "Logout",
-    "rules" : "Rules"
+    "rules" : "Rules",
+    "host_settings" : "Host settings",
+    "host_master" : "Host master",
+    "password" : "Password",
+    "turn_timer" : "Turn timer (seconds)",
+    "join_game" : "Join game",
+    "game_id" : "Game ID"
+
 }
