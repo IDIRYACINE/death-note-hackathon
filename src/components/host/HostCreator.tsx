@@ -1,7 +1,7 @@
 import { Space, Card, Descriptions, Button, Form, Input, Select, } from "antd";
 import { useTranslation } from "next-i18next";
 import type { DescriptionsProps } from "antd"
-import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from '@auth0/nextjs-auth0/client';
 import { useNavigateMainMenu } from "@/lib/navigation-hooks";
 import { useHostGame } from "@/lib/sdk";
 
@@ -18,7 +18,7 @@ const tailLayout = {
 
 export default function HostCreator() {
     const { t } = useTranslation()
-    const { user, } = useAuth0();
+    const { user, } = useUser();
     const navigation = useNavigateMainMenu()
     const hostGame = useHostGame()
 
