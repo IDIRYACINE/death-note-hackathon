@@ -2,17 +2,19 @@ import { useTranslation } from 'next-i18next';
 import { Button, Space, Typography } from 'antd';
 import { useNavigateMainMenu } from '@/lib/navigation-hooks';
 import Logo from '@/components/commons/Logo';
+import { useClerk } from "@clerk/clerk-react";
 
 
 export default function MainMenu() {
-
+    const { signOut } = useClerk();
     const { t } = useTranslation();
     const { Title } = Typography;
 
     const navigation = useNavigateMainMenu()
 
     function toLogout() {
-        navigation.navigateLogout()
+        signOut()
+        // navigation.navigateLogout()
     }
 
     function toHostGame() {

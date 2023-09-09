@@ -1,31 +1,48 @@
 import { GetServerSideProps } from "next/types"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
-interface LoadLocales{
-    host:string,
-    locale:string
+interface LoadLocales {
+  host: string,
+  locale: string
 }
-export async function loadLocales({host,locale} : LoadLocales) : Promise<JSON>{
-    const res = await  fetch(`${host}/locales/${locale}/common.json`)
-    const data = await res.json()
+export async function loadLocales({ host, locale }: LoadLocales): Promise<JSON> {
+  const res = await fetch(`${host}/locales/${locale}/common.json`)
+  const data = await res.json()
 
-    return data
+  return data
 }
 
-export const getServerSideLocales : GetServerSideProps = async (context) => {
+export const getServerSideLocales: GetServerSideProps = async (context) => {
 
-    const  locale  = context.locale!;
-    const host = process.env.HOST_URL!;
-    
-    const data = await loadLocales({locale,host});
-  
+  const locale = context.locale!;
+  const host = process.env.HOST_URL!;
+
+  const data = await loadLocales({ locale, host });
+
+  return {
+    props: {
+
+      ...(await serverSideTranslations(locale, ['common'])),
+
+      data,
+    },
+  };
+};
+
+
+export function withGetServerSideLocale (fun:GetServerSideProps): GetServerSideProps  {
+
+  const localGetServerSideProps: GetServerSideProps = async (context) => {
+
+    const localeProps = await getServerSideLocales(context);
+    const props = await fun(context);
     return {
       props: {
-  
-        ...(await serverSideTranslations(locale, ['common'])),
-  
-        data,
-      },
-    };
-  };
+        ...localeProps,
+        ...props
+      }
+    }
+  }
 
+  return localGetServerSideProps
+}

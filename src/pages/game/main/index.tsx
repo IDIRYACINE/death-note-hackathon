@@ -1,11 +1,16 @@
 import MainMenu from "@/components/main-menu/MainMenu";
 import { getServerSideLocales } from "@/lib/locales";
-import { GetServerSideProps } from "next/types";
+import ProfileLoader from "@/lib/stateLoaders/ProfileLoader";
 
 export default function Page() {
+
     return (
-        <MainMenu/>
+        <>
+            <ProfileLoader />
+            <MainMenu />
+
+        </>
     )
 }
 
-export const getServerSideProps: GetServerSideProps = getServerSideLocales
+export const getServerSideProps = getServerSideLocales

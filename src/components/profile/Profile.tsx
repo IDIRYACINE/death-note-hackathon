@@ -4,6 +4,8 @@ import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined
 import { Button, Card, Form, FormInstance, Input, Modal, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useReadStoreProfile } from "@/hooks/useProfile";
+import { Profile } from "@/domain/profile";
 
 
 const numberOfScrects = [1, 2, 3, 4, 5]
@@ -25,15 +27,17 @@ export default function Profile() {
     const [secretsForm] = Form.useForm();
     const [profileForm] = Form.useForm();
 
+    const profileStore = useReadStoreProfile()
+
     const [profile, setProfile] = useState({
-        name: "",
-        profilePicture: "",
-        background: "",
-        secret1: "",
-        secret2: "",
-        secret3: "",
-        secret4: "",
-        secret5: "",
+        name: profileStore.name,
+        profilePicture: profileStore.profilePicture,
+        background: profileStore.background,
+        secret1: profileStore.secret1,
+        secret2: profileStore.secret2,
+        secret3: profileStore.secret3,
+        secret4: profileStore.secret4,
+        secret5: profileStore.secret5,
         collectedProfile: false,
         collectedSecrets: false,
 
@@ -108,6 +112,7 @@ export default function Profile() {
         backgroundLabel: t('background'),
         form: profileForm,
         handleFinish: handleProfile,
+        profile
 
     }
 
@@ -116,6 +121,7 @@ export default function Profile() {
         secretLabel: t('secret'),
         form: secretsForm,
         handleFinish: handleSecrets,
+        profile
     }
 
     return (
@@ -149,11 +155,12 @@ interface ProfileCardProps {
     profilePictureLabel: string,
     handleFinish: (values: any) => void,
     form: FormInstance<any>,
+    profile : Profile
 
 }
 function ProfileCard(props: ProfileCardProps) {
     const { displayNameLabel, profileLabel, backgroundLabel, profilePictureLabel } = props
-    const { form, handleFinish } = props
+    const { form, handleFinish,profile } = props
     return (
         <Card title={profileLabel} style={{ width: 400, height: "35rem" }} suppressHydrationWarning>
             <Form
@@ -165,16 +172,16 @@ function ProfileCard(props: ProfileCardProps) {
             >
 
                 <Form.Item name="name" label={displayNameLabel} rules={[{ required: true }]}>
-                    <Input />
+                    <Input defaultValue={profile.name}/>
                 </Form.Item>
 
 
                 <Form.Item name="profilePicture" label={profilePictureLabel} rules={[{ required: true }]}>
-                    <Input />
+                    <Input defaultValue={profile.profilePicture}/>
                 </Form.Item>
 
                 <Form.Item name="background" label={backgroundLabel} rules={[{ required: true }]}>
-                    <Input.TextArea rows={4} />
+                    <Input.TextArea rows={4} defaultValue={profile.background}/>
                 </Form.Item>
 
 
@@ -189,11 +196,12 @@ interface SecretsCardProps {
     secretLabel: string,
     handleFinish: (values: any) => void,
     form: FormInstance<any>,
+    profile: any
 
 }
 function SecretsCard(props: SecretsCardProps) {
     const { secretsLabel, secretLabel } = props
-    const { form, handleFinish } = props
+    const { form, handleFinish,profile } = props
 
     return (
         <Card title={secretsLabel} style={{ width: 400, height: "35rem" }} suppressHydrationWarning>
@@ -210,7 +218,7 @@ function SecretsCard(props: SecretsCardProps) {
                         const key = `secret${index}`
                         return (
                             <Form.Item key={key} name={key} label={secretLabel} rules={[{ required: true }]}>
-                                <Input />
+                                <Input defaultValue={profile[key]} />
                             </Form.Item>
                         )
                     })

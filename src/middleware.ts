@@ -6,5 +6,5 @@ export default authMiddleware({
 });
 
 export const config = {
-  matcher: '/game/:path*',
+  matcher: ['/game/:path*','/game'],
 };

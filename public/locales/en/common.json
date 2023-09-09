@@ -18,5 +18,6 @@
     "display_name" : "Display name",
     "profile_saved" : "Profile saved",
     "profile_picture" : "Profile picture",
-    "background" : "Background"
+    "background" : "Background",
+    "max_players" : "Max players"
 }

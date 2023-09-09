@@ -58,10 +58,10 @@ export default function HostCreator() {
                     name="control-hooks"
                     onFinish={onFinish}
                 >
-                    <Form.Item name="hostPassword" label={t('host_password')} rules={[{ required: true }]}>
+                    <Form.Item name="hostPassword" label={t('password')} rules={[{ required: true }]}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item name="maxPlayerCount" label={t('Max players')} rules={[{ required: true }]}>
+                    <Form.Item name="maxPlayerCount" label={t('max_players')} rules={[{ required: true }]}>
                         <Select
                             placeholder="Max players count"
                             allowClear
