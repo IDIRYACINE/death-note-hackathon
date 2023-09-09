@@ -1,6 +1,9 @@
-import { withMiddlewareAuthRequired } from '@auth0/nextjs-auth0/edge';
-
-export default withMiddlewareAuthRequired();
+import { authMiddleware } from "@clerk/nextjs";
+ 
+ 
+export default authMiddleware({
+  publicRoutes: ["/", "/login"],
+});
 
 export const config = {
   matcher: '/game/:path*',

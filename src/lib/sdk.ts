@@ -1,12 +1,7 @@
 import { useAction } from "convex/react";
 import { GenericId } from "convex/values";
 import { api } from "../../convex/_generated/api";
-
-import { useConvexAuth } from "convex/react";
-import { useEffect, useRef, useState } from "react";
 import { useMutation } from "convex/react";
-import { Id } from "../../convex/_generated/dataModel";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 export function useHostGame() {
   const hostGame = useAction(api.host.hostGame);

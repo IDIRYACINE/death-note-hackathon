@@ -2,11 +2,9 @@ import { useTranslation } from 'next-i18next';
 import { Button, Space, Typography } from 'antd';
 import { useNavigateMainMenu } from '@/lib/navigation-hooks';
 import Logo from '@/components/commons/Logo';
-import { useAuth0 } from '@auth0/auth0-react';
 
 
 export default function MainMenu() {
-    const { logout } = useAuth0();
 
     const { t } = useTranslation();
     const { Title } = Typography;

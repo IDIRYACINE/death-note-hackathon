@@ -1,6 +1,5 @@
 import { Space, Card, Button, Form, Input, } from "antd";
 import { useTranslation } from "next-i18next";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigateMainMenu } from "@/lib/navigation-hooks";
 import { useJoinGame } from "@/lib/sdk";
 
@@ -16,7 +15,6 @@ const tailLayout = {
 
 export default function JoinGame() {
     const { t } = useTranslation()
-    const { user, } = useAuth0();
     const navigation = useNavigateMainMenu()
     const joinGame = useJoinGame()
 
@@ -27,7 +25,6 @@ export default function JoinGame() {
             hostPassword: string,
             gameId: string,
         }) => {
-        console.log(values)
         navigation.navigateMainMenu()
     };
 

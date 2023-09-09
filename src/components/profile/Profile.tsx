@@ -66,6 +66,11 @@ export default function Profile() {
         }))
     }
 
+    const closeModal = () => {
+        setIsModalOpen(false)
+        setProfile((oldState) => ({...oldState, collectedProfile: false, collectedSecrets: false}))
+    }
+
 
     const onSave = () => {
         secretsForm.validateFields().then((res) => {
@@ -77,7 +82,6 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        console.log(profile)
         if (profile.collectedProfile && profile.collectedSecrets) {
             createUser(profile).then(() => {
                 setIsModalOpen(true)
@@ -92,8 +96,8 @@ export default function Profile() {
 
     const modalProps = {
         isModalOpen,
-        handleOk: () => setIsModalOpen(false),
-        handleCancel: () => setIsModalOpen(false),
+        handleOk: closeModal,
+        handleCancel: closeModal,
         successMessage: t('profile_saved')
     }
 

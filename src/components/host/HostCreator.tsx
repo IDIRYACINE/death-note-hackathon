@@ -1,7 +1,7 @@
 import { Space, Card, Descriptions, Button, Form, Input, Select, } from "antd";
 import { useTranslation } from "next-i18next";
 import type { DescriptionsProps } from "antd"
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from "@clerk/nextjs";
 import { useNavigateMainMenu } from "@/lib/navigation-hooks";
 import { useHostGame } from "@/lib/sdk";
 
@@ -26,7 +26,7 @@ export default function HostCreator() {
         {
             key: '1',
             label: t('host_master'),
-            children: <p>{user?.name ?? "nothing"}</p>,
+            children: <p>{user?.fullName ?? "nothing"}</p>,
         },
     ]
 
@@ -38,7 +38,6 @@ export default function HostCreator() {
             maxPlayerCount: string,
             turnTimerInSeconds: string
         }) => {
-            console.log(values)
         navigation.navigateMainMenu()
     };
 

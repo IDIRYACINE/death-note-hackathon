@@ -1,16 +1,14 @@
 import ConvexClientProvider from "@/components/ConvexClientProvider";
-import { Auth0Provider } from "@auth0/auth0-react";
 import { ConfigProvider } from "antd";
 import theme from '@/theme/ThemeConfig';
 import { ReactNode } from "react";
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { ClerkProvider } from "@clerk/nextjs";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
 
     return (
-        <UserProvider
-            
-        >
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+
             <ConvexClientProvider>
                 <ConfigProvider theme={theme}>
                     <div
@@ -21,6 +19,6 @@ export default function MainLayout({ children }: { children: ReactNode }) {
 
                 </ConfigProvider>
             </ConvexClientProvider>
-        </UserProvider>
+            </ClerkProvider>
     )
 }
