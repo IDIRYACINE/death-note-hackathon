@@ -11,7 +11,15 @@ export const databaseTables = {
 }
 
 const PlayerSchema = {
-    id: v.id(databaseTables.players),
+    tokenIdentifier: v.string(),
+    name: v.string(),
+    secret1: v.string(),
+    secret2: v.string(),
+    secret3: v.string(),
+    secret4: v.string(),
+    secret5: v.string(),
+    background: v.string(),
+    profilePicture: v.string(),
 }
 
 const PlayerStatusScehma = {
@@ -68,9 +76,9 @@ export const PublicMessagesSchema = {
 
 
 
-const lobbies = defineTable(LobbySchema).index("byHostId", ["hostId"]);
+const lobbies = defineTable(LobbySchema).index("by_hostId", ["hostId"]);
 const games = defineTable(GameSchema);
-const players = defineTable(PlayerSchema);
+const players = defineTable(PlayerSchema).index("by_token", ["tokenIdentifier"]);
 const publicMessages = defineTable(PublicMessagesSchema).index("by_gameId", ["gameId"]);
 const privateMessages = defineTable(PrivateMessagesSchema).index("by_gameId_senderId_receiverId", ["gameId","senderId","receiverId"]);
 const playersStatus = defineTable(PlayerStatusScehma).index("by_lobbyId_playerId", ["lobbyId","playerId"]);

@@ -15,6 +15,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as host from "../host";
+import type * as player from "../player";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -26,6 +27,7 @@ import type * as host from "../host";
  */
 declare const fullApi: ApiFromModules<{
   host: typeof host;
+  player: typeof player;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

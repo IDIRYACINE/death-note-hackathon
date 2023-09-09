@@ -11,6 +11,12 @@
     "password" : "Password",
     "turn_timer" : "Turn timer (seconds)",
     "join_game" : "Join game",
-    "game_id" : "Game ID"
-
+    "game_id" : "Game ID",
+    "profile" : "Profile",
+    "secret" : "Secret",
+    "secrets" : "Secrets",
+    "display_name" : "Display name",
+    "profile_saved" : "Profile saved",
+    "profile_picture" : "Profile picture",
+    "background" : "Background"
 }

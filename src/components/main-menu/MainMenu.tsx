@@ -33,6 +33,10 @@ export default function MainMenu() {
         navigation.navigateRules()
     }
 
+    function toProfile() {
+        navigation.navigateProfile()
+    }
+
     return (
         <Space direction="vertical" size="small" className="flex items-center">
             <Logo />
@@ -49,6 +53,11 @@ export default function MainMenu() {
             <Button onClick={toRules} className="flex flex-col justify-center items-center" type="text" size="large">
                 <Title className="mb-0" level={2} type={'secondary'}>
                     {t('rules')}
+                </Title>
+            </Button>
+            <Button onClick={toProfile} className="flex flex-col justify-center items-center" type="text" size="large">
+                <Title className="mb-0" level={2} type={'secondary'}>
+                    {t('profile')}
                 </Title>
             </Button>
             <Button onClick={toSettings} className="flex flex-col justify-center items-center" type="text" size="large">

@@ -1,4 +1,4 @@
-import { hostGamePath, joinGamePath, mainMenuPath, rulesPath, startScreenPath,settingsPath, logoutPath } from '@/domain/navigation'
+import { hostGamePath, joinGamePath, mainMenuPath, rulesPath, startScreenPath,settingsPath, logoutPath, profilePath } from '@/domain/navigation'
 import { useRouter } from 'next/router'
 
 
@@ -21,7 +21,8 @@ interface NavigationMainMenuHook {
     navigateSettings: () => void
     navigateLogout: () => void
     navigateRules: () => void,
-    navigateMainMenu: () => void
+    navigateMainMenu: () => void,
+    navigateProfile: () => void
 }
 
 export function useNavigateMainMenu() : NavigationMainMenuHook{
@@ -32,6 +33,7 @@ export function useNavigateMainMenu() : NavigationMainMenuHook{
         navigateJoinGame: () => router.push(joinGamePath),
         navigateSettings: () => router.push(settingsPath),
         navigateLogout: () => router.push(logoutPath),
+        navigateProfile: () => router.push(profilePath),
         navigateRules: () => router.push(rulesPath),
         navigateMainMenu : () => router.push(mainMenuPath)
     }
