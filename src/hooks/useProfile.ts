@@ -3,7 +3,7 @@ import { loadProfile } from "@/stores/profile/profile-slice";
 import { selectProfile, selectProfileLoadState } from "@/stores/profile/selectors";
 import {  useQuery } from "convex/react";
 import { useEffect } from "react";
-import { api } from "../../convex/_generated/api";
+import { api } from "@convex/_generated/api";
 
 export const useLoadProfile = () => {
 
@@ -13,6 +13,7 @@ export const useLoadProfile = () => {
 
 
     useEffect(() => {
+        console.log(profile)
         if (!isProfileLoaded && profile) {
             dispatch(loadProfile(profile))
         }

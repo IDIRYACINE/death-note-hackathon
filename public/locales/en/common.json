@@ -19,5 +19,7 @@
     "profile_saved" : "Profile saved",
     "profile_picture" : "Profile picture",
     "background" : "Background",
-    "max_players" : "Max players"
+    "max_players" : "Max players",
+    "lobby" : "Lobby",
+    "cancel" : "Cancel"
 }

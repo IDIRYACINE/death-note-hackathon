@@ -215,7 +215,7 @@ function SecretsCard(props: SecretsCardProps) {
 
                 {
                     numberOfScrects.map((_, index) => {
-                        const key = `secret${index}`
+                        const key = `secret${index + 1}`
                         return (
                             <Form.Item key={key} name={key} label={secretLabel} rules={[{ required: true }]}>
                                 <Input defaultValue={profile[key]} />

@@ -10,7 +10,7 @@ export const databaseTables = {
     playersStatus : "playersStatus"
 }
 
-const PlayerSchema = {
+export const PlayerSchema = {
     tokenIdentifier: v.string(),
     name: v.string(),
     secret1: v.string(),
@@ -23,26 +23,28 @@ const PlayerSchema = {
 }
 
 const PlayerStatusScehma = {
-    lobbyId: v.id(databaseTables.lobbies),
-    playerId: v.id(databaseTables.players),
+    lobbyId: v.id("lobbies"),
+    playerId: v.string(),
+    player: v.object(PlayerSchema),
     kiraMeter: v.number(),
     lawlietMeter: v.number(),
-    ready: v.boolean()
+    ready: v.boolean(),
+    name:v.optional(v.string()),
 
 }
 
 const GameSchema = {
-    hostId: v.id(databaseTables.players),
-    lobybId : v.id(databaseTables.lobbies),
+    hostId: v.string(),
+    lobybId : v.string(),
     players: v.array(v.object(PlayerSchema)),
-    kiraId: v.id(databaseTables.players),
-    lawlietId: v.id(databaseTables.players),
+    kiraId: v.string(),
+    lawlietId: v.string(),
     turnTimerInSeconds: v.number(),
-    playerTurnId: v.id(databaseTables.players),
+    playerTurnId: v.string(),
 }
 
-const LobbySchema = {
-    hostId: v.id(databaseTables.players),
+export const LobbySchema = {
+    hostId: v.string(),
     password: v.string(),
     maxPlayers: v.number(),
     playersCount : v.number(),
@@ -50,10 +52,10 @@ const LobbySchema = {
     turnTimerInSeconds: v.number(),
 }
 
-const PrivateMessagesSchema = {
+export const PrivateMessagesSchema = {
     gameId: v.id(databaseTables.games),
-    senderId: v.id(databaseTables.players),
-    receiverId: v.id(databaseTables.players),
+    senderId: v.string(),
+    receiverId: v.string(),
     message: v.string(),
     author: v.string()
 }
@@ -62,7 +64,7 @@ export const PublicMessagesSchema = {
     gameId: v.id(databaseTables.games),
     message: v.string(),
     author: v.string(),
-    senderId: v.id(databaseTables.players)
+    senderId: v.string(),
 }
 
 
@@ -77,7 +79,7 @@ export const PublicMessagesSchema = {
 
 
 const lobbies = defineTable(LobbySchema).index("by_hostId", ["hostId"]);
-const games = defineTable(GameSchema);
+const games = defineTable(GameSchema).index("by_hostId", ["hostId"]);
 const players = defineTable(PlayerSchema).index("by_token", ["tokenIdentifier"]);
 const publicMessages = defineTable(PublicMessagesSchema).index("by_gameId", ["gameId"]);
 const privateMessages = defineTable(PrivateMessagesSchema).index("by_gameId_senderId_receiverId", ["gameId","senderId","receiverId"]);

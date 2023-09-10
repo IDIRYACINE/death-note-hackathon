@@ -1,13 +1,20 @@
 import { useAction } from "convex/react";
 import { GenericId } from "convex/values";
-import { api } from "../../convex/_generated/api";
+import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
+import { Id } from "@convex/_generated/dataModel";
+
+
+
+interface HostGameProps {
+  maxPlayers?: number | undefined; turnTimerInSeconds?: number | undefined; hostId: string; password: string;
+}
 
 export function useHostGame() {
   const hostGame = useAction(api.host.hostGame);
 
   return {
-    execute: (props: { maxPlayers?: number | undefined; turnTimerInSeconds?: number | undefined; hostId: GenericId<"players">; password: string; }) => hostGame(props)
+    execute: async (props:HostGameProps) => hostGame(props)
   }
 }
 
@@ -29,12 +36,12 @@ interface StoreUserProps {
   background: string;
   profilePicture: string;
 }
-export  function useStoreUser() {
+export function useStoreUser() {
   const storeUser = useMutation(api.player.storePlayer);
 
-  const createUser = async (props:StoreUserProps) => {
-     storeUser({
-      name: props.name ,
+  const createUser = async (props: StoreUserProps) => {
+    storeUser({
+      name: props.name,
       secret1: props.secret1 ?? "",
       secret2: props.secret2 ?? "",
       secret3: props.secret3 ?? "",
@@ -45,5 +52,13 @@ export  function useStoreUser() {
     })
   }
 
-  return  createUser
+  return createUser
+}
+
+
+export function useUpdateReadyStatus(id: Id<"playersStatus">) {
+  const updateReadyStatus = useMutation(api.host.updatePlayerReadyStatus,);
+
+  return (ready: boolean) => updateReadyStatus({ id, ready })
+
 }

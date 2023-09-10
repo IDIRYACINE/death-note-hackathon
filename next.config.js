@@ -7,7 +7,7 @@ const nextConfig = {
   i18n,
   modularizeImports: {
     "antd": {
-      transform: "antd/es/{{loweCase member}}/{{member}}",
+      transform: "antd/es/{{loweCase member}}",
     },
     "@ant-design/icons": {
       transform: "@ant-design/icons/lib/icons/{{member}}",

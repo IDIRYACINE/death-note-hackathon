@@ -1,9 +1,9 @@
 import { Space, Card, Descriptions, Button, Form, Input, Select, } from "antd";
 import { useTranslation } from "next-i18next";
 import type { DescriptionsProps } from "antd"
-import { useUser } from "@clerk/nextjs";
 import { useNavigateMainMenu } from "@/lib/navigation-hooks";
 import { useHostGame } from "@/lib/sdk";
+import { useReadStoreProfile } from "@/hooks/useProfile";
 
 const { Option } = Select;
 
@@ -18,7 +18,7 @@ const tailLayout = {
 
 export default function HostCreator() {
     const { t } = useTranslation()
-    const { user, } = useUser();
+    const profile = useReadStoreProfile()
     const navigation = useNavigateMainMenu()
     const hostGame = useHostGame()
 
@@ -26,7 +26,7 @@ export default function HostCreator() {
         {
             key: '1',
             label: t('host_master'),
-            children: <p>{user?.fullName ?? "nothing"}</p>,
+            children: <p>{profile.name ?? "nothing"}</p>,
         },
     ]
 
@@ -38,7 +38,18 @@ export default function HostCreator() {
             maxPlayerCount: string,
             turnTimerInSeconds: string
         }) => {
-        navigation.navigateMainMenu()
+
+        hostGame.execute(
+            {
+                password: values.hostPassword,
+                maxPlayers: parseInt(values.maxPlayerCount),
+                turnTimerInSeconds: parseInt(values.turnTimerInSeconds),
+                hostId: profile.tokenIdentifier
+            }
+        ).then((lobbyId) => {
+            navigation.navigateLobby(lobbyId)
+        })
+
     };
 
     const onCancel = () => {
@@ -81,11 +92,11 @@ export default function HostCreator() {
                     <Form.Item {...tailLayout}>
                         <Space>
                             <Button htmlType="button" onClick={onCancel}>
-                                Cancel
+                                {t('cancel')}
                             </Button>
 
                             <Button type="primary" htmlType="submit">
-                                Create
+                                {t('create_game')}
                             </Button>
                         </Space>
                     </Form.Item>
