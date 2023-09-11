@@ -3,6 +3,7 @@ import { GenericId } from "convex/values";
 import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Id } from "@convex/_generated/dataModel";
+import { useNavigation } from "@/hooks/useNavigate";
 
 
 
@@ -14,15 +15,23 @@ export function useHostGame() {
   const hostGame = useAction(api.host.hostGame);
 
   return {
-    execute: async (props:HostGameProps) => hostGame(props)
+    execute: async (props: HostGameProps) => hostGame(props)
   }
 }
 
 export function useJoinGame() {
   const joinGame = useAction(api.host.joinGame);
+  const navigate = useNavigation()
 
   return {
-    execute: (props: { hostId: GenericId<"players">; password: string; playerId: GenericId<"players">; }) => joinGame(props)
+    execute: (props: { lobbyId: string; password: string; }) => {
+      joinGame({ password: props.password, lobbyId: props.lobbyId as GenericId<"lobbies"> }).then((res) => {
+
+        if (res.lobby) {
+          navigate.navigateLobby(res.lobby._id)
+        }
+      })
+    }
   }
 }
 

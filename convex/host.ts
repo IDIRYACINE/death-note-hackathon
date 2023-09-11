@@ -107,7 +107,7 @@ export const readLobbyPlayers = internalQuery({
 
 export const readLobby = internalQuery({
   args: {
-    hostId: v.string(),
+    lobbyId: v.id("lobbies"),
     password: v.optional(v.string()),
     byPassPassword: v.optional(v.boolean()),
   },
@@ -117,13 +117,13 @@ export const readLobby = internalQuery({
 
     if (args.byPassPassword) {
       lobby = await ctx.db.query("lobbies")
-        .filter((q) => q.eq(q.field("hostId"), args.hostId), )
+        .filter((q) => q.eq(q.field("_id"), args.lobbyId), )
         .first();
     }
     else {
 
       lobby = await ctx.db.query("lobbies")
-        .filter((q) => q.and(q.eq(q.field("hostId"), args.hostId), q.eq(q.field("password"), args.password)))
+        .filter((q) => q.and(q.eq(q.field("_id"), args.lobbyId), q.eq(q.field("password"), args.password)))
         .first();
     }
 
@@ -157,7 +157,8 @@ export const addPlayerToLobby = internalMutation({
 
     const playerIds = [...args.playerIds, args.playerId]
     await ctx.db.patch(args.lobbyId, {
-      playerIds
+      playerIds,
+      playersCount: playerIds.length,
     })
 
   },
@@ -165,7 +166,7 @@ export const addPlayerToLobby = internalMutation({
 
 export const joinGame = action({
   args: {
-    hostId: v.id("players"),
+    lobbyId: v.id("lobbies"),
     password: v.string(),
   },
   handler: async (ctx, args): Promise<
@@ -176,7 +177,7 @@ export const joinGame = action({
     }> => {
 
     const lobbyArgs = {
-      hostId: args.hostId,
+      lobbyId: args.lobbyId,
       password: args.password,
     }
 
@@ -224,7 +225,7 @@ export const joinGame = action({
 
     const isHostMaster = lobby?.hostId === playerId
 
-    if (canJoinLobby.status === 400 && !isHostMaster) {
+    if (canJoinLobby.status === 200 && !isHostMaster) {
       ctx.runMutation(internal.host.addPlayerToLobby, {
         playerId: playerId,
         lobbyId: lobby!._id,

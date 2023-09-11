@@ -8,13 +8,13 @@ import { Id } from "@convex/_generated/dataModel";
 import { useNavigation } from "./useNavigate";
 
 
-export const useStartGame = (lobbyId:string) => {
+export const useStartGame = () => {
     const startGame = useAction(api.game.startGame)
     const navigate = useNavigation()
 
-    return (hostId: string) => { 
-        navigate.navigateGame(lobbyId)
-        startGame({ hostId }) 
+    return (lobbyId: string) => {
+
+        startGame({ lobbyId:lobbyId as Id<"lobbies"> }).then((res) => navigate.navigateGame(lobbyId))
     }
 }
 
@@ -22,8 +22,13 @@ export const useTearDownGame = () => {
     const tearDown = useAction(api.game.endGame)
     const navigate = useNavigation()
 
-    return (props:{gameId?:Id<"games">,hostId:string,lobbyId:Id<"lobbies">}) => {
-        tearDown({ ...props }).then(() => navigate.navigateMainMenu())
+    return (props: { gameId?: Id<"games">, tokenIdentifier:string,hostId: string, lobbyId: Id<"lobbies"> }) => {
+        if(props.hostId !== props.tokenIdentifier) {
+            navigate.navigateMainMenu()
+            return
+        }
+        const tearDownProps = {gameId: props.gameId, lobbyId: props.lobbyId,hostId: props.hostId}
+        tearDown({ ...tearDownProps }).then(() => navigate.navigateMainMenu())
     }
 }
 

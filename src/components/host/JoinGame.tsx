@@ -22,10 +22,10 @@ export default function JoinGame() {
 
     const onFinish = (
         values: {
-            hostPassword: string,
-            gameId: string,
+            password: string,
+            lobbyId: string,
         }) => {
-        navigation.navigateMainMenu()
+        joinGame.execute({...values})
     };
 
     const onCancel = () => {
@@ -44,11 +44,11 @@ export default function JoinGame() {
                     onFinish={onFinish}
                 >
 
-                    <Form.Item name="gameId" label={t('game_id')} rules={[{ required: true }]}>
+                    <Form.Item name="lobbyId" label={t('game_id')} rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
 
-                    <Form.Item name="hostPassword" label={t('password')} rules={[{ required: true }]}>
+                    <Form.Item name="password" label={t('password')} rules={[{ required: true }]}>
                         <Input.Password />
                     </Form.Item>
 

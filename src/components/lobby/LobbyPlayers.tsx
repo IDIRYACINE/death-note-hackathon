@@ -16,9 +16,9 @@ export default function LobbyPlayers(props: LobbyPlayersProps) {
 
     const profile = useReadStoreProfile()
 
-    const items : DescriptionsProps['items'] = players.map((player) => {
+    const items: DescriptionsProps['items'] = players.map((player) => {
         const isPlayer = player.playerId === profile.tokenIdentifier
-        const Widget = isPlayer? MyPlayerItem : OtherPlayerItem
+        const Widget = isPlayer ? MyPlayerItem : OtherPlayerItem
 
         return {
             key: player.playerId,
@@ -30,36 +30,36 @@ export default function LobbyPlayers(props: LobbyPlayersProps) {
 
     return (
 
-            <Descriptions bordered items={items}/>
-            
-            
-           
+        <Descriptions bordered items={items} />
+
+
+
 
     )
 }
 
-interface LobbyPlayerItemProps{
-    playerStatus : Doc<"playersStatus">,
+interface LobbyPlayerItemProps {
+    playerStatus: Doc<"playersStatus">,
 }
-function MyPlayerItem({playerStatus}:LobbyPlayerItemProps) {
-    const updateStatus  = useUpdateReadyStatus(playerStatus._id)
+function MyPlayerItem({ playerStatus }: LobbyPlayerItemProps) {
+    const updateStatus = useUpdateReadyStatus(playerStatus._id)
 
-    const updateReadyStatus = (e:CheckboxChangeEvent) => {
+    const updateReadyStatus = (e: CheckboxChangeEvent) => {
         updateStatus(e.target.checked)
     }
 
     return (
         <Descriptions.Item label={playerStatus.player.name}>
-             <Checkbox defaultChecked={playerStatus.ready} onChange={updateReadyStatus}/>
+            <Checkbox defaultChecked={playerStatus.ready} onChange={updateReadyStatus} />
         </Descriptions.Item>
 
     )
 }
 
-function OtherPlayerItem({playerStatus}:LobbyPlayerItemProps) {
+function OtherPlayerItem({ playerStatus }: LobbyPlayerItemProps) {
     return (
         <Descriptions.Item label={playerStatus.player.name}>
-             <Checkbox defaultChecked={playerStatus.ready} disabled/>
+            <Checkbox defaultChecked={playerStatus.ready} disabled />
         </Descriptions.Item>
     )
 }

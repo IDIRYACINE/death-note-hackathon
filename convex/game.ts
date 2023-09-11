@@ -8,9 +8,9 @@ import { StartGameResponse } from "./_types/game";
 
 
 export const startGame = action({
-    args: { hostId: v.string() },
+    args: { lobbyId: v.id("lobbies") },
     handler: async (ctx, args): Promise<StartGameResponse> => {
-        const lobby = (await ctx.runQuery(internal.host.readLobby, { hostId: args.hostId, byPassPassword: true }))!
+        const lobby = (await ctx.runQuery(internal.host.readLobby, { lobbyId: args.lobbyId, byPassPassword: true }))!
 
         let status = 200
         let message = "game started"
@@ -25,7 +25,7 @@ export const startGame = action({
 
         if (status == 200) {
             gameId = await ctx.runMutation(internal.game.setupGame, {
-                hostId: args.hostId,
+                hostId: lobby.hostId,
                 playerIds: lobby.playerIds,
                 roundTimerInSeconds: lobby.roundTimerInSeconds,
                 lobbyId: lobby._id

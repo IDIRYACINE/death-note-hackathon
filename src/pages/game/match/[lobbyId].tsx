@@ -19,4 +19,4 @@ export default function Page() {
 }
 
 
-export const serverSideProps = getServerSideLocales
+export const getServerSideProps = getServerSideLocales

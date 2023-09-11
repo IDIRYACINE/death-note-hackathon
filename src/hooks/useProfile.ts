@@ -13,7 +13,6 @@ export const useLoadProfile = () => {
 
 
     useEffect(() => {
-        console.log(profile)
         if (!isProfileLoaded && profile) {
             dispatch(loadProfile(profile))
         }

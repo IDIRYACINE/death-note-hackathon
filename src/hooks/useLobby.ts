@@ -13,7 +13,6 @@ export const useLoadLobby= (lobbyId:Id<"lobbies">) => {
 
 
     useEffect(() => {
-        console.log(lobby)
         if (lobby) {
             dispatch(loadLobby(lobby))
         }
