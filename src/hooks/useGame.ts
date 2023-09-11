@@ -2,8 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { useAction, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@convex/_generated/api";
-import { loadChat, loadGame } from "@/stores/game/game-slice";
-import { selectChat, selectGame } from "@/stores/game/selectors";
+import {  loadGame } from "@/stores/game/game-slice";
+import {  selectGame } from "@/stores/game/selectors";
 import { Id } from "@convex/_generated/dataModel";
 import { useNavigation } from "./useNavigate";
 
@@ -47,27 +47,8 @@ export const useLoadGame = (lobbyId: Id<"lobbies">) => {
     return game !== null && game !== undefined
 }
 
-export const useLoadRoundMessages = (round: number, gameId: Id<"games">) => {
-    const chat = useQuery(api.chat.loadRoundMessages, { round, gameId })
-
-    const dispatch = useAppDispatch()
-
-
-    useEffect(() => {
-        if (chat) {
-            dispatch(loadChat(chat))
-        }
-    }, [dispatch, chat])
-
-}
-
 export const useReadStoreGame = () => {
     const game = useAppSelector(selectGame)
     return game
 
-}
-
-export const useReadStoreChat = (round: number) => {
-    const chat = useAppSelector((state) => selectChat({ ...state, round }))
-    return chat
 }

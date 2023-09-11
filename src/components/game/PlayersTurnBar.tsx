@@ -3,21 +3,19 @@ import { useReadStoreLobbyPlayers } from "@/hooks/useLobby"
 import { Doc } from "@convex/_generated/dataModel"
 import { Card, Space, Image, Slider, Typography } from "antd"
 import { SliderMarks } from "antd/es/slider"
-import { useTranslation } from "next-i18next"
 
 
 export default function PlayersTurnBar() {
 
     const players = useReadStoreLobbyPlayers()
-    const {t} = useTranslation()
 
     return (
         <Space direction="vertical">
             {players.map((player) => {
                 const playerProps = {
                     player,
-                    kiraLabel:t("kira") ,
-                    lawlietLabel:t("lawliet")
+                    kiraLabel:"K" ,
+                    lawlietLabel:"L"
                 }
                 return <PlayerCard key={player.playerId} {...playerProps} />
             })
@@ -32,17 +30,17 @@ function PlayerCard({ player,kiraLabel,lawlietLabel }: PlayerCardProps) {
     
     return (
         <Card>
-            <Card.Grid >
+            <Card.Grid className="flex flex-col justify-center items-center" style={{width : "25%" , padding:"0.2rem"}} >
                 <Image
-                    width={200}
-                    height={200}
+                    width="100%"
+                    height={100}
                     alt={player.player.name}
                     src={player.player.profilePicture}
                     fallback={fallbackImageUrl}
                 />
             </Card.Grid>
-            <Card.Grid style={{ textAlign: "center" }}>
-                <Space>
+            <Card.Grid style={{ textAlign: "center",width:"75%", }}>
+                <Space className="w-full" direction="vertical">
                     <Typography.Title level={4}>{player.player.name}</Typography.Title>
                     <SuspicionMeter label={kiraLabel} step={player.kiraMeter} />
                     <SuspicionMeter label={lawlietLabel} step={player.lawlietMeter} />

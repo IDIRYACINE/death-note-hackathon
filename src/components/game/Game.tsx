@@ -1,10 +1,11 @@
 import { Layout ,Space} from "antd";
+import Chat from "../chat/Chat";
 import PlayersTurnBar from "./PlayersTurnBar";
 
 
 export default function Game(){
     return (
-        <Layout className="layout">
+        <Layout className="w-screen">
             <Layout.Header className="flex flex-row justify-center items-center">
                 Round 1 : 00:40
             </Layout.Header>
@@ -12,7 +13,7 @@ export default function Game(){
                 <Space>
                     <PlayersTurnBar/>
                     <div>Something Something</div>
-                    <div>Chat</div>
+                    <Chat/>
                 </Space>
             </Layout.Content>
         </Layout>

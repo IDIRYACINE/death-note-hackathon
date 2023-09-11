@@ -1,9 +1,9 @@
 import { useReadStoreGame } from "@/hooks/useGame";
-import { useReadStoreLobby } from "@/hooks/useLobby";
 import { useReadStoreProfile } from "@/hooks/useProfile";
-import { Button, Input, Layout, Space } from "antd";
+import {  Layout } from "antd";
 import { useTranslation } from "next-i18next";
-import { useRef } from "react";
+import ChatMessages from "./ChatMessages";
+import SendMessageButton from "./SendMessageButton";
 
 
 export default function Chat(){
@@ -20,13 +20,16 @@ export default function Chat(){
         sendLabel: t("send"),
         sendKiraLabel: t("sendKira"),
         sendLawlietLabel: t("sendLawliet"),
+        gameId: game._id,
+        avatar: profile.profilePicture,
+        name: profile.name,
     }
 
     return (
         <>
             <Layout>
                 <Layout.Content>
-
+                    <ChatMessages round={game.round} gameId={game._id}/>
                 </Layout.Content>
 
                 <Layout.Footer>
@@ -34,44 +37,5 @@ export default function Chat(){
                 </Layout.Footer>
             </Layout>
         </>
-    )
-}
-
-interface SendMessageButtonProps {
-    kiraId?: string
-    lawlietId?: string
-    playerId : string,
-    sendLabel: string,
-    round: number,
-    sendKiraLabel: string,
-    sendLawlietLabel: string,
-}
-function SendMessageButton(props:SendMessageButtonProps){
-    const {kiraId, lawlietId, playerId, sendLabel, sendKiraLabel, sendLawlietLabel} = props
-    const message = useRef("")
-
-    const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        message.current = e.target.value
-    }
-    
-    const sendPlayerMessage = () => {
-        message.current = ""
-    }
-
-    const sendKorLMessage = () => {
-        message.current = ""
-    }
-
-    let kOrLbutton = null
-
-    kOrLbutton = kiraId === playerId ? <Button title={sendKiraLabel} onClick={sendKorLMessage}/> : kOrLbutton
-    kOrLbutton = lawlietId === playerId ? <Button title={sendLawlietLabel} onClick={sendKorLMessage}/> : kOrLbutton
-
-    return (
-        <Space>
-            <Input.TextArea  onChange={handleMessage}/>
-            <Button title={sendLabel}  onClick={sendPlayerMessage}/>
-            {kOrLbutton}
-        </Space>
     )
 }

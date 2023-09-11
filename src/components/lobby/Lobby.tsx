@@ -19,11 +19,13 @@ export default function Lobby() {
     const cancelGame = useTearDownGame()
     const profile = useReadStoreProfile()
 
+    const isGameMaster = lobby.hostId === profile.tokenIdentifier
+
     const items: DescriptionsProps['items'] = [
         {
             key: lobby._id,
             label: t("lobby_id"),
-            span : 3,
+            span: 3,
             children: <p>{lobby._id}</p>,
         }
     ]
@@ -38,7 +40,7 @@ export default function Lobby() {
             {
                 hostId: lobby.hostId,
                 lobbyId: lobby._id,
-                tokenIdentifier : profile.tokenIdentifier
+                tokenIdentifier: profile.tokenIdentifier
             }
         )
     }
@@ -54,9 +56,13 @@ export default function Lobby() {
                         {t('cancel')}
                     </Button>
 
-                    <Button type="primary" onClick={onStartGame}>
-                        {t('start_game')}
-                    </Button>
+                    {
+                        isGameMaster ? 
+                        <Button type="primary" onClick={onStartGame}>
+                            {t('start_game')}
+                        </Button>
+                            : null
+                    }
                 </Space>
             </Space>
 
