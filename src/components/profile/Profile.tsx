@@ -1,4 +1,4 @@
-import { useNavigateMainMenu } from "@/lib/navigation-hooks";
+import { useNavigation } from "@/hooks/useNavigate";
 import {useStoreUser} from "@/lib/sdk";
 import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
 import { Button, Card, Form, FormInstance, Input, Modal, Space, Typography } from "antd";
@@ -20,7 +20,7 @@ const tailLayout = {
 };
 
 export default function Profile() {
-    const navigation = useNavigateMainMenu()
+    const navigation = useNavigation()
     const createUser  = useStoreUser()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { t } = useTranslation()

@@ -9,7 +9,7 @@
     "host_settings" : "Host settings",
     "host_master" : "Host master",
     "password" : "Password",
-    "turn_timer" : "Turn timer (seconds)",
+    "round_timer" : "Turn timer (seconds)",
     "join_game" : "Join game",
     "game_id" : "Game ID",
     "profile" : "Profile",
@@ -21,5 +21,10 @@
     "background" : "Background",
     "max_players" : "Max players",
     "lobby" : "Lobby",
-    "cancel" : "Cancel"
+    "cancel" : "Cancel",
+    "send" : "Send",
+    "message" : "Message",
+    "sendKira" : "Send Kira",
+    "sendLawliet" : "Send Lawliet",
+    "lobby_id" : "Lobby ID"
 }

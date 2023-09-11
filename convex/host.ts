@@ -9,7 +9,7 @@ const hostGameArgs = {
   hostId: v.string(),
   password: v.string(),
   maxPlayers: v.optional(v.number()),
-  turnTimerInSeconds: v.optional(v.number()),
+  roundTimerInSeconds: v.optional(v.number()),
 }
 
 export const createLobby = internalMutation({
@@ -22,7 +22,7 @@ export const createLobby = internalMutation({
       maxPlayers: args.maxPlayers ?? 5,
       playersCount: 1,
       gameStarted: false,
-      turnTimerInSeconds: args.turnTimerInSeconds ?? 60,
+      roundTimerInSeconds: args.roundTimerInSeconds ?? 360,
       playerIds: [args.hostId],
     }
 

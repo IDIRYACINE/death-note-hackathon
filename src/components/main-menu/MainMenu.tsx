@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
 import { Button, Space, Typography } from 'antd';
-import { useNavigateMainMenu } from '@/lib/navigation-hooks';
+import { useNavigation } from '@/hooks/useNavigate';
 import Logo from '@/components/commons/Logo';
 import { useClerk } from "@clerk/clerk-react";
 
@@ -10,7 +10,7 @@ export default function MainMenu() {
     const { t } = useTranslation();
     const { Title } = Typography;
 
-    const navigation = useNavigateMainMenu()
+    const navigation = useNavigation()
 
     function toLogout() {
         signOut()

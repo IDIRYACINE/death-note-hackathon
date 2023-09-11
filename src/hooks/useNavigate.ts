@@ -1,21 +1,10 @@
-import { hostGamePath, joinGamePath, mainMenuPath, rulesPath, startScreenPath,settingsPath, logoutPath, profilePath, lobbyPath } from '@/domain/navigation'
+import { hostGamePath, joinGamePath, mainMenuPath, rulesPath,  lobbyPath, gamePath } from '@/domain/navigation'
+import {settingsPath, logoutPath, profilePath,} from '@/domain/navigation'
 import { useRouter } from 'next/router'
 
 
+
 interface NavigationHook {
-    navigate: () => void
-}
-
-
-export function useNavigateGame(): NavigationHook {
-    const router = useRouter()
-
-    return {
-        navigate: () => router.push(mainMenuPath)
-    }
-}
-
-interface NavigationMainMenuHook {
     navigateHostGame: () => void,
     navigateJoinGame: () => void
     navigateSettings: () => void
@@ -23,11 +12,12 @@ interface NavigationMainMenuHook {
     navigateRules: () => void,
     navigateMainMenu: () => void,
     navigateProfile: () => void,
-    navigateLobby: (lobbyId:string) => void
+    navigateLobby: (lobbyId:string) => void,
+    navigateGame: (lobbyId:string) => void
 
 }
 
-export function useNavigateMainMenu() : NavigationMainMenuHook{
+export function useNavigation() : NavigationHook{
     const router = useRouter()
 
     return {
@@ -38,6 +28,7 @@ export function useNavigateMainMenu() : NavigationMainMenuHook{
         navigateProfile: () => router.push(profilePath),
         navigateRules: () => router.push(rulesPath),
         navigateMainMenu : () => router.push(mainMenuPath),
-        navigateLobby: (lobbyId:string) => router.push(lobbyPath + lobbyId)
+        navigateLobby: (lobbyId:string) => router.push(lobbyPath + lobbyId),
+        navigateGame: (lobbyId:string) => router.push(gamePath + lobbyId )
     }
 }

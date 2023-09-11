@@ -27,31 +27,14 @@ export default function LobbyPlayers(props: LobbyPlayersProps) {
         }
     })
 
-    const onStartGame = () => {
-        
-    }
-
-    const onCancel = () => {
-
-    }
 
     return (
-        <Space direction="vertical">
 
             <Descriptions bordered items={items}/>
             
             
-            <Space>
-                <Button htmlType="button" onClick={onCancel}>
-                    {t('cancel')}
-                </Button>
+           
 
-                <Button type="primary" htmlType="submit">
-                    {t('start_game')}
-                </Button>
-            </Space>
-
-        </Space>
     )
 }
 
@@ -74,7 +57,6 @@ function MyPlayerItem({playerStatus}:LobbyPlayerItemProps) {
 }
 
 function OtherPlayerItem({playerStatus}:LobbyPlayerItemProps) {
-    console.log("other")
     return (
         <Descriptions.Item label={playerStatus.player.name}>
              <Checkbox defaultChecked={playerStatus.ready} disabled/>

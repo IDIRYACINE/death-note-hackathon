@@ -38,8 +38,8 @@ export const GameSchema = {
     lobbyId : v.id("lobbies"),
     kiraId: v.string(),
     lawlietId: v.string(),
-    turnTimerInSeconds: v.number(),
-    playerTurnId: v.string(),
+    roundTimerInSeconds: v.number(),
+    round: v.number(),
     playerIds: v.array(v.string()),
 }
 
@@ -49,23 +49,18 @@ export const LobbySchema = {
     maxPlayers: v.number(),
     playersCount : v.number(),
     gameStarted: v.boolean(),
-    turnTimerInSeconds: v.number(),
+    roundTimerInSeconds: v.number(),
     playerIds: v.array(v.string()),
 }
 
-export const PrivateMessagesSchema = {
-    gameId: v.id(databaseTables.games),
-    senderId: v.string(),
-    receiverId: v.string(),
-    message: v.string(),
-    author: v.string()
-}
 
 export const PublicMessagesSchema = {
     gameId: v.id(databaseTables.games),
     message: v.string(),
     author: v.string(),
     senderId: v.string(),
+    avatar: v.string(),
+    round: v.number(),
 }
 
 
@@ -80,16 +75,14 @@ export const PublicMessagesSchema = {
 
 
 const lobbies = defineTable(LobbySchema).index("by_hostId", ["hostId"]);
-const games = defineTable(GameSchema).index("by_hostId", ["hostId"]);
+const games = defineTable(GameSchema).index("by_lobbyId", ["lobbyId"]);
 const players = defineTable(PlayerSchema).index("by_token", ["tokenIdentifier"]);
-const publicMessages = defineTable(PublicMessagesSchema).index("by_gameId", ["gameId"]);
-const privateMessages = defineTable(PrivateMessagesSchema).index("by_gameId_senderId_receiverId", ["gameId","senderId","receiverId"]);
+const chat = defineTable(PublicMessagesSchema).index("by_gameId_round", ["gameId","round"]);
 const playersStatus = defineTable(PlayerStatusScehma).index("by_lobbyId_playerId", ["lobbyId","playerId"]);
 
 export default defineSchema({
     players,
-    publicMessages,
-    privateMessages,
+    chat,
     lobbies,
     games,
     playersStatus,

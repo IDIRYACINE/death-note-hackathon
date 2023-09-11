@@ -18,7 +18,7 @@ const initialState: LobbyState = {
         playersCount: 0,
         gameStarted: false,
         playerIds: [],
-        turnTimerInSeconds: 0,
+        roundTimerInSeconds: 360,
         _id: "" as Id<"lobbies">,
         _creationTime: 0
     },

@@ -7,7 +7,7 @@ import { Id } from "@convex/_generated/dataModel";
 
 
 interface HostGameProps {
-  maxPlayers?: number | undefined; turnTimerInSeconds?: number | undefined; hostId: string; password: string;
+  maxPlayers?: number | undefined; roundTimerInSeconds?: number | undefined; hostId: string; password: string;
 }
 
 export function useHostGame() {

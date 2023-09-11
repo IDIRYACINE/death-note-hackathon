@@ -1,7 +1,7 @@
 import { Space, Card, Descriptions, Button, Form, Input, Select, } from "antd";
 import { useTranslation } from "next-i18next";
 import type { DescriptionsProps } from "antd"
-import { useNavigateMainMenu } from "@/lib/navigation-hooks";
+import { useNavigation } from "@/hooks/useNavigate";
 import { useHostGame } from "@/lib/sdk";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 
@@ -19,7 +19,7 @@ const tailLayout = {
 export default function HostCreator() {
     const { t } = useTranslation()
     const profile = useReadStoreProfile()
-    const navigation = useNavigateMainMenu()
+    const navigation = useNavigation()
     const hostGame = useHostGame()
 
     const items: DescriptionsProps['items'] = [
@@ -36,14 +36,14 @@ export default function HostCreator() {
         values: {
             hostPassword: string,
             maxPlayerCount: string,
-            turnTimerInSeconds: string
+            roundTimerInSeconds: string
         }) => {
 
         hostGame.execute(
             {
                 password: values.hostPassword,
                 maxPlayers: parseInt(values.maxPlayerCount),
-                turnTimerInSeconds: parseInt(values.turnTimerInSeconds),
+                roundTimerInSeconds: parseInt(values.roundTimerInSeconds),
                 hostId: profile.tokenIdentifier
             }
         ).then((lobbyId) => {
@@ -85,7 +85,7 @@ export default function HostCreator() {
                         </Select>
                     </Form.Item>
 
-                    <Form.Item name="turnTimerInSeconds" label={t('turn_timer')} rules={[{ required: true }]}>
+                    <Form.Item name="roundTimerInSeconds" label={t('round_timer')} rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
 

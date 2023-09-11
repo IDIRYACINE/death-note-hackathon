@@ -1,9 +1,9 @@
-import { useNavigateMainMenu } from "@/lib/navigation-hooks"
+import { useNavigation } from "@/hooks/useNavigate"
 import { useEffect } from "react"
 
 
 export default function Page() {
-    const navigation = useNavigateMainMenu()
+    const navigation = useNavigation()
 
     useEffect(() => {
         navigation.navigateMainMenu()

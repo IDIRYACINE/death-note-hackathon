@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
 import { Button, Space, Typography } from 'antd';
-import { useNavigateGame } from '@/lib/navigation-hooks';
+import { useNavigation } from '@/hooks/useNavigate';
 
 import Logo from '@/components/commons/Logo';
 
@@ -9,10 +9,10 @@ export default function StartScreen() {
     const { t } = useTranslation();
     const { Title } = Typography;
 
-    const navigation = useNavigateGame()
+    const navigation = useNavigation()
 
     function navigate(){
-        navigation.navigate()
+        navigation.navigateMainMenu()
     }
 
 
