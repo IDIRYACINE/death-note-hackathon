@@ -3,6 +3,7 @@ import { action, internalMutation, internalQuery, mutation, query } from "./_gen
 import { internal } from "./_generated/api";
 import { Doc, Id } from "./_generated/dataModel";
 import { ReadLobbyResponse } from "./_types/host";
+import { playerAlreadyJoined } from "./_helpers/helpers";
 
 const hostGameArgs = {
   hostId: v.string(),
@@ -22,6 +23,7 @@ export const createLobby = internalMutation({
       playersCount: 1,
       gameStarted: false,
       turnTimerInSeconds: args.turnTimerInSeconds ?? 60,
+      playerIds: [args.hostId],
     }
 
     const lobbyId = await ctx.db.insert("lobbies", lobby);
@@ -31,7 +33,7 @@ export const createLobby = internalMutation({
 });
 
 export const hostAlreadyExists = internalQuery({
-  args: {hostId: v.string()},
+  args: { hostId: v.string() },
   handler: async (ctx, args) => {
     const lobby = await ctx.db.query("lobbies")
       .filter((q) => q.eq(q.field("hostId"), args.hostId))
@@ -45,9 +47,9 @@ export const hostGame = action({
   args: hostGameArgs,
   handler: async (ctx, args): Promise<Id<"lobbies">> => {
 
-    const lobbyExistsId = await ctx.runQuery(internal.host.hostAlreadyExists, {hostId: args.hostId})
+    const lobbyExistsId = await ctx.runQuery(internal.host.hostAlreadyExists, { hostId: args.hostId })
 
-    if(lobbyExistsId){
+    if (lobbyExistsId) {
       return lobbyExistsId
     }
 
@@ -55,7 +57,8 @@ export const hostGame = action({
 
     await ctx.runMutation(internal.host.addPlayerToLobby, {
       lobbyId: lobbyId,
-      playerId: args.hostId
+      playerId: args.hostId,
+      playerIds: []
     })
 
     return lobbyId
@@ -105,15 +108,25 @@ export const readLobbyPlayers = internalQuery({
 export const readLobby = internalQuery({
   args: {
     hostId: v.string(),
-    password: v.string(),
+    password: v.optional(v.string()),
+    byPassPassword: v.optional(v.boolean()),
   },
   handler: async (ctx, args): Promise<Doc<"lobbies"> | null> => {
 
+    let lobby: Doc<"lobbies"> | null = null;
 
+    if (args.byPassPassword) {
+      lobby = await ctx.db.query("lobbies")
+        .filter((q) => q.eq(q.field("hostId"), args.hostId), )
+        .first();
+    }
+    else {
 
-    const lobby = await ctx.db.query("lobbies")
-      .filter((q) => q.and(q.eq(q.field("hostId"), args.hostId), q.eq(q.field("password"), args.password)))
-      .first();
+      lobby = await ctx.db.query("lobbies")
+        .filter((q) => q.and(q.eq(q.field("hostId"), args.hostId), q.eq(q.field("password"), args.password)))
+        .first();
+    }
+
 
 
     return lobby;
@@ -123,22 +136,28 @@ export const readLobby = internalQuery({
 export const addPlayerToLobby = internalMutation({
   args: {
     lobbyId: v.id("lobbies"),
-    playerId: v.string()
+    playerId: v.string(),
+    playerIds: v.array(v.string()),
   },
   handler: async (ctx, args) => {
 
     const player = (await ctx.db.query("players").filter((q) => q.eq(q.field("tokenIdentifier"), args.playerId)).first())!
-    
-    const data = {...player,_id:undefined,_creationTime:undefined}
+
+    const data = { ...player, _id: undefined, _creationTime: undefined }
 
     await ctx.db.insert("playersStatus", {
       lobbyId: args.lobbyId,
       playerId: args.playerId,
-      player : data,
+      player: data,
       ready: false,
       kiraMeter: 0,
       lawlietMeter: 0,
 
+    })
+
+    const playerIds = [...args.playerIds, args.playerId]
+    await ctx.db.patch(args.lobbyId, {
+      playerIds
     })
 
   },
@@ -189,6 +208,11 @@ export const joinGame = action({
         const wrongPassword = lobby.password === args.password
         status = wrongPassword ? 400 : status
         message = wrongPassword ? "wrong passowrd" : message
+
+        if(playerAlreadyJoined({playerId,playerIds:lobby.playerIds})){
+          status = 400
+          message = "player already joined"
+        }
       }
 
       return {
@@ -203,7 +227,8 @@ export const joinGame = action({
     if (canJoinLobby.status === 400 && !isHostMaster) {
       ctx.runMutation(internal.host.addPlayerToLobby, {
         playerId: playerId,
-        lobbyId: lobby!._id
+        lobbyId: lobby!._id,
+        playerIds: lobby!.playerIds
       })
 
     }
@@ -236,14 +261,14 @@ export const deleteLobby = internalMutation({
 
 
 export const updatePlayerReadyStatus = mutation({
-  args: {id: v.id("playersStatus"), ready: v.boolean() },
+  args: { id: v.id("playersStatus"), ready: v.boolean() },
   handler: async (ctx, args) => {
     const playerId = await ctx.auth.getUserIdentity()
 
     if (!playerId) {
       throw new Error("user not logged in")
     }
-    const {id,ready} = args
+    const { id, ready } = args
 
     await ctx.db.patch(id, { ready });
 

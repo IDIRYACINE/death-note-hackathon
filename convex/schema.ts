@@ -22,7 +22,7 @@ export const PlayerSchema = {
     profilePicture: v.string(),
 }
 
-const PlayerStatusScehma = {
+export const PlayerStatusScehma = {
     lobbyId: v.id("lobbies"),
     playerId: v.string(),
     player: v.object(PlayerSchema),
@@ -33,14 +33,14 @@ const PlayerStatusScehma = {
 
 }
 
-const GameSchema = {
+export const GameSchema = {
     hostId: v.string(),
-    lobybId : v.string(),
-    players: v.array(v.object(PlayerSchema)),
+    lobbyId : v.id("lobbies"),
     kiraId: v.string(),
     lawlietId: v.string(),
     turnTimerInSeconds: v.number(),
     playerTurnId: v.string(),
+    playerIds: v.array(v.string()),
 }
 
 export const LobbySchema = {
@@ -50,6 +50,7 @@ export const LobbySchema = {
     playersCount : v.number(),
     gameStarted: v.boolean(),
     turnTimerInSeconds: v.number(),
+    playerIds: v.array(v.string()),
 }
 
 export const PrivateMessagesSchema = {
