@@ -3,7 +3,7 @@ import { useAction, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@convex/_generated/api";
 import {  loadGame } from "@/stores/game/game-slice";
-import {  selectGame } from "@/stores/game/selectors";
+import {  selectGame, selectIsVoting } from "@/stores/game/selectors";
 import { Id } from "@convex/_generated/dataModel";
 import { useNavigation } from "./useNavigate";
 
@@ -12,8 +12,11 @@ export const useStartGame = () => {
     const startGame = useAction(api.game.startGame)
     const navigate = useNavigation()
 
-    return (lobbyId: string) => {
-
+    return ({lobbyId,gameStarted}:{lobbyId: string,gameStarted?:boolean}) => {
+        if(gameStarted) {
+            navigate.navigateGame(lobbyId)
+            return
+        }
         startGame({ lobbyId:lobbyId as Id<"lobbies"> }).then((res) => navigate.navigateGame(lobbyId))
     }
 }
@@ -51,4 +54,9 @@ export const useReadStoreGame = () => {
     const game = useAppSelector(selectGame)
     return game
 
+}
+
+export const useReadStoreIsVoting = () => {
+    const isVoting = useAppSelector(selectIsVoting)
+    return isVoting
 }

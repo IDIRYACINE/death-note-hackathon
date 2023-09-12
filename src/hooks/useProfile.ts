@@ -25,3 +25,7 @@ export const useReadStoreProfile = () => {
     const profile = useAppSelector(selectProfile)
     return profile
 }
+export const useReadStorePlayerId = () => {
+    const profile = useAppSelector(selectProfile)
+    return profile.tokenIdentifier
+}

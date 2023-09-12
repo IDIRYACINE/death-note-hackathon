@@ -1,7 +1,7 @@
 import { useSendMessage } from "@/hooks/useChat"
 import { Id } from "@convex/_generated/dataModel"
 import { Button, Space ,Input} from "antd"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 
 interface SendMessageButtonProps {
     kiraId?: string
@@ -18,16 +18,16 @@ interface SendMessageButtonProps {
 export default function SendMessageButton(props:SendMessageButtonProps){
     const {kiraId, lawlietId, playerId, round,sendLabel, sendKiraLabel, sendLawlietLabel} = props
     const {avatar, name,gameId} = props
-    const message = useRef("")
+    const [message,setMessage] = useState("")
     const sendMessage = useSendMessage()
 
     const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        message.current = e.target.value
+        setMessage( e.target.value)
     }
     
     const sendPlayerMessage = () => {
         sendMessage({
-            message : message.current,
+            message : message,
             isKira : false,
             isLawliet : false,
             round,
@@ -35,12 +35,12 @@ export default function SendMessageButton(props:SendMessageButtonProps){
             avatar  ,
             name,
         })
-        message.current = ""
+        setMessage("")
     }
 
     const sendKorLMessage = () => {
         sendMessage({
-            message : message.current,
+            message : message,
             isKira : kiraId === playerId,
             isLawliet : lawlietId === playerId,
             round,
@@ -48,7 +48,7 @@ export default function SendMessageButton(props:SendMessageButtonProps){
             avatar  ,
             name,
         })
-        message.current = ""
+        setMessage( "")
     }
 
     let kOrLbutton = null
@@ -57,8 +57,8 @@ export default function SendMessageButton(props:SendMessageButtonProps){
     kOrLbutton = lawlietId === playerId ? <Button className={btnClassName} onClick={sendKorLMessage}>{sendLawlietLabel}</Button>: kOrLbutton
 
     return (
-        <Space direction="vertical">
-            <Input.TextArea  onChange={handleMessage}/>
+        <Space className="w-full" direction="vertical">
+            <Input.TextArea value={message} onChange={handleMessage}/>
             <Button className={btnClassName} onClick={sendPlayerMessage}>{sendLabel}</Button>
             {kOrLbutton}
         </Space>

@@ -10,6 +10,7 @@ export const databaseTables = {
     playersStatus : "playersStatus"
 }
 
+
 export const PlayerSchema = {
     tokenIdentifier: v.string(),
     name: v.string(),
@@ -32,6 +33,12 @@ export const PlayerStatusScehma = {
     name:v.optional(v.string()),
 
 }
+export const VoteSchema = {
+    playerId: v.string(),
+    targetId: v.id("playersStatus"),
+    voteType: v.string(),
+    voteImpact : v.number(),
+}
 
 export const GameSchema = {
     hostId: v.string(),
@@ -41,6 +48,9 @@ export const GameSchema = {
     roundTimerInSeconds: v.number(),
     round: v.number(),
     playerIds: v.array(v.string()),
+    roundStartTimestamp: v.number(),
+    roundVotes: v.array(v.object(VoteSchema)),
+    isVoting: v.boolean(),
 }
 
 export const LobbySchema = {

@@ -26,5 +26,10 @@
     "message" : "Message",
     "sendKira" : "Send Kira",
     "sendLawliet" : "Send Lawliet",
-    "lobby_id" : "Lobby ID"
+    "lobby_id" : "Lobby ID",
+    "round" : "Round",
+    "kira" : "Kira",
+    "lawliet" : "Lawliet",
+    "vote" : "Vote",
+    "not_voting_phase" : "Not voting phase"
 }

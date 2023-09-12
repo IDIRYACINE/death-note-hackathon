@@ -14,7 +14,7 @@ export const useLoadRoundMessages = (round: number, gameId: Id<"games">) => {
 
 
     useEffect( () => {
-        if (chat) {
+        if (chat && chat.length > 0) {
             dispatch(loadChat(chat))
         }
     }, [dispatch, chat])

@@ -26,16 +26,16 @@ export default function Chat(){
     }
 
     return (
-        <>
-            <Layout>
+        
+            <Layout className="max-w-md">
                 <Layout.Content>
                     <ChatMessages round={game.round} gameId={game._id}/>
                 </Layout.Content>
 
-                <Layout.Footer>
+                <Layout.Footer className="p-0 pt-2">
                     <SendMessageButton {...sendMessageProps}/>
                 </Layout.Footer>
             </Layout>
-        </>
+        
     )
 }

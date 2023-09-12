@@ -1,20 +1,22 @@
 import { Layout ,Space} from "antd";
 import Chat from "../chat/Chat";
+import Vote from "../vote/Vote";
 import PlayersTurnBar from "./PlayersTurnBar";
+import RoundTimer from "./RoundTImer";
 
 
 export default function Game(){
     return (
         <Layout className="w-screen">
             <Layout.Header className="flex flex-row justify-center items-center">
-                Round 1 : 00:40
+                <RoundTimer  />
             </Layout.Header>
             <Layout.Content className="flex flex-row justify-center items-center">
-                <Space>
+                <div className="flex flex-row justify-between items-center w-full h-full p-2">
                     <PlayersTurnBar/>
-                    <div>Something Something</div>
+                    <Vote/>
                     <Chat/>
-                </Space>
+                </div>
             </Layout.Content>
         </Layout>
     )

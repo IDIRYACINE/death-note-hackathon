@@ -4,6 +4,7 @@ import { useNavigation } from "@/hooks/useNavigate";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Button, Card, Descriptions, DescriptionsProps, Space } from "antd";
 import { useTranslation } from "next-i18next";
+import { useEffect } from "react";
 import LobbyPlayers from "./LobbyPlayers";
 
 
@@ -32,7 +33,7 @@ export default function Lobby() {
 
 
     const onStartGame = () => {
-        startGame(lobby._id)
+        startGame({lobbyId:lobby._id})
     }
 
     const onCancel = () => {
@@ -44,6 +45,12 @@ export default function Lobby() {
             }
         )
     }
+
+    useEffect(() => {
+        if (lobby.gameStarted){
+            startGame({lobbyId:lobby._id,gameStarted:true})
+        }
+    }, [lobby,startGame])
 
     return (
         <Card title={t('lobby')}>
