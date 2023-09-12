@@ -113,7 +113,7 @@ export const loadGame = query({
 })
 
 export const vote = action({
-    args: { voteImpact: v.number(), voteType: v.string(), targetId: v.id("playersStatus"), playerId: v.string(), gameId: v.id("games"),  },
+    args: { voteImpact: v.number(), voteType: v.string(), targetId: v.id("playersStatus"), playerId: v.string(), gameId: v.id("games"), },
     handler: async (ctx, args): Promise<{ alreadyVoted: boolean }> => {
         const voted = await ctx.runQuery(internal.game.checkIfPlayerVoted, { gameId: args.gameId, playerId: args.playerId })
 
@@ -124,7 +124,8 @@ export const vote = action({
             targetId: args.targetId
         }
         if (!voted.voted) {
-            await ctx.runMutation(internal.game.addVote, { gameId: args.gameId, vote, votes: voted.game.roundVotes,})
+            voted.game.roundVotes.push(vote)
+            await ctx.runMutation(internal.game.addVote, { gameId: args.gameId, vote, votes: voted.game.roundVotes, })
         }
 
         await ctx.runAction(internal.game.endVotingPhase, { game: voted.game })
@@ -147,7 +148,7 @@ export const checkIfPlayerVoted = internalQuery({
 
         const voted = alreadyVoted(args.playerId, votes)
 
-        const gameRes  = {
+        const gameRes = {
             _id: game._id,
             hostId: game.hostId,
             kiraId: game.kiraId,
@@ -164,7 +165,7 @@ export const checkIfPlayerVoted = internalQuery({
 
         return {
             voted,
-            game:gameRes
+            game: gameRes
         }
     }
 })
@@ -174,13 +175,13 @@ export const addVote = internalMutation({
         gameId: v.id("games"),
         vote: v.object(VoteSchema),
         votes: v.array(v.object(VoteSchema)),
-        
+
     },
     handler: async (ctx, args) => {
         const { vote, votes, } = args
 
         await ctx.db.patch(args.gameId, {
-            roundVotes: [...votes, vote]
+            roundVotes: votes
         })
 
         const status = await ctx.db.get(vote.targetId)
@@ -236,12 +237,14 @@ export const endVotingPhase = internalAction({
 
         if (isVotingOver) {
             await ctx.runMutation(internal.game.endVoting, { gameId: game._id, votes: game.roundVotes, playersCount: game.playerIds.length, round: game.round })
+            
+            if (!isGameOver) {
+                await ctx.runMutation(internal.game.startNextRound, { gameId: game._id, round: game.round })
+                await ctx.scheduler.runAfter(game.roundTimerInSeconds * 1000, internal.game.startVotingPhase, { gameId: game._id, roundTimerInSeconds: game.roundTimerInSeconds })
+            }
         }
 
-        if (!isGameOver) {
-            await ctx.runMutation(internal.game.startNextRound, { gameId: game._id, round: game.round })
-            await ctx.scheduler.runAfter(game.roundTimerInSeconds * 1000, internal.game.startVotingPhase, { gameId: game._id, roundTimerInSeconds: game.roundTimerInSeconds })
-        }
+       
     },
 })
 

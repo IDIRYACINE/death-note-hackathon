@@ -4,7 +4,7 @@ import { useReadStorePlayerId } from "@/hooks/useProfile"
 import { useVote } from "@/hooks/useVote"
 import SmileOutlined from "@ant-design/icons/lib/icons/SmileOutlined"
 import { Doc } from "@convex/_generated/dataModel"
-import { Avatar, Button, Col, Row, Space } from "antd"
+import { Avatar, Button,Typography, Col, Row, Space } from "antd"
 import { useTranslation } from "next-i18next"
 import { useState } from "react"
 
@@ -129,7 +129,7 @@ function VotingPhaseInactive({ notVotingPhaseLabel }: VotingPhaseInactiveProps) 
     return (
         <Space direction="vertical">
             <SmileOutlined style={{ fontSize: 20 }} />
-            <p>{notVotingPhaseLabel}</p>
+            <Typography.Title level={4}>{notVotingPhaseLabel}</Typography.Title>
 
         </Space>
     )

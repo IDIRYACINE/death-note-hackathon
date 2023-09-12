@@ -99,6 +99,6 @@ function SuspicionMeter({ label, step }: { label: string, step: number }) {
         },
     };
     return (
-        <Slider marks={marks} step={step} disabled />
+        <Slider marks={marks} value={step} disabled />
     )
 }

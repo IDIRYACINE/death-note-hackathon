@@ -3,7 +3,7 @@ import { useAction, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@convex/_generated/api";
 import {  loadGame } from "@/stores/game/game-slice";
-import {  selectGame, selectIsVoting } from "@/stores/game/selectors";
+import {  selectGame, selectIsKiraOrLawliet, selectIsVoting } from "@/stores/game/selectors";
 import { Id } from "@convex/_generated/dataModel";
 import { useNavigation } from "./useNavigate";
 
@@ -59,4 +59,15 @@ export const useReadStoreGame = () => {
 export const useReadStoreIsVoting = () => {
     const isVoting = useAppSelector(selectIsVoting)
     return isVoting
+}
+
+export const useReadStoreIsKiraOrLawliet = () => {
+    const kiraOrLawliet = useAppSelector(selectIsKiraOrLawliet)
+
+    return kiraOrLawliet
+}
+
+export const useReadStoreRound = () => {
+    const round = useAppSelector((state) => state.game.game.round)
+    return round
 }
