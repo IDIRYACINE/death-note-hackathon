@@ -31,6 +31,10 @@ export const PlayerStatusScehma = {
     lawlietMeter: v.number(),
     ready: v.boolean(),
     name:v.optional(v.string()),
+    remainingActions: v.number(),
+    alive: v.boolean(),
+    jailed: v.boolean(),
+    revealedSecretsInReverse: v.number(), 
 
 }
 export const VoteSchema = {

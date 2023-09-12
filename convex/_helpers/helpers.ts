@@ -32,7 +32,7 @@ interface GameOverOptions {
 
 }
 export const IsGameOver = (game:GameOverOptions) => {
-    return game.round >= 2
+    return game.round > 7
 }
 
 export const IsVotingOver = (game:GameOverOptions) => {

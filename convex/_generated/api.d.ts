@@ -16,6 +16,7 @@ import type {
 } from "convex/server";
 import type * as _helpers_helpers from "../_helpers/helpers";
 import type * as _helpers_statusCodes from "../_helpers/statusCodes";
+import type * as actions from "../actions";
 import type * as chat from "../chat";
 import type * as game from "../game";
 import type * as host from "../host";
@@ -32,6 +33,7 @@ import type * as player from "../player";
 declare const fullApi: ApiFromModules<{
   "_helpers/helpers": typeof _helpers_helpers;
   "_helpers/statusCodes": typeof _helpers_statusCodes;
+  actions: typeof actions;
   chat: typeof chat;
   game: typeof game;
   host: typeof host;

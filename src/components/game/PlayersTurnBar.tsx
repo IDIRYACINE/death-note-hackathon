@@ -1,23 +1,46 @@
 import { fallbackImageUrl } from "@/domain/constants"
+import { useReadStoreAbillities } from "@/hooks/useGame"
 import { useReadStoreLobbyPlayers } from "@/hooks/useLobby"
-import { Doc } from "@convex/_generated/dataModel"
-import { Card, Space, Image, Slider, Typography, CollapseProps, Avatar, Collapse } from "antd"
+import { usePlayerAction } from "@/hooks/usePlayerActions"
+import { Doc, Id } from "@convex/_generated/dataModel"
+import { Card, Space, Image, Slider, Typography, CollapseProps, Avatar, Collapse, Row, Col, Button } from "antd"
 import { SliderMarks } from "antd/es/slider"
+import { useTranslation } from "next-i18next"
 
 
 export default function PlayersTurnBar() {
 
     const players = useReadStoreLobbyPlayers()
+    const {t} = useTranslation()
+
+    const gadgetLabels = {
+        protectLawlietLabel: t('protect_lawliet'),
+        protectKiraLabel: t('protect_kira'),
+        killLabel: t('kill'),
+        investigateLabel: t('investigate'),
+        imprisonLabel: t('imprison')
+    }
 
     const items: CollapseProps['items'] = players.map((player) => {
+
         return {
             key: `status-${player._id}`,
-            label: <PlayerHeader name={player.player.name}  avatar={player.player.profilePicture}/>,
-            children: <SuspicionStatus 
-            kiraMeter={player.kiraMeter} 
-            lawlietMeter={player.lawlietMeter} 
-            kiraLabel={"K"}
-            lawlietLabel={"L"}/>,
+            label: <PlayerHeader name={player.player.name} avatar={player.player.profilePicture} />,
+            children:
+                <Space direction="vertical">
+                    <SuspicionStatus
+                        kiraMeter={player.kiraMeter}
+                        lawlietMeter={player.lawlietMeter}
+                        kiraLabel={"K"}
+                        lawlietLabel={"L"} />,
+                    <ActionsGadget
+                        targetId={player._id}
+                        kiraMeter={player.kiraMeter}
+                        lawlietMeter={player.lawlietMeter}
+                        {...gadgetLabels}
+                        />
+                </Space>
+
         }
     })
 
@@ -44,39 +67,39 @@ function PlayerCard({ player, kiraLabel, lawlietLabel }: PlayerCardProps) {
                 />
             </Card.Grid>
             <Card.Grid style={{ textAlign: "center", width: "75%", }}>
-                <SuspicionStatus 
-                kiraMeter={player.kiraMeter} 
-                lawlietMeter={player.lawlietMeter} 
-                kiraLabel={kiraLabel}
-                lawlietLabel={lawlietLabel}/>
-                
+                <SuspicionStatus
+                    kiraMeter={player.kiraMeter}
+                    lawlietMeter={player.lawlietMeter}
+                    kiraLabel={kiraLabel}
+                    lawlietLabel={lawlietLabel} />
+
             </Card.Grid>
 
         </Card>
     )
 }
 
-interface PlayerHeaderProps{
-    name : string,
-    avatar : string
+interface PlayerHeaderProps {
+    name: string,
+    avatar: string
 }
-function PlayerHeader({name,avatar}:PlayerHeaderProps){
+function PlayerHeader({ name, avatar }: PlayerHeaderProps) {
     return (
         <Space>
-            <Avatar src={avatar}/>
+            <Avatar src={avatar} />
             <Typography.Title level={4}>{name}</Typography.Title>
 
         </Space>
     )
 }
 
-interface SuspicionStatusProps{
-    kiraMeter : number,
-    lawlietMeter : number,
-    kiraLabel : string,
-    lawlietLabel : string
+interface SuspicionStatusProps {
+    kiraMeter: number,
+    lawlietMeter: number,
+    kiraLabel: string,
+    lawlietLabel: string
 }
-function SuspicionStatus({ kiraMeter, lawlietMeter,kiraLabel,lawlietLabel}: SuspicionStatusProps) {
+function SuspicionStatus({ kiraMeter, lawlietMeter, kiraLabel, lawlietLabel }: SuspicionStatusProps) {
     return (
         <Space className="w-full" direction="vertical">
             <SuspicionMeter label={kiraLabel} step={kiraMeter} />
@@ -101,4 +124,68 @@ function SuspicionMeter({ label, step }: { label: string, step: number }) {
     return (
         <Slider marks={marks} value={step} disabled />
     )
+}
+
+interface ActionsGadgetProps {
+    targetId: Id<"playersStatus">,
+    kiraMeter: number,
+    lawlietMeter: number,
+    protectLawlietLabel: string,
+    protectKiraLabel: string,
+    investigateLabel: string,
+    imprisonLabel: string,
+    killLabel: string
+}
+function ActionsGadget(props: ActionsGadgetProps) {
+    const { isKira, isNeutral, actionsCount,userId } = useReadStoreAbillities()
+
+    const { targetId,kiraMeter,lawlietMeter } = props
+    const {killLabel,investigateLabel,imprisonLabel,protectKiraLabel,protectLawlietLabel} = props
+
+    const disabled = actionsCount === 0
+
+    const actions = usePlayerAction()
+    
+    const investigate = () => actions.investigate({targetId,userId})
+
+    const KiraActions = () => {
+        const canIvestigateL = !disabled && lawlietMeter >= 70
+        const canKillL = !disabled && lawlietMeter >= 90
+
+        const kill = () => actions.kill({targetId, userId})
+
+        return (
+            <Space>
+                <Button onClick={investigate} disabled={!canIvestigateL}>{investigateLabel}</Button>
+                <Button onClick={kill} disabled={!canKillL}>{killLabel}</Button>
+
+            </Space>
+        )
+    }
+
+    const LawlietActions = () => {
+        const canIvestigateK = !disabled && kiraMeter >= 70
+        const canImprisonK = !disabled && kiraMeter >= 90
+
+        const imprison = () => actions.jail({targetId, userId})
+        return (
+            <Space>
+                <Button onClick={investigate} disabled={!canIvestigateK} >{investigateLabel}</Button>
+                <Button onClick={imprison} disabled={!canImprisonK}>{imprisonLabel}</Button>
+            </Space>
+        )
+    }
+
+    const NeutralActions = () => {
+        const protectL = () => actions.protect({targetId, userId,actionType:"protectLawliet"})
+        const protectK = () => actions.protect({targetId, userId,actionType:"protectKira"})
+        return  (
+            <Space>
+                <Button onClick={protectL} disabled={disabled} >{protectLawlietLabel}</Button>
+                <Button onClick={protectK} disabled={disabled}>{protectKiraLabel}</Button>
+            </Space>
+        )
+    }
+
+    return (isNeutral ? <NeutralActions /> : isKira ? <KiraActions /> : <LawlietActions />)
 }

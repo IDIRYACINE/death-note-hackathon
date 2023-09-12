@@ -152,7 +152,10 @@ export const addPlayerToLobby = internalMutation({
       ready: false,
       kiraMeter: 0,
       lawlietMeter: 0,
-
+      remainingActions: 1,
+      alive: true,
+      jailed: false,
+      revealedSecretsInReverse: 6,
     })
 
     const playerIds = [...args.playerIds, args.playerId]

@@ -239,6 +239,7 @@ export const endVotingPhase = internalAction({
             await ctx.runMutation(internal.game.endVoting, { gameId: game._id, votes: game.roundVotes, playersCount: game.playerIds.length, round: game.round })
             
             if (!isGameOver) {
+                await ctx.runMutation(internal.actions.replenishActions, { lobbyId:game.lobbyId })
                 await ctx.runMutation(internal.game.startNextRound, { gameId: game._id, round: game.round })
                 await ctx.scheduler.runAfter(game.roundTimerInSeconds * 1000, internal.game.startVotingPhase, { gameId: game._id, roundTimerInSeconds: game.roundTimerInSeconds })
             }
@@ -266,5 +267,6 @@ export const startNextRound = internalMutation({
             round: args.round + 1,
             roundStartTimestamp: Date.now()
         })
+        
     }
 })

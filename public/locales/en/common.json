@@ -31,5 +31,10 @@
     "kira" : "Kira",
     "lawliet" : "Lawliet",
     "vote" : "Vote",
-    "not_voting_phase" : "Not voting phase"
+    "not_voting_phase" : "Not voting phase",
+    "kill" : "Kill",
+    "investigate" : "Investigate",
+    "protect_kira" : "Protect Kira",
+    "protect_lawliet" : "Protect Lawliet",
+    "Imprison" : "Imprison"
 }
