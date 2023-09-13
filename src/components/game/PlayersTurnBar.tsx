@@ -27,7 +27,7 @@ export default function PlayersTurnBar() {
             key: `status-${player._id}`,
             label: <PlayerHeader name={player.player.name} avatar={player.player.profilePicture} />,
             children:
-                <Space direction="vertical">
+                <Space className="w-full" direction="vertical">
                     <SuspicionStatus
                         kiraMeter={player.kiraMeter}
                         lawlietMeter={player.lawlietMeter}
@@ -45,7 +45,7 @@ export default function PlayersTurnBar() {
     })
 
     return (
-        <Space direction="vertical">
+        <Space className="w-full" direction="vertical">
             <Collapse items={items} expandIconPosition="end" />
         </Space>
     )
@@ -88,7 +88,7 @@ export function PlayerHeader({ name, avatar,trailing }: PlayerHeaderProps) {
     return (
         <Space>
             <Avatar src={avatar} />
-            <Typography.Title level={4}>{name}</Typography.Title>
+            <Typography.Title level={4} className="mb-0">{name}</Typography.Title>
             {trailing}
         </Space>
     )

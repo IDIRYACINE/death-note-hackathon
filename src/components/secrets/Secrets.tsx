@@ -57,9 +57,9 @@ interface SecretsHeaderProps {
 function SecretsHeader({ name, avatar }: SecretsHeaderProps) {
 
     return (
-        <Space>
+        <Space >
             <Avatar src={avatar} />
-            <Typography.Title level={4}>{name}</Typography.Title>
+            <Typography.Title level={4} className="mb-0">{name}</Typography.Title>
 
         </Space>
     )

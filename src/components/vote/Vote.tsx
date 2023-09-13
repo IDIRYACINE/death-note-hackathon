@@ -90,13 +90,17 @@ function VotingPhaseActive(props: VotingPhaseActiveProps) {
 
         const type = isSelected ? "primary" : "default"
         return (
-            <Col className="gutter-row" >
-                <Button className="flex flex-col justify-evenly items-center h-fit" type={type} onClick={select}
+            <Col className="w-full h-full" span={12} >
+                <Button className="flex flex-col justify-evenly items-center w-full h-full p-4" type={type} onClick={select}
 
-                    icon={<Avatar size="large" src={player.player.profilePicture} />}
-                >
+                    icon={
+                    <Space size="middle" direction="vertical">
+                    <Avatar size="large" src={player.player.profilePicture} />
                     <p>{player.player.name}</p>
-                </Button>
+                    </Space>
+                }
+                />
+                   
 
 
             </Col>
@@ -104,11 +108,11 @@ function VotingPhaseActive(props: VotingPhaseActiveProps) {
     }
 
     return (
-        <Space direction="vertical">
-            <Space>
-                <Button type={buttonType("kira")} onClick={isVotingKira}>{kiraLabel}</Button>
-                <Button type={buttonType("lawliet")} onClick={isVotingLawliet}>{lawlietLabel}</Button>
-            </Space>
+        <Space className="w-96" direction="vertical">
+            <div className="w-full flex flex-row justify-between items-center" >
+                <Button className="w-full flex-1 mr-4" type={buttonType("kira")} onClick={isVotingKira}>{kiraLabel}</Button>
+                <Button className="w-full flex-1" type={buttonType("lawliet")} onClick={isVotingLawliet}>{lawlietLabel}</Button>
+            </div>
 
             <Row gutter={[16, 24]}>
                 {lobbyPlayers.map((lobbyPlayer) => {

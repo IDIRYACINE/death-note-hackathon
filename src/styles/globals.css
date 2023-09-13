@@ -17,3 +17,34 @@
     opacity: 1;
   }
 }
+
+@font-face {
+  font-family: "OldLondon";
+  src: url("../../public/fonts/old_london/Olondona.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GothicWar";
+  src: url("../../public/fonts/gothic_war/GothicWar.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "DeathNote";
+  src: url("../../public/fonts/death_note/DeathNote.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+  html{
+    font-family: DeathNote, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  

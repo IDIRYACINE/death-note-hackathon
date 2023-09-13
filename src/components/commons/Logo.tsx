@@ -5,7 +5,7 @@ export default function Logo() {
     const { Title } = Typography;
 
     return (
-        <Title italic={true} type={'secondary'}>
+        <Title className="text-8xl" type={'secondary'}>
             Death Note
         </Title>
     )

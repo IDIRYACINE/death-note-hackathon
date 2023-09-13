@@ -24,15 +24,13 @@ export default function Game(){
             <Layout.Header className="flex flex-row justify-center items-center">
                 <RoundTimer  />
             </Layout.Header>
-            <Layout.Content className="flex flex-row justify-center items-center">
-                <div className="flex flex-row justify-between items-center w-full h-full p-2">
-                    <Space direction="vertical">
+            <Layout.Content className="flex flex-row justify-between items-center w-full h-full p-2">
+                    <Space direction="vertical" className="overflow-y-scroll h-112 w-96"  >
                         <Secrets/>
                         <PlayersTurnBar/>
                     </Space>
                     <Vote/>
                     <Chat/>
-                </div>
             </Layout.Content>
         </Layout>
     )

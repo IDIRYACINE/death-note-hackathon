@@ -7,12 +7,12 @@ import { useTranslation } from "next-i18next";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Profile } from "@/domain/profile";
 
+const labelCol ={span:20}
 
 const numberOfScrects = [1, 2, 3, 4, 5]
 
 const layout = {
     labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
 };
 
 const tailLayout = {
@@ -161,6 +161,7 @@ interface ProfileCardProps {
 function ProfileCard(props: ProfileCardProps) {
     const { displayNameLabel, profileLabel, backgroundLabel, profilePictureLabel } = props
     const { form, handleFinish,profile } = props
+
     return (
         <Card title={profileLabel} style={{ width: 400, height: "35rem" }} suppressHydrationWarning>
             <Form
@@ -171,17 +172,17 @@ function ProfileCard(props: ProfileCardProps) {
                 onFinish={handleFinish}
             >
 
-                <Form.Item name="name" label={displayNameLabel} rules={[{ required: true }]}>
-                    <Input defaultValue={profile.name}/>
+                <Form.Item name="name" label={displayNameLabel} labelCol={labelCol} rules={[{ required: true }]} >
+                    <Input defaultValue={profile.name} style={{fontSize:24}}/>
                 </Form.Item>
 
 
-                <Form.Item name="profilePicture" label={profilePictureLabel} rules={[{ required: true }]}>
+                <Form.Item name="profilePicture" label={profilePictureLabel} labelCol={labelCol} rules={[{ required: true }]}>
                     <Input defaultValue={profile.profilePicture}/>
                 </Form.Item>
 
-                <Form.Item name="background" label={backgroundLabel} rules={[{ required: true }]}>
-                    <Input.TextArea rows={4} defaultValue={profile.background}/>
+                <Form.Item name="background" label={backgroundLabel} labelCol={labelCol} rules={[{ required: true }]}>
+                    <Input.TextArea autoSize={{minRows:7,maxRows:7}} defaultValue={profile.background}/>
                 </Form.Item>
 
 
@@ -217,8 +218,8 @@ function SecretsCard(props: SecretsCardProps) {
                     numberOfScrects.map((_, index) => {
                         const key = `secret${index + 1}`
                         return (
-                            <Form.Item key={key} name={key} label={secretLabel} rules={[{ required: true }]}>
-                                <Input defaultValue={profile[key]} />
+                            <Form.Item className="w-full" key={key} name={key} label={secretLabel} rules={[{ required: true }]}>
+                                <Input className="w-full" defaultValue={profile[key]} />
                             </Form.Item>
                         )
                     })

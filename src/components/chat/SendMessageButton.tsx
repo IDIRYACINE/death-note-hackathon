@@ -57,8 +57,8 @@ export default function SendMessageButton(props:SendMessageButtonProps){
     kOrLbutton = lawlietId === playerId ? <Button className={btnClassName} onClick={sendKorLMessage}>{sendLawlietLabel}</Button>: kOrLbutton
 
     return (
-        <Space className="w-full" direction="vertical">
-            <Input.TextArea value={message} onChange={handleMessage}/>
+        <Space size="large" className="w-full" direction="vertical">
+            <Input.TextArea value={message} autoSize={{ minRows: 4, maxRows: 4 }} maxLength={180} showCount onChange={handleMessage}/>
             <Button className={btnClassName} onClick={sendPlayerMessage}>{sendLabel}</Button>
             {kOrLbutton}
         </Space>

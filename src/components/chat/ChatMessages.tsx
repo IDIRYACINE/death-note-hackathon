@@ -1,7 +1,7 @@
 import { useReadStoreChat } from "@/hooks/useChat";
 import ChatInjector from "@/lib/stateLoaders/ChatLoader";
 import StateLoader from "@/lib/stateLoaders/StateLoader";
-import { Avatar, List } from "antd";
+import { Avatar, Card, List } from "antd";
 
 
 export default function ChatMessages({round,gameId}:{round: number,gameId:string}) {
@@ -18,9 +18,9 @@ export default function ChatMessages({round,gameId}:{round: number,gameId:string
                 return (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<Avatar src={item.avatar} />}
-                            title={<p >{item.author}</p>}
-                            description={item.message}
+                            avatar={<Avatar size="large" src={item.avatar} />}
+                            title={item.author}
+                            description={<Card type="inner">{item.message}</Card>}
                         />
                     </List.Item>
                 )
