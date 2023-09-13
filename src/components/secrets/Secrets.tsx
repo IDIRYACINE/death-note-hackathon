@@ -26,12 +26,12 @@ export default function Secrets() {
             secrets.push({
                 key: `secret-${i}`,
                 label: <Typography.Title level={4}>{`${t('secret')} ${i}`}</Typography.Title>,
-                children: <Typography.Paragraph>{targetPlayer[`secret${i}` as keyof typeof targetPlayer] as string}</Typography.Paragraph>,
+                children: <Typography.Paragraph>{targetPlayer.player[`secret${i}` as keyof typeof targetPlayer.player] as string}</Typography.Paragraph>,
             })
         }
 
         const secretsHeaderProps = {
-            name: t(isKira ? 'lawliet' : 'kira'),
+            name: t(isKira ? 'kira':'lawliet' ),
             avatar: isKira? kiraAvatar : lawlietAvatar
         }
        

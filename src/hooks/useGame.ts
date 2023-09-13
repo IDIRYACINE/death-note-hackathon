@@ -2,8 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { useAction, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@convex/_generated/api";
-import {  loadGame } from "@/stores/game/game-slice";
-import {  selectActions, selectGame, selectIsKiraOrLawliet, selectIsVoting } from "@/stores/game/selectors";
+import { loadGame } from "@/stores/game/game-slice";
+import { selectActions, selectGame, selectGameMonument, selectGameWinner, selectIsKiraOrLawliet, selectIsVoting, selectKiraAndLalwietIds } from "@/stores/game/selectors";
 import { Id } from "@convex/_generated/dataModel";
 import { useNavigation } from "./useNavigate";
 
@@ -12,25 +12,25 @@ export const useStartGame = () => {
     const startGame = useAction(api.game.startGame)
     const navigate = useNavigation()
 
-    return ({lobbyId,gameStarted}:{lobbyId: string,gameStarted?:boolean}) => {
-        if(gameStarted) {
+    return ({ lobbyId, gameStarted }: { lobbyId: string, gameStarted?: boolean }) => {
+        if (gameStarted) {
             navigate.navigateGame(lobbyId)
             return
         }
-        startGame({ lobbyId:lobbyId as Id<"lobbies"> }).then((res) => navigate.navigateGame(lobbyId))
+        startGame({ lobbyId: lobbyId as Id<"lobbies"> }).then((res) => navigate.navigateGame(lobbyId))
     }
 }
 
 export const useTearDownGame = () => {
-    const tearDown = useAction(api.game.endGame)
+    const tearDown = useAction(api.game.cleanupGame)
     const navigate = useNavigation()
 
-    return (props: { gameId?: Id<"games">, tokenIdentifier:string,hostId: string, lobbyId: Id<"lobbies"> }) => {
-        if(props.hostId !== props.tokenIdentifier) {
+    return (props: { gameId?: Id<"games">, tokenIdentifier: string, hostId: string, lobbyId: Id<"lobbies"> }) => {
+        if (props.hostId !== props.tokenIdentifier) {
             navigate.navigateMainMenu()
             return
         }
-        const tearDownProps = {gameId: props.gameId, lobbyId: props.lobbyId,hostId: props.hostId}
+        const tearDownProps = { gameId: props.gameId, lobbyId: props.lobbyId, hostId: props.hostId }
         tearDown({ ...tearDownProps }).then(() => navigate.navigateMainMenu())
     }
 }
@@ -75,4 +75,19 @@ export const useReadStoreRound = () => {
 export const useReadStoreAbillities = () => {
     const abillities = useAppSelector(selectActions)
     return abillities
+}
+
+export const useReadStoreKandLids = () => {
+    const kiraAndLids = useAppSelector(selectKiraAndLalwietIds)
+    return { ...kiraAndLids }
+}
+
+export const useReadStoreIsGameOver = () => {
+    const gameOver = useAppSelector(selectGameWinner)
+    return gameOver
+}
+
+export const useReadStoreGameMonument = () => {
+    const gameMonument = useAppSelector(selectGameMonument)
+    return gameMonument
 }

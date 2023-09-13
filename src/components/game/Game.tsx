@@ -1,4 +1,7 @@
-import { Layout } from "antd";
+import { useReadStoreIsGameOver } from "@/hooks/useGame";
+import { useNavigation } from "@/hooks/useNavigate";
+import { Layout, Space } from "antd";
+import { useEffect } from "react";
 import Chat from "../chat/Chat";
 import Secrets from "../secrets/Secrets";
 import Vote from "../vote/Vote";
@@ -7,6 +10,15 @@ import RoundTimer from "./RoundTImer";
 
 
 export default function Game(){
+    const {gameOver} = useReadStoreIsGameOver()
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        if(gameOver){
+            navigation.navigateGameOver()
+        }
+    },[gameOver,navigation])
+
     return (
         <Layout className="w-screen">
             <Layout.Header className="flex flex-row justify-center items-center">
@@ -14,10 +26,10 @@ export default function Game(){
             </Layout.Header>
             <Layout.Content className="flex flex-row justify-center items-center">
                 <div className="flex flex-row justify-between items-center w-full h-full p-2">
-                    <div className="flex flex-col justify-start items-start">
+                    <Space direction="vertical">
                         <Secrets/>
                         <PlayersTurnBar/>
-                    </div>
+                    </Space>
                     <Vote/>
                     <Chat/>
                 </div>

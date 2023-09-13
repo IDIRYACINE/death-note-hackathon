@@ -32,7 +32,7 @@ export default function PlayersTurnBar() {
                         kiraMeter={player.kiraMeter}
                         lawlietMeter={player.lawlietMeter}
                         kiraLabel={"K"}
-                        lawlietLabel={"L"} />,
+                        lawlietLabel={"L"} />
                     <ActionsGadget
                         targetId={player._id}
                         kiraMeter={player.kiraMeter}
@@ -81,14 +81,15 @@ function PlayerCard({ player, kiraLabel, lawlietLabel }: PlayerCardProps) {
 
 interface PlayerHeaderProps {
     name: string,
-    avatar: string
+    avatar: string,
+    trailing?: React.ReactNode
 }
-function PlayerHeader({ name, avatar }: PlayerHeaderProps) {
+export function PlayerHeader({ name, avatar,trailing }: PlayerHeaderProps) {
     return (
         <Space>
             <Avatar src={avatar} />
             <Typography.Title level={4}>{name}</Typography.Title>
-
+            {trailing}
         </Space>
     )
 }
@@ -99,7 +100,7 @@ interface SuspicionStatusProps {
     kiraLabel: string,
     lawlietLabel: string
 }
-function SuspicionStatus({ kiraMeter, lawlietMeter, kiraLabel, lawlietLabel }: SuspicionStatusProps) {
+export function SuspicionStatus({ kiraMeter, lawlietMeter, kiraLabel, lawlietLabel }: SuspicionStatusProps) {
     return (
         <Space className="w-full" direction="vertical">
             <SuspicionMeter label={kiraLabel} step={kiraMeter} />
@@ -134,15 +135,15 @@ interface ActionsGadgetProps {
     protectKiraLabel: string,
     investigateLabel: string,
     imprisonLabel: string,
-    killLabel: string
+    killLabel: string,
 }
 function ActionsGadget(props: ActionsGadgetProps) {
-    const { isKira, isNeutral, actionsCount,userId } = useReadStoreAbillities()
+    const { isKira, isNeutral, actionsCount,userId, } = useReadStoreAbillities()
 
     const { targetId,kiraMeter,lawlietMeter } = props
     const {killLabel,investigateLabel,imprisonLabel,protectKiraLabel,protectLawlietLabel} = props
 
-    const disabled = actionsCount === 0
+    const disabled = (actionsCount === 0) || (userId === targetId)
 
     const actions = usePlayerAction()
     

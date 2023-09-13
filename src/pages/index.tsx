@@ -1,4 +1,4 @@
-import StartScreen from "@/components/start-screen/StartScreen";
+import StartScreen from "@/components/main-menu/StartScreen";
 import { getServerSideLocales } from "@/lib/locales";
 import { GetServerSideProps } from "next/types";
 

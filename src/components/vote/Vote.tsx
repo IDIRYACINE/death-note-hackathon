@@ -1,4 +1,4 @@
-import { useReadStoreIsVoting } from "@/hooks/useGame"
+import { useReadStoreIsVoting, useReadStoreKandLids } from "@/hooks/useGame"
 import { useReadStoreLobbyPlayers } from "@/hooks/useLobby"
 import { useReadStorePlayerId } from "@/hooks/useProfile"
 import { useVote } from "@/hooks/useVote"
@@ -50,6 +50,7 @@ function VotingPhaseActive(props: VotingPhaseActiveProps) {
     const [isKira, setIsKira] = useState(false)
     const [targetPlayerId, setTargetPlayerId] = useState("")
     const vote = useVote()
+    const {kiraStatusId, lawlietStatusId} = useReadStoreKandLids()
 
     const lobbyPlayers = useReadStoreLobbyPlayers()
 
@@ -65,10 +66,11 @@ function VotingPhaseActive(props: VotingPhaseActiveProps) {
         vote({
             gameId: gameId,
             playerId: playerId,
-            targetId: targetPlayerId,
+            targetStatusId: targetPlayerId,
             voteType: isKira ? "kira" : "lawliet",
             isKiraOrL: false,
-            statusId: targetPlayerId
+            kiraStatusId,
+            lawlietStatusId
         })
     }
 

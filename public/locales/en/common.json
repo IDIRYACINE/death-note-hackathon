@@ -36,5 +36,10 @@
     "investigate" : "Investigate",
     "protect_kira" : "Protect Kira",
     "protect_lawliet" : "Protect Lawliet",
-    "Imprison" : "Imprison"
+    "Imprison" : "Imprison",
+    "kira_won" : "Kira won",
+    "lawliet_won" : "Lawliet won",
+    "winner_faction" : "Winner Faction",
+    "winner" : "Winner",
+    "imprison" : "Imprison"
 }

@@ -55,6 +55,9 @@ export const GameSchema = {
     roundStartTimestamp: v.number(),
     roundVotes: v.array(v.object(VoteSchema)),
     isVoting: v.boolean(),
+    kiraWon: v.boolean(),
+    lawlietWon: v.boolean(),
+    gameOver: v.boolean(),
 }
 
 export const LobbySchema = {

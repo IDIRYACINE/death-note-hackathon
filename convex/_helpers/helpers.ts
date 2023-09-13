@@ -31,8 +31,8 @@ interface GameOverOptions {
     roundStartTimestamp: number,
 
 }
-export const IsGameOver = (game:GameOverOptions) => {
-    return game.round > 7
+export const IsFinalRound = (game:GameOverOptions) => {
+    return game.round > 10
 }
 
 export const IsVotingOver = (game:GameOverOptions) => {

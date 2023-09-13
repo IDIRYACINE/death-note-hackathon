@@ -23,6 +23,9 @@ const initialState: LobbyState = {
         round: 1,
         lobbyId: "" as Id<"lobbies">,
         playerIds: [],
+        kiraWon: false,
+        lawlietWon: false,
+        gameOver: false,
     },
     chat: {},
 }
