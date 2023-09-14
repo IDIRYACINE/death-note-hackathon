@@ -1,4 +1,3 @@
-import { Doc } from "../_generated/dataModel";
 
 interface PlayerJoinedOptions {
     playerId: string,

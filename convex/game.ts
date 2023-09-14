@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { GameSchema, VoteSchema } from "./schema";
 import { internal } from "./_generated/api";
 import { Doc, Id } from "./_generated/dataModel";
-import { action, internalAction, internalMutation, internalQuery, mutation, query } from "./_generated/server";
+import { action, internalAction, internalMutation, internalQuery, query } from "./_generated/server";
 import { alreadyVoted, IsFinalRound, IsVotingOver, randomIndex } from "./_helpers/helpers";
 import { StartGameResponse } from "./_types/game";
 
@@ -103,6 +103,14 @@ export const setupGame = internalMutation({
     }
 })
 
+export const readGame = internalQuery({
+    args: { gameId: v.id("games") },
+    handler: async (ctx, args) => {
+        const game = await ctx.db.get(args.gameId)
+        return game
+    }
+})
+
 export const loadGame = query({
     args: { lobbyId: v.id("lobbies") },
     handler: async (ctx, args) => {
@@ -117,7 +125,8 @@ export const loadGame = query({
 })
 
 export const vote = action({
-    args: { voteImpact: v.number(), voteType: v.string(),
+    args: {
+        voteImpact: v.number(), voteType: v.string(),
         targetId: v.id("playersStatus"), playerId: v.string(), gameId: v.id("games"),
         lawlietStatusId: v.id("playersStatus"), kiraStatusId: v.id("playersStatus")
     },
@@ -135,10 +144,11 @@ export const vote = action({
             await ctx.runMutation(internal.game.addVote, { gameId: args.gameId, vote, votes: voted.game.roundVotes, })
         }
 
-        await ctx.runAction(internal.game.endVotingPhase, { 
+        await ctx.runAction(internal.game.endVotingPhase, {
             game: voted.game,
-            lawlietStatusId: args.lawlietStatusId, 
-            kiraStatusId: args.kiraStatusId })
+            lawlietStatusId: args.lawlietStatusId,
+            kiraStatusId: args.kiraStatusId
+        })
 
         return {
             alreadyVoted: voted.voted
@@ -240,35 +250,36 @@ export const startVoting = internalMutation({
 
 
 export const endVotingPhase = internalAction({
-    args: { 
-    game: v.object({ ...GameSchema, _id: v.id("games") }),
-    kiraStatusId:v.id("playersStatus"),
-    lawlietStatusId:v.id("playersStatus") 
+    args: {
+        game: v.object({ ...GameSchema, _id: v.id("games") }),
+        kiraStatusId: v.id("playersStatus"),
+        lawlietStatusId: v.id("playersStatus")
     },
     handler: async (ctx, args) => {
         const { game } = args
 
         const isFinalRound = IsFinalRound(game)
         const isVotingOver = IsVotingOver(game)
-        const { kiraWon, lawlietWon,gameOver } = await ctx.runQuery(internal.game.checkIfGameOver, { 
+        const { kiraWon, lawlietWon, gameOver } = await ctx.runQuery(internal.game.checkIfGameOver, {
             kiraStatusId: args.kiraStatusId,
             lawlietStatusId: args.lawlietStatusId,
-         })
+        })
 
         if (isVotingOver) {
             await ctx.runMutation(internal.game.endVoting, { gameId: game._id, votes: game.roundVotes, playersCount: game.playerIds.length, round: game.round })
-            
+
             if (!isFinalRound && !gameOver) {
-                await ctx.runMutation(internal.actions.replenishActions, { lobbyId:game.lobbyId })
+                await ctx.runMutation(internal.actions.replenishActions, { lobbyId: game.lobbyId })
                 await ctx.runMutation(internal.game.startNextRound, { gameId: game._id, round: game.round })
                 await ctx.scheduler.runAfter(game.roundTimerInSeconds * 1000, internal.game.startVotingPhase, { gameId: game._id, roundTimerInSeconds: game.roundTimerInSeconds })
             }
             else {
                 await ctx.runMutation(internal.game.endGame, { gameId: game._id, kiraWon, lawlietWon })
+                await ctx.runAction(internal.ai.generateGameMonuments,{gameId:game._id,rounds:game.round})
             }
         }
 
-       
+
     },
 })
 
@@ -290,13 +301,13 @@ export const startNextRound = internalMutation({
             round: args.round + 1,
             roundStartTimestamp: Date.now()
         })
-        
+
     }
 })
 
 
 export const checkIfGameOver = internalQuery({
-    args :{kiraStatusId: v.id("playersStatus"), lawlietStatusId: v.id("playersStatus")},
+    args: { kiraStatusId: v.id("playersStatus"), lawlietStatusId: v.id("playersStatus") },
     handler: async (ctx, args) => {
         const kiraStatus = await ctx.db.get(args.kiraStatusId)
         const lawlietStatus = await ctx.db.get(args.lawlietStatusId)
@@ -304,7 +315,7 @@ export const checkIfGameOver = internalQuery({
         const kiraWon = lawlietStatus!.alive === false
         const lawlietWon = kiraStatus!.jailed === true
 
-        
+
         return {
             kiraWon,
             lawlietWon,
@@ -314,8 +325,8 @@ export const checkIfGameOver = internalQuery({
 })
 
 export const cleanupGame = action({
-    args: { gameId: v.optional(v.id("games")),lobbyId:v.id("lobbies"),hostId:v.string() },
+    args: { gameId: v.optional(v.id("games")), lobbyId: v.id("lobbies"), hostId: v.string() },
     handler: async (ctx, args) => {
-       
+
     }
 })

@@ -14,12 +14,15 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as _helpers_ai_helper from "../_helpers/ai_helper";
 import type * as _helpers_helpers from "../_helpers/helpers";
 import type * as _helpers_statusCodes from "../_helpers/statusCodes";
 import type * as actions from "../actions";
+import type * as ai from "../ai";
 import type * as chat from "../chat";
 import type * as game from "../game";
 import type * as host from "../host";
+import type * as monuments from "../monuments";
 import type * as player from "../player";
 
 /**
@@ -31,12 +34,15 @@ import type * as player from "../player";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "_helpers/ai_helper": typeof _helpers_ai_helper;
   "_helpers/helpers": typeof _helpers_helpers;
   "_helpers/statusCodes": typeof _helpers_statusCodes;
   actions: typeof actions;
+  ai: typeof ai;
   chat: typeof chat;
   game: typeof game;
   host: typeof host;
+  monuments: typeof monuments;
   player: typeof player;
 }>;
 export declare const api: FilterApi<

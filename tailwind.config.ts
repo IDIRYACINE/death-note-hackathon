@@ -17,6 +17,7 @@ const config: Config = {
         'gothic-war': ['GothicWar', ...defaultTheme.fontFamily.sans],
       },
       height: {
+        "100" : "30rem",
         "112": "37rem",
       }
     }

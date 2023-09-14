@@ -1,13 +1,13 @@
 import { useNavigation } from "@/hooks/useNavigate";
-import {useStoreUser} from "@/lib/sdk";
+import { useStoreUser } from "@/lib/sdk";
 import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
 import { Button, Card, Form, FormInstance, Input, Modal, Space, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Profile } from "@/domain/profile";
 
-const labelCol ={span:20}
+const labelCol = { span: 20 }
 
 const numberOfScrects = [1, 2, 3, 4, 5]
 
@@ -21,7 +21,7 @@ const tailLayout = {
 
 export default function Profile() {
     const navigation = useNavigation()
-    const createUser  = useStoreUser()
+    const createUser = useStoreUser()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { t } = useTranslation()
     const [secretsForm] = Form.useForm();
@@ -29,7 +29,7 @@ export default function Profile() {
 
     const profileStore = useReadStoreProfile()
 
-    const [profile, setProfile] = useState({
+    const profile = useRef({
         name: profileStore.name,
         profilePicture: profileStore.profilePicture,
         background: profileStore.background,
@@ -50,12 +50,13 @@ export default function Profile() {
         secret4: string,
         secret5: string,
     }) => {
-        setProfile((oldState) => ({
-            ...oldState,
+
+        profile.current = {
+            ...profile.current,
             ...values,
             collectedSecrets: true
-        })
-        )
+        }
+
     }
 
     const handleProfile = (values: {
@@ -63,31 +64,35 @@ export default function Profile() {
         profilePicture: string,
         name: string,
     }) => {
-        setProfile((oldState) => ({
-            ...oldState,
+        profile.current = {
+            ...profile.current,
             ...values,
             collectedProfile: true
-        }))
+        }
     }
 
     const closeModal = () => {
         setIsModalOpen(false)
-        setProfile((oldState) => ({...oldState, collectedProfile: false, collectedSecrets: false}))
+        profile.current = {
+            ...profile.current,
+            collectedProfile: false, 
+            collectedSecrets: false
+        }
     }
 
 
     const onSave = () => {
         secretsForm.validateFields().then((res) => {
             handleSecrets(res)
-        }).catch((err) => {})
+        }).catch((err) => { })
         profileForm.validateFields().then((res) => {
             handleProfile(res)
-        }).catch((err) => {})
+        }).catch((err) => { })
     }
 
     useEffect(() => {
-        if (profile.collectedProfile && profile.collectedSecrets) {
-            createUser(profile).then(() => {
+        if (profile.current.collectedProfile && profile.current.collectedSecrets) {
+            createUser(profile.current).then(() => {
                 setIsModalOpen(true)
             })
         }
@@ -112,7 +117,7 @@ export default function Profile() {
         backgroundLabel: t('background'),
         form: profileForm,
         handleFinish: handleProfile,
-        profile
+        profile:profileStore
 
     }
 
@@ -121,7 +126,7 @@ export default function Profile() {
         secretLabel: t('secret'),
         form: secretsForm,
         handleFinish: handleSecrets,
-        profile
+        profile:profileStore
     }
 
     return (
@@ -155,12 +160,12 @@ interface ProfileCardProps {
     profilePictureLabel: string,
     handleFinish: (values: any) => void,
     form: FormInstance<any>,
-    profile : Profile
+    profile: Profile
 
 }
 function ProfileCard(props: ProfileCardProps) {
     const { displayNameLabel, profileLabel, backgroundLabel, profilePictureLabel } = props
-    const { form, handleFinish,profile } = props
+    const { form, handleFinish, profile } = props
 
     return (
         <Card title={profileLabel} style={{ width: 400, height: "100%" }} suppressHydrationWarning>
@@ -173,7 +178,7 @@ function ProfileCard(props: ProfileCardProps) {
             >
 
                 <Form.Item name="name" label={displayNameLabel} initialValue={profile.name} labelCol={labelCol} rules={[{ required: true }]} >
-                    <Input  style={{fontSize:24}}/>
+                    <Input style={{ fontSize: 24 }} />
                 </Form.Item>
 
 
@@ -182,7 +187,7 @@ function ProfileCard(props: ProfileCardProps) {
                 </Form.Item>
 
                 <Form.Item name="background" label={backgroundLabel} labelCol={labelCol} initialValue={profile.background} rules={[{ required: true }]}>
-                    <Input.TextArea autoSize={{minRows:8,maxRows:8}} />
+                    <Input.TextArea autoSize={{ minRows: 8, maxRows: 8 }} />
                 </Form.Item>
 
 
@@ -202,7 +207,7 @@ interface SecretsCardProps {
 }
 function SecretsCard(props: SecretsCardProps) {
     const { secretsLabel, secretLabel } = props
-    const { form, handleFinish,profile } = props
+    const { form, handleFinish, profile } = props
 
     return (
         <Card title={secretsLabel} style={{ width: 400, height: "100%" }} suppressHydrationWarning>
@@ -218,7 +223,7 @@ function SecretsCard(props: SecretsCardProps) {
                     numberOfScrects.map((_, index) => {
                         const key = `secret${index + 1}`
                         return (
-                            <Form.Item className="w-full" key={key} name={key} initialValue={profile[key]}  label={secretLabel} rules={[{ required: true }]}>
+                            <Form.Item className="w-full" key={key} name={key} initialValue={profile[key]} label={secretLabel} rules={[{ required: true }]}>
                                 <Input className="w-full" />
                             </Form.Item>
                         )

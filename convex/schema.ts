@@ -7,7 +7,8 @@ export const databaseTables = {
     lobbies : "lobbies",
     publicMessages : "publicMessages",
     privateMessages : "privateMessages",
-    playersStatus : "playersStatus"
+    playersStatus : "playersStatus",
+    monuments : "monuments",
 }
 
 
@@ -82,7 +83,13 @@ export const PublicMessagesSchema = {
 
 
 
-
+export const GameMonumentsSchema = {
+    round: v.number(),
+    gameId: v.id(databaseTables.games),
+    epicStory: v.optional(v.string()),
+    imagePrompt :v.optional(v.string()),
+    epicImageUrl: v.optional(v.string()),
+}
 
 
 
@@ -96,6 +103,7 @@ const games = defineTable(GameSchema).index("by_lobbyId", ["lobbyId"]);
 const players = defineTable(PlayerSchema).index("by_token", ["tokenIdentifier"]);
 const chat = defineTable(PublicMessagesSchema).index("by_gameId_round", ["gameId","round"]);
 const playersStatus = defineTable(PlayerStatusScehma).index("by_lobbyId_playerId", ["lobbyId","playerId"]);
+const monuments = defineTable(GameMonumentsSchema).index("by_gameId_round", ["gameId","round"]);
 
 export default defineSchema({
     players,
@@ -103,4 +111,5 @@ export default defineSchema({
     lobbies,
     games,
     playersStatus,
+    monuments
 });

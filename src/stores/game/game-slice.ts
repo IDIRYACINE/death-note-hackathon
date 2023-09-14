@@ -7,6 +7,7 @@ interface ChatMap { [key: number]: Doc<"chat">[] }
 export interface LobbyState {
     game: Doc<"games">,
     chat: ChatMap,
+    monuments : Doc<"monuments">[]
 }
 
 const initialState: LobbyState = {
@@ -28,6 +29,7 @@ const initialState: LobbyState = {
         gameOver: false,
     },
     chat: {},
+    monuments: []
 }
 
 export const gameSlice = createSlice({
@@ -45,10 +47,13 @@ export const gameSlice = createSlice({
         addMessage: (state, action: PayloadAction<Doc<"chat">>) => {
             const key = action.payload.round
             state.chat[key].push(action.payload)
+        },
+        loadMonuments: (state, action: PayloadAction<Doc<"monuments">[]>) => {
+            state.monuments = action.payload
         }
     },
 })
 
-export const { loadGame, loadChat, addMessage } = gameSlice.actions
+export const { loadGame, loadChat, addMessage,loadMonuments } = gameSlice.actions
 
 export default gameSlice.reducer

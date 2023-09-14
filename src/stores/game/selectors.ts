@@ -2,16 +2,16 @@ import { createSelector } from "@reduxjs/toolkit";
 import { selectLobbyPlayers } from "../lobby/selectors";
 import { RootState } from "../store";
 
-
+const selectMonuments = (state: RootState) => state.game.monuments;
 export const selectGame = (state: RootState) => state.game.game;
 export const selectAllRoundsChat = (state: RootState) => state.game.chat;
-export const selectRound = ({round}:{round:number}) => round 
+export const selectRound = ({ round }: { round: number }) => round
 export const selectRoundVotes = (state: RootState) => state.game.game.roundVotes;
 const selectProfile = (state: RootState) => state.profile.profile;
 const selectPlayers = (state: RootState) => state.lobby.lobbyPlayers;
 
 export const selectIsKiraOrLawliet = createSelector(
-    [selectGame,selectProfile],(game,profile)=> {
+    [selectGame, selectProfile], (game, profile) => {
         const kiraId = game.kiraId
         const lawlietId = game.lawlietId
         const playerId = profile.tokenIdentifier
@@ -20,32 +20,32 @@ export const selectIsKiraOrLawliet = createSelector(
             kiraId,
             lawlietId,
             playerId,
-            isKira : kiraId === playerId,
-            isLawliet : lawlietId === playerId
+            isKira: kiraId === playerId,
+            isLawliet: lawlietId === playerId
         }
     }
 )
 
 export const selectIsVoting = createSelector(
-    [selectGame],(game)=> {
+    [selectGame], (game) => {
         return {
-            isVoting : game.isVoting,
-            gameId : game._id
+            isVoting: game.isVoting,
+            gameId: game._id
         }
     }
 )
 
 export const selectChat = createSelector(
-    [selectAllRoundsChat, selectRound] ,(chat,round)=> {
+    [selectAllRoundsChat, selectRound], (chat, round) => {
         const chatRound = chat[round]
-        
-        return chat[round] !==undefined ? chatRound : []
+
+        return chat[round] !== undefined ? chatRound : []
     },
 )
 
 
 export const selectActions = createSelector(
-    [selectPlayers,selectProfile,selectGame] ,(players,profile,game)=> {
+    [selectPlayers, selectProfile, selectGame], (players, profile, game) => {
         const playerId = profile.tokenIdentifier
 
         const userId = players.find(player => player.playerId === playerId)!._id!
@@ -62,13 +62,13 @@ export const selectActions = createSelector(
             isNeutral,
             actionsCount,
             userId
-        } 
-        
+        }
+
     }
 )
 
 export const selectKiraAndLalwietIds = createSelector(
-    [selectGame,selectLobbyPlayers],(game,playersStatus)=> {
+    [selectGame, selectLobbyPlayers], (game, playersStatus) => {
         const kiraId = game.kiraId
         const lawlietId = game.lawlietId
 
@@ -85,7 +85,7 @@ export const selectKiraAndLalwietIds = createSelector(
 )
 
 export const selectGameWinner = createSelector(
-    [selectGame],(game)=> {
+    [selectGame], (game) => {
         return {
             gameOver: game.gameOver,
             kiraWon: game.kiraWon,
@@ -96,7 +96,7 @@ export const selectGameWinner = createSelector(
 )
 
 export const selectGameMonument = createSelector(
-    [selectLobbyPlayers,selectGame],(lobbyPlayers,game) => {
+    [selectLobbyPlayers,selectGame,selectMonuments],(lobbyPlayers,game,monuments) => {
         
         const kira = lobbyPlayers.find(player => player.playerId === game.kiraId)!
         const lawliet = lobbyPlayers.find(player => player.playerId === game.lawlietId)!
@@ -111,6 +111,9 @@ export const selectGameMonument = createSelector(
             lawliet,
             kiraWon: game.kiraWon,
             lawlietWon: game.lawlietWon,
+            monuments,
+            gameId:game._id
         }
     }
+    
 )
