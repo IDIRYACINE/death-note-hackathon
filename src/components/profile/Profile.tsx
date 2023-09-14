@@ -163,7 +163,7 @@ function ProfileCard(props: ProfileCardProps) {
     const { form, handleFinish,profile } = props
 
     return (
-        <Card title={profileLabel} style={{ width: 400, height: "35rem" }} suppressHydrationWarning>
+        <Card title={profileLabel} style={{ width: 400, height: "100%" }} suppressHydrationWarning>
             <Form
                 {...layout}
                 layout="vertical"
@@ -172,17 +172,17 @@ function ProfileCard(props: ProfileCardProps) {
                 onFinish={handleFinish}
             >
 
-                <Form.Item name="name" label={displayNameLabel} labelCol={labelCol} rules={[{ required: true }]} >
-                    <Input defaultValue={profile.name} style={{fontSize:24}}/>
+                <Form.Item name="name" label={displayNameLabel} initialValue={profile.name} labelCol={labelCol} rules={[{ required: true }]} >
+                    <Input  style={{fontSize:24}}/>
                 </Form.Item>
 
 
-                <Form.Item name="profilePicture" label={profilePictureLabel} labelCol={labelCol} rules={[{ required: true }]}>
-                    <Input defaultValue={profile.profilePicture}/>
+                <Form.Item name="profilePicture" label={profilePictureLabel} initialValue={profile.profilePicture} labelCol={labelCol} rules={[{ required: true }]}>
+                    <Input />
                 </Form.Item>
 
-                <Form.Item name="background" label={backgroundLabel} labelCol={labelCol} rules={[{ required: true }]}>
-                    <Input.TextArea autoSize={{minRows:7,maxRows:7}} defaultValue={profile.background}/>
+                <Form.Item name="background" label={backgroundLabel} labelCol={labelCol} initialValue={profile.background} rules={[{ required: true }]}>
+                    <Input.TextArea autoSize={{minRows:8,maxRows:8}} />
                 </Form.Item>
 
 
@@ -205,7 +205,7 @@ function SecretsCard(props: SecretsCardProps) {
     const { form, handleFinish,profile } = props
 
     return (
-        <Card title={secretsLabel} style={{ width: 400, height: "35rem" }} suppressHydrationWarning>
+        <Card title={secretsLabel} style={{ width: 400, height: "100%" }} suppressHydrationWarning>
             <Form
                 {...layout}
                 layout="vertical"
@@ -218,8 +218,8 @@ function SecretsCard(props: SecretsCardProps) {
                     numberOfScrects.map((_, index) => {
                         const key = `secret${index + 1}`
                         return (
-                            <Form.Item className="w-full" key={key} name={key} label={secretLabel} rules={[{ required: true }]}>
-                                <Input className="w-full" defaultValue={profile[key]} />
+                            <Form.Item className="w-full" key={key} name={key} initialValue={profile[key]}  label={secretLabel} rules={[{ required: true }]}>
+                                <Input className="w-full" />
                             </Form.Item>
                         )
                     })

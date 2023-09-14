@@ -1,4 +1,5 @@
 import GameOver from "@/components/game/GameOver";
+import { getServerSideLocales } from "@/lib/locales";
 
 
 export default function Page() {
@@ -6,3 +7,6 @@ export default function Page() {
         <GameOver/>
     )
 }
+
+
+export const getServerSideProps = getServerSideLocales
