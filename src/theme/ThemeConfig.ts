@@ -1,7 +1,8 @@
 import type { ThemeConfig } from 'antd';
 import { theme } from 'antd';
 
-const { darkAlgorithm } = theme;
+export const darkAlgorithm  = theme.darkAlgorithm;
+export const lightAlgorithm = theme.defaultAlgorithm;
 
 const appTheme: ThemeConfig = {
   token : {
@@ -28,3 +29,11 @@ const appTheme: ThemeConfig = {
 }
 
 export default appTheme;
+
+export const getTheme = (darkTheme:boolean) :ThemeConfig => {
+  return {
+    ...appTheme,
+    algorithm: darkTheme ? darkAlgorithm : lightAlgorithm,
+
+  }
+}

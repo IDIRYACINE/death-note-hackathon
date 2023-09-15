@@ -37,7 +37,7 @@ export default function MainMenu() {
     }
 
     return (
-        <Space direction="vertical" size="middle" className="flex items-center">
+        <Space direction="vertical" size="middle" className="flex items-center ">
             <Logo />
             <Button onClick={toHostGame} className="flex flex-col justify-center items-center" type="text" size="large">
                 <Title className="mb-0" level={2} type={'secondary'}>

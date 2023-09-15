@@ -78,16 +78,16 @@ export default function Profile() {
     }
 
     return (
-        <Layout className="w-screen">
+        <Layout className="w-full h-full">
             <Layout.Sider>
                 <Card className="h-full flex flex-col items-center justify-center">
                     <Space className="h-full w-full" direction="vertical">
                         <Button className="w-full" type="primary" onClick={onSave}>
-                            Save
+                            {t("save")}
                         </Button>
 
                         <Button className="w-full" htmlType="button" onClick={onCancel}>
-                            Cancel
+                            {t("mainMenu")}
                         </Button>
 
                     </Space>

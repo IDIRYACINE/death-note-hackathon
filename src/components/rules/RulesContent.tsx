@@ -4,8 +4,8 @@ import { Card, Space, Typography } from "antd"
 export default function RulesContent (props:{rules:Array<Array<{ rule: string, id: number }>>}){
     const rules = props.rules[0]
     return (
-        <Card>
-            <Space className="w-full" direction="vertical">
+        <Card >
+            <Space  direction="vertical">
                     {
                         rules.map((rule) => {
                             return (

@@ -49,5 +49,14 @@
     "action_fail" : "Action failed",
     "vote_sucess" : "Vote submitted",
     "vote_fail" : "Vote failed",
-    "copy_sucess" : "Copy sucess"
+    "copy_sucess" : "Copy sucess",
+    "mainMenu": "Main Menu",
+    "dark_theme":"Dark Theme",
+    "light_theme" : "Light Theme",
+    "swap_theme" : "Swap Theme",
+    "language" : "Language",
+    "arabic" : "Arabic",
+    "english" : "English",
+    "change_language" : "Change Language",
+    "french" : "French"
 }

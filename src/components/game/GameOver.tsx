@@ -25,13 +25,13 @@ export default function GameOver() {
     }
 
     return (
-        <Space direction="vertical" className="p-2">
+        <Space direction="vertical" align="center" className="w-full h-full p-2">
             <MonumentsInjector gameId={gameId} />
             <Space align="center">
                 <Typography.Title level={2}>{t("winner_faction")} {t(kiraWon ? "kira" : "lawliet")}</Typography.Title>
                 <Button onClick={goToMainMenu}>{t("mainMenu")}</Button>
             </Space>
-            <div className="flex flex-row justify-between items-center">
+            <Space >
                 <PlayerCard name={kira.player.name} avatar={kira.player.profilePicture}
                     kiraMeter={kira.kiraMeter} lawlietMeter={kira.lawlietMeter}
                     isLorKira={true} won={kiraWon} />
@@ -39,7 +39,7 @@ export default function GameOver() {
                 <PlayerCard name={lawliet.player.name} avatar={lawliet.player.profilePicture}
                     kiraMeter={lawliet.kiraMeter} lawlietMeter={lawliet.lawlietMeter}
                     isLorKira={true} won={lawlietWon} />
-            </div>
+            </Space>
             <Divider />
             <Row>
                 {
