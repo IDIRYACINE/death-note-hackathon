@@ -16,6 +16,9 @@ const config: Config = {
         'old-london': ['OldLondon', ...defaultTheme.fontFamily.sans],
         'gothic-war': ['GothicWar', ...defaultTheme.fontFamily.sans],
       },
+      minWidth : {
+        '96' : "24rem",
+      },
       height: {
         "100" : "30rem",
         "112": "37rem",

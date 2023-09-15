@@ -1,5 +1,5 @@
 import { useReadStoreGame } from "@/hooks/useGame";
-import { Typography } from "antd";
+import { Typography,Card } from "antd";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo } from "react";
 import { useTimer } from "react-timer-hook";
@@ -25,8 +25,10 @@ export default function RoundTimer(){
     },[restart,expiryTimestamp])
 
     return (
-        <Typography.Title level={4}>
+        <Card className="flex flex-row items-center justify-center w-full h-full" bodyStyle={{padding:"0"}}>
+        <Typography.Title level={4} className="m-0">
             {t("round") } {round} : {minutes}:{seconds}
         </Typography.Title>
+        </Card>
     )
 }

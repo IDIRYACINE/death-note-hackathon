@@ -14,6 +14,7 @@ export default function ChatMessages({round,gameId}:{round: number,gameId:string
             style={{height:"50vh",overflowY:"scroll"}}
             itemLayout="horizontal"
             dataSource={data}
+            split={false}
             renderItem={(item) => {
                 return (
                     <List.Item>

@@ -33,7 +33,7 @@ export default function Vote({onActionResult}:VoteProps) {
     }
 
     return (
-        <div className="flex flex-row justify-center items-center w-full max-w-md">
+        <div className="flex flex-row justify-center items-center w-96">
 
             {isVoting ? <VotingPhaseActive {...activePhaseProps} /> : <VotingPhaseInactive {...inactivePhaseProps} />
             }
@@ -117,7 +117,7 @@ function VotingPhaseActive(props: VotingPhaseActiveProps) {
     }
 
     return (
-        <Space className="w-96" direction="vertical">
+        <Space className="w-full" direction="vertical">
             <div className="w-full flex flex-row justify-between items-center" >
                 <Button className="w-full flex-1 mr-4" type={buttonType("kira")} onClick={isVotingKira}>{kiraLabel}</Button>
                 <Button className="w-full flex-1" type={buttonType("lawliet")} onClick={isVotingLawliet}>{lawlietLabel}</Button>

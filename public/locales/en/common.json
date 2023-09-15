@@ -48,5 +48,6 @@
     "actions_sucess" : "Action executed",
     "action_fail" : "Action failed",
     "vote_sucess" : "Vote submitted",
-    "vote_fail" : "Vote failed"
+    "vote_fail" : "Vote failed",
+    "copy_sucess" : "Copy sucess"
 }

@@ -27,10 +27,9 @@ export default function LobbyPlayers(props: LobbyPlayersProps) {
         }
     })
 
-
     return (
 
-        <Descriptions bordered items={items} />
+        <Descriptions bordered column={1} items={items} />
 
 
 

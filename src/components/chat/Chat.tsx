@@ -27,7 +27,7 @@ export default function Chat() {
 
     return (
 
-        <Layout className="max-w-md">
+        <Layout className="max-w-lg">
             <Layout.Content>
                 <Card bodyStyle={{ padding: "0.3rem", }}>
                     <ChatMessages round={game.round} gameId={game._id} />

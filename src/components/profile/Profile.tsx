@@ -1,7 +1,7 @@
 import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useStoreUser } from "@/lib/sdk";
 import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
-import { Alert, Button, Card, Form, FormInstance, Input, Modal, Space, Typography } from "antd";
+import { Alert, Button, Card, Form, FormInstance, Input, Layout, Modal, Space, Typography } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useReadStoreProfile } from "@/hooks/useProfile";
@@ -27,7 +27,7 @@ export default function Profile() {
     const [profileForm] = Form.useForm();
 
     const profileStore = useReadStoreProfile()
-    const {contextHolder,display:displayFeedback} = useFeedbackModal()
+    const { contextHolder, display: displayFeedback } = useFeedbackModal()
 
 
 
@@ -78,27 +78,33 @@ export default function Profile() {
     }
 
     return (
-        <div className="p-4">
-            <Space direction="horizontal">
-                <Card>
-                    <Space >
-                        <Button htmlType="button" onClick={onCancel}>
+        <Layout className="w-screen">
+            <Layout.Sider>
+                <Card className="h-full flex flex-col items-center justify-center">
+                    <Space className="h-full w-full" direction="vertical">
+                        <Button className="w-full" type="primary" onClick={onSave}>
+                            Save
+                        </Button>
+
+                        <Button className="w-full" htmlType="button" onClick={onCancel}>
                             Cancel
                         </Button>
 
-                        <Button type="primary" onClick={onSave}>
-                            Save
-                        </Button>
                     </Space>
                 </Card>
-                <ProfileCard {...profileProps} />
-                <SecretsCard {...secretsProps} />
+            </Layout.Sider>
+            <Layout.Content className="p-4">
+                <div className="flex flex-row justify-evenly items-center">
+
+                    <ProfileCard {...profileProps} />
+                    <SecretsCard {...secretsProps} />
 
 
-            </Space>
+                </div>
+            </Layout.Content>
             {contextHolder}
 
-        </div>
+        </Layout>
     )
 }
 

@@ -3,7 +3,8 @@
     "kira" : "Kira Rules",
     "lawliet" : "Lawliet Rules",
     "neutral" : "Neutral Rules",
-    "goBack" : "mainMenu",
+    "goBack" : "Main Menu",
+    "mainMenu" : "Main Menu",
     "generalRulesArray" : [
         {
             "id" : "0",

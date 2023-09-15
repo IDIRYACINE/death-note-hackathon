@@ -1,8 +1,9 @@
 import { useStartGame, useTearDownGame } from "@/hooks/useGame";
 import { useReadStoreLobby, useReadStoreLobbyPlayers } from "@/hooks/useLobby";
-import { useNavigation } from "@/hooks/useNavigate";
+import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useReadStoreProfile } from "@/hooks/useProfile";
-import { Button, Card, Descriptions, DescriptionsProps, Space } from "antd";
+import CopyOutlined from "@ant-design/icons/lib/icons/CopyOutlined";
+import { Button, Card, Descriptions, DescriptionsProps, Space, Typography } from "antd";
 import { useTranslation } from "next-i18next";
 import { useEffect } from "react";
 import LobbyPlayers from "./LobbyPlayers";
@@ -22,10 +23,27 @@ export default function Lobby() {
 
     const isGameMaster = lobby.hostId === profile.tokenIdentifier
 
+    const { contextHolder, display: displayFeedbackModal } = useFeedbackModal()
+
+    const LobbyIdTitle = () => {
+        const copyContentToKeyboard = () => {
+            navigator.clipboard.writeText(lobby._id)
+            displayFeedbackModal(t("copy_sucess"))
+        }
+
+        return (
+            <Space>
+                <p>
+                    {t("lobby_id")}
+                </p>
+                <Button onClick={copyContentToKeyboard} icon={<CopyOutlined style={{ fontSize: 14 }} />} />
+            </Space>
+        )
+    }
     const items: DescriptionsProps['items'] = [
         {
             key: lobby._id,
-            label: t("lobby_id"),
+            label: <LobbyIdTitle />,
             span: 3,
             children: <p>{lobby._id}</p>,
         }
@@ -33,7 +51,7 @@ export default function Lobby() {
 
 
     const onStartGame = () => {
-        startGame({lobbyId:lobby._id})
+        startGame({ lobbyId: lobby._id })
     }
 
     const onCancel = () => {
@@ -47,32 +65,32 @@ export default function Lobby() {
     }
 
     useEffect(() => {
-        if (lobby.gameStarted){
-            startGame({lobbyId:lobby._id,gameStarted:true})
+        if (lobby.gameStarted) {
+            startGame({ lobbyId: lobby._id, gameStarted: true })
         }
-    }, [lobby,startGame])
+    }, [lobby, startGame])
 
     return (
-        <Card title={t('lobby')}>
-            <Space direction="vertical">
+        <Card title={t('lobby')} className="min-w-96">
+            <Space className="w-full" direction="vertical">
 
                 <Descriptions layout="vertical" items={items} bordered />
                 <LobbyPlayers players={players} />
-                <Space>
+                <div className="flex flex-row justify-between w-full">
                     <Button htmlType="button" onClick={onCancel}>
                         {t('cancel')}
                     </Button>
 
                     {
-                        isGameMaster ? 
-                        <Button type="primary" onClick={onStartGame}>
-                            {t('start_game')}
-                        </Button>
+                        isGameMaster ?
+                            <Button type="primary" onClick={onStartGame}>
+                                {t('start_game')}
+                            </Button>
                             : null
                     }
-                </Space>
+                </div>
             </Space>
-
+            {contextHolder}
         </Card>
     )
 }

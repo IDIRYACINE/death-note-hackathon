@@ -23,16 +23,16 @@ export function useNavigation(): NavigationHook {
     const router = useRouter()
 
     return {
-        navigateHostGame: () => router.push(hostGamePath),
-        navigateJoinGame: () => router.push(joinGamePath),
-        navigateSettings: () => router.push(settingsPath),
-        navigateLogout: () => router.push(logoutPath),
-        navigateProfile: () => router.push(profilePath),
-        navigateRules: () => router.push(rulesPath),
-        navigateMainMenu: () => router.push(mainMenuPath),
-        navigateLobby: (lobbyId: string) => router.push(lobbyPath + lobbyId),
-        navigateGame: (lobbyId: string) => router.push(gamePath + lobbyId),
-        navigateGameOver: () => router.push(gameOverPath)
+        navigateHostGame: () => router.replace(hostGamePath),
+        navigateJoinGame: () => router.replace(joinGamePath),
+        navigateSettings: () => router.replace(settingsPath),
+        navigateLogout: () => router.replace(logoutPath),
+        navigateProfile: () => router.replace(profilePath),
+        navigateRules: () => router.replace(rulesPath),
+        navigateMainMenu: () => router.replace(mainMenuPath),
+        navigateLobby: (lobbyId: string) => router.replace(lobbyPath + lobbyId),
+        navigateGame: (lobbyId: string) => router.replace(gamePath + lobbyId),
+        navigateGameOver: () => router.replace(gameOverPath)
     }
 }
 
@@ -47,16 +47,9 @@ export const useFeedbackModal = () => {
 
             let secondsToGo = 3;
 
-            const instance = (() =>{
-                if (!statusCode){
-                    return modal.error({
-                        title  :content,
-                    });
-                }
-                return modal.success({
-                    title  :content,
-                });
-            })()
+            const instance = modal.info({
+                title  :content,
+            });
 
 
             setTimeout(() => {

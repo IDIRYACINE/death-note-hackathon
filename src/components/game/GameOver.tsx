@@ -1,9 +1,10 @@
 import { useReadStoreGameMonument } from "@/hooks/useMonuments"
+import { useNavigation } from "@/hooks/useNavigate"
 import MonumentsInjector from "@/lib/stateLoaders/MonumentsLoader"
 import CloseCircleFilled from "@ant-design/icons/lib/icons/CloseCircleFilled"
 import CrownFilled from "@ant-design/icons/lib/icons/CrownFilled"
 import { Doc } from "@convex/_generated/dataModel"
-import { Card, Col, Divider, Empty, Image, Row, Space, Typography } from "antd"
+import { Button, Card, Col, Divider, Empty, Image, Row, Space, Typography } from "antd"
 import { useTranslation } from "next-i18next"
 import { PlayerHeader, SuspicionStatus } from "./PlayersTurnBar"
 
@@ -11,7 +12,7 @@ import { PlayerHeader, SuspicionStatus } from "./PlayersTurnBar"
 export default function GameOver() {
     const { lawlietWon, kiraWon, kira, lawliet, players, monuments, gameId } = useReadStoreGameMonument()
     const { t } = useTranslation()
-
+    const navigate = useNavigation()
 
     const monumentsProps = {
         monumentsLabel: t("monuments"),
@@ -19,10 +20,17 @@ export default function GameOver() {
         roundLabel: t("round")
     }
 
+    const goToMainMenu = () => {
+        navigate.navigateMainMenu()
+    }
+
     return (
-        <Space direction="vertical">
+        <Space direction="vertical" className="p-2">
             <MonumentsInjector gameId={gameId} />
-            <Typography.Title level={2}>{t("winner_faction")} {t(kiraWon ? "kira" : "lawliet")}</Typography.Title>
+            <Space align="center">
+                <Typography.Title level={2}>{t("winner_faction")} {t(kiraWon ? "kira" : "lawliet")}</Typography.Title>
+                <Button onClick={goToMainMenu}>{t("mainMenu")}</Button>
+            </Space>
             <div className="flex flex-row justify-between items-center">
                 <PlayerCard name={kira.player.name} avatar={kira.player.profilePicture}
                     kiraMeter={kira.kiraMeter} lawlietMeter={kira.lawlietMeter}
