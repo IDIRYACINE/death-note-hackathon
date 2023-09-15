@@ -1,12 +1,13 @@
 import MainMenu from "@/components/main-menu/MainMenu";
 import { getServerSideLocales } from "@/lib/locales";
-import ProfileLoader from "@/lib/stateLoaders/ProfileLoader";
+import ProfileInjector from "@/lib/stateLoaders/ProfileLoader";
+import StateLoader from "@/lib/stateLoaders/StateLoader";
 
 export default function Page() {
 
     return (
         <>
-            <ProfileLoader />
+            <StateLoader injector={<ProfileInjector/>} />
             <MainMenu />
 
         </>

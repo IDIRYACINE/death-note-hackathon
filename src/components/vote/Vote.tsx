@@ -9,7 +9,10 @@ import { useTranslation } from "next-i18next"
 import { useState } from "react"
 
 
-export default function Vote() {
+interface VoteProps {
+    onActionResult: (message: string, errorCode?: number) => void
+}
+export default function Vote({onActionResult}:VoteProps) {
     const { isVoting, gameId, } = useReadStoreIsVoting()
     const playerId = useReadStorePlayerId()
     const { t } = useTranslation()
@@ -19,6 +22,9 @@ export default function Vote() {
         kiraLabel: t("kira"),
         lawlietLabel: t("lawliet"),
         voteLabel: t("vote"),
+        displayFeedback:onActionResult,
+        voteSucessLabel:t("vote_sucess"),
+        voteFailLabel:t("vote_fail"),
         gameId,
         playerId
     }
@@ -43,6 +49,9 @@ interface VotingPhaseActiveProps {
     voteLabel: string,
     gameId: string,
     playerId: string,
+    voteSucessLabel : string,
+    voteFailLabel:string,
+    displayFeedback : (message:string,errorCode?:number) => void
 }
 function VotingPhaseActive(props: VotingPhaseActiveProps) {
     const { kiraLabel, lawlietLabel, voteLabel } = props

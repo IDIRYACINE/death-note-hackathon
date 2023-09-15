@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { loadProfile } from "@/stores/profile/profile-slice";
-import { selectProfile, selectProfileLoadState } from "@/stores/profile/selectors";
+import { selectProfile } from "@/stores/profile/selectors";
 import {  useQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@convex/_generated/api";
@@ -9,16 +9,15 @@ export const useLoadProfile = () => {
 
     const profile = useQuery(api.player.loadPlayerProfile)
     const dispatch = useAppDispatch()
-    const isProfileLoaded = useAppSelector(selectProfileLoadState)
 
 
     useEffect(() => {
-        if (!isProfileLoaded && profile) {
+        if ( profile) {
             dispatch(loadProfile(profile))
         }
-    }, [dispatch, isProfileLoaded, profile])
+    }, [dispatch,  profile])
 
-    return isProfileLoaded
+    return profile
 }
 
 export const useReadStoreProfile = () => {

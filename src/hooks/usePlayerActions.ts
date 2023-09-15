@@ -7,13 +7,13 @@ interface BaseArgs {
     userId: Id<"playersStatus">,
 }
 
-interface ProtectArgs extends BaseArgs{
+interface ProtectArgs extends BaseArgs {
     actionType: "protectKira" | "protectLawliet",
 }
 export const useProtect = () => {
     const action = useAction(api.actions.usePlayerAction)
 
-    return ({targetId,userId,actionType} : ProtectArgs) => {
+    return ({ targetId, userId, actionType }: ProtectArgs) => {
         action(
             {
                 targetId,
@@ -26,8 +26,8 @@ export const useProtect = () => {
 
 export const useKill = () => {
     const action = useAction(api.actions.usePlayerAction)
-    
-    return ({targetId,userId} :BaseArgs) => {
+
+    return ({ targetId, userId }: BaseArgs) => {
         action(
             {
                 targetId,
@@ -41,7 +41,7 @@ export const useKill = () => {
 export const useJail = () => {
     const action = useAction(api.actions.usePlayerAction)
 
-    return ({targetId,userId} : BaseArgs) => {
+    return ({ targetId, userId }: BaseArgs) => {
         action(
             {
                 targetId,
@@ -55,7 +55,7 @@ export const useJail = () => {
 export const useInvestigate = () => {
     const action = useAction(api.actions.usePlayerAction)
 
-    return ({targetId,userId} : BaseArgs) => {
+    return ({ targetId, userId }: BaseArgs) => {
         action(
             {
                 targetId,
@@ -66,48 +66,63 @@ export const useInvestigate = () => {
     }
 }
 
-
-export const usePlayerAction = () => {
+interface PlayerActionProps {
+    displayFeedback: (message: string, errorCode?: number) => void,
+    sucessMessage: string,
+    failMessage: string
+}
+export const usePlayerAction = (props?: PlayerActionProps) => {
     const action = useAction(api.actions.usePlayerAction)
 
-    const protect = ({targetId,userId,actionType} : ProtectArgs) => {
+    const displayFeedbackMessage = (executed: boolean) => {
+        if (props) {
+            const { displayFeedback, sucessMessage, failMessage } = props
+            displayFeedback(
+                executed ? sucessMessage : failMessage,
+                executed ? undefined : 400
+            )
+        }
+    }
+
+    const protect = ({ targetId, userId, actionType }: ProtectArgs) => {
         action(
             {
                 targetId,
                 userId,
                 actionType,
             }
-        )
+        ).then((res) => displayFeedbackMessage(res.executed))
     }
 
-    const investigate = ({targetId,userId} : BaseArgs) => {
+    const investigate = ({ targetId, userId }: BaseArgs) => {
         action(
             {
                 targetId,
                 userId,
                 actionType: "investigate",
             }
-        )
+        ).then((res) => displayFeedbackMessage(res.executed))
+
     }
 
-    const kill = ({targetId,userId} :BaseArgs) => {
+    const kill = ({ targetId, userId }: BaseArgs) => {
         action(
             {
                 targetId,
                 userId,
                 actionType: "kill",
             }
-        )
+        ).then((res) => displayFeedbackMessage(res.executed))
     }
 
-    const jail = ({targetId,userId} : BaseArgs) => {
+    const jail = ({ targetId, userId }: BaseArgs) => {
         action(
             {
                 targetId,
                 userId,
                 actionType: "jail",
             }
-        )
+        ).then((res) => displayFeedbackMessage(res.executed))
     }
 
     return {

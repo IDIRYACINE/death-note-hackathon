@@ -42,5 +42,11 @@
     "winner_faction" : "Winner Faction",
     "winner" : "Winner",
     "imprison" : "Imprison",
-    "no_monuments" : "No Monuments"
+    "no_monuments" : "No Monuments",
+    "connect_failed" : "Couldn't connect",
+    "out_of_actions" : "You already used this round action",
+    "actions_sucess" : "Action executed",
+    "action_fail" : "Action failed",
+    "vote_sucess" : "Vote submitted",
+    "vote_fail" : "Vote failed"
 }

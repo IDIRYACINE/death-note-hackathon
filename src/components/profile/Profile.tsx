@@ -1,7 +1,7 @@
-import { useNavigation } from "@/hooks/useNavigate";
+import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useStoreUser } from "@/lib/sdk";
 import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
-import { Button, Card, Form, FormInstance, Input, Modal, Space, Typography } from "antd";
+import { Alert, Button, Card, Form, FormInstance, Input, Modal, Space, Typography } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useReadStoreProfile } from "@/hooks/useProfile";
@@ -22,93 +22,41 @@ const tailLayout = {
 export default function Profile() {
     const navigation = useNavigation()
     const createUser = useStoreUser()
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const { t } = useTranslation()
     const [secretsForm] = Form.useForm();
     const [profileForm] = Form.useForm();
 
     const profileStore = useReadStoreProfile()
+    const {contextHolder,display:displayFeedback} = useFeedbackModal()
 
-    const profile = useRef({
-        name: profileStore.name,
-        profilePicture: profileStore.profilePicture,
-        background: profileStore.background,
-        secret1: profileStore.secret1,
-        secret2: profileStore.secret2,
-        secret3: profileStore.secret3,
-        secret4: profileStore.secret4,
-        secret5: profileStore.secret5,
-        collectedProfile: false,
-        collectedSecrets: false,
 
-    })
 
-    const handleSecrets = (values: {
-        secret1: string,
-        secret2: string,
-        secret3: string,
-        secret4: string,
-        secret5: string,
-    }) => {
-
-        profile.current = {
-            ...profile.current,
-            ...values,
-            collectedSecrets: true
-        }
-
-    }
-
-    const handleProfile = (values: {
-        background: string,
-        profilePicture: string,
-        name: string,
-    }) => {
-        profile.current = {
-            ...profile.current,
-            ...values,
-            collectedProfile: true
-        }
-    }
-
-    const closeModal = () => {
-        setIsModalOpen(false)
-        profile.current = {
-            ...profile.current,
-            collectedProfile: false, 
-            collectedSecrets: false
-        }
-    }
 
 
     const onSave = () => {
-        secretsForm.validateFields().then((res) => {
-            handleSecrets(res)
+
+        Promise.all([
+            secretsForm.validateFields(),
+            profileForm.validateFields()
+        ]).then((values) => {
+            const profile = {
+                ...values[0],
+                ...values[1]
+            }
+            createUser(profile).then(() => {
+                displayFeedback(t('profile_saved'))
+            })
+
+
         }).catch((err) => { })
-        profileForm.validateFields().then((res) => {
-            handleProfile(res)
-        }).catch((err) => { })
+
     }
 
-    useEffect(() => {
-        if (profile.current.collectedProfile && profile.current.collectedSecrets) {
-            createUser(profile.current).then(() => {
-                setIsModalOpen(true)
-            })
-        }
-
-    }, [createUser, profile])
 
     const onCancel = () => {
         navigation.navigateMainMenu()
     };
 
-    const modalProps = {
-        isModalOpen,
-        handleOk: closeModal,
-        handleCancel: closeModal,
-        successMessage: t('profile_saved')
-    }
 
     const profileProps = {
         displayNameLabel: t('display_name'),
@@ -116,8 +64,8 @@ export default function Profile() {
         profilePictureLabel: t('profile_picture'),
         backgroundLabel: t('background'),
         form: profileForm,
-        handleFinish: handleProfile,
-        profile:profileStore
+        handleFinish: () => { },
+        profile: profileStore
 
     }
 
@@ -125,30 +73,31 @@ export default function Profile() {
         secretsLabel: t('secrets'),
         secretLabel: t('secret'),
         form: secretsForm,
-        handleFinish: handleSecrets,
-        profile:profileStore
+        handleFinish: () => { },
+        profile: profileStore
     }
 
     return (
         <div className="p-4">
-            <Space direction="vertical">
-                <Space direction="horizontal">
-                    <ProfileCard {...profileProps} />
-                    <SecretsCard {...secretsProps} />
-                </Space>
+            <Space direction="horizontal">
+                <Card>
+                    <Space >
+                        <Button htmlType="button" onClick={onCancel}>
+                            Cancel
+                        </Button>
 
-                <Space direction="horizontal">
-                    <Button htmlType="button" onClick={onCancel}>
-                        Cancel
-                    </Button>
+                        <Button type="primary" onClick={onSave}>
+                            Save
+                        </Button>
+                    </Space>
+                </Card>
+                <ProfileCard {...profileProps} />
+                <SecretsCard {...secretsProps} />
 
-                    <Button type="primary" onClick={onSave}>
-                        Save
-                    </Button>
-                </Space>
+
             </Space>
+            {contextHolder}
 
-            <SaveStatusModal {...modalProps} />
         </div>
     )
 }
@@ -245,12 +194,9 @@ function SaveStatusModal({ isModalOpen, handleOk, successMessage }: SaveStatusMo
 
 
     return (
-        <Modal open={isModalOpen} onOk={handleOk} onCancel={handleOk}>
+        <Modal open={isModalOpen} >
 
-            <Space direction="horizontal">
-                <CheckCircleOutlined style={{ fontSize: '32px', color: '#52c41a' }} />
-                <Typography.Title level={4}>{successMessage}</Typography.Title>
-            </Space>
+            <Alert message={successMessage} type="success" />
 
         </Modal>
     )

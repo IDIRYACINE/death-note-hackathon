@@ -11,20 +11,35 @@ interface VoteProps {
     kiraStatusId: string;
     lawlietStatusId: string;
 }
-export const useVote = () => {
+interface VoteBaseProps {
+    displayFeedback: (message: string, errorCode?: number) => void,
+    sucessMessage: string,
+    failMessage: string
+}
+export const useVote = (baseProps?: VoteBaseProps) => {
     const vote = useAction(api.game.vote)
 
-    return (props:VoteProps) => {
+    return (props: VoteProps) => {
+
+        const displayFeedbackMessage = (executed: boolean) => {
+            if (baseProps) {
+                const { displayFeedback, sucessMessage, failMessage } = baseProps
+                displayFeedback(
+                    executed ? sucessMessage : failMessage,
+                    executed ? undefined : 400
+                )
+            }
+        }
         const voteProps = {
             gameId: props.gameId as Id<"games">,
             playerId: props.playerId,
-            targetId: props.targetStatusId as Id<"playersStatus"> ,
+            targetId: props.targetStatusId as Id<"playersStatus">,
             voteType: props.voteType,
             voteImpact: props.isKiraOrL ? 5 : 10,
             lawlietStatusId: props.lawlietStatusId as Id<"playersStatus">,
             kiraStatusId: props.kiraStatusId as Id<"playersStatus">,
         }
 
-        vote(voteProps)
+        vote(voteProps).then((res) => displayFeedbackMessage(!res.alreadyVoted))
     }
 }

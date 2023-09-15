@@ -1,6 +1,6 @@
 import { Space, Card, Button, Form, Input, } from "antd";
 import { useTranslation } from "next-i18next";
-import { useNavigation } from "@/hooks/useNavigate";
+import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useJoinGame } from "@/lib/sdk";
 
 
@@ -19,13 +19,18 @@ export default function JoinGame() {
     const joinGame = useJoinGame()
 
     const [form] = Form.useForm();
+    const {contextHolder,display:displayFeedback} = useFeedbackModal()
+ 
 
     const onFinish = (
         values: {
             password: string,
             lobbyId: string,
         }) => {
-        joinGame.execute({...values})
+            const onFail = (errorCode:number) => {
+                displayFeedback(t("connect_failed"),errorCode)
+            }
+            joinGame.execute({...values,onFail})
     };
 
     const onCancel = () => {
@@ -65,6 +70,7 @@ export default function JoinGame() {
                         </Space>
                     </Form.Item>
                 </Form>
+                {contextHolder}
         </Card>
     )
 }

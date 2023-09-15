@@ -19,16 +19,24 @@ export function useHostGame() {
   }
 }
 
+interface JoinGameProps {
+  lobbyId: string;
+  password: string;
+  onFail? : (statusCode:number) => void
+}
 export function useJoinGame() {
   const joinGame = useAction(api.host.joinGame);
   const navigate = useNavigation()
 
   return {
-    execute: (props: { lobbyId: string; password: string; }) => {
+    execute: (props: JoinGameProps) => {
       joinGame({ password: props.password, lobbyId: props.lobbyId as GenericId<"lobbies"> }).then((res) => {
 
         if (res.lobby) {
           navigate.navigateLobby(res.lobby._id)
+        }
+        else{
+          props.onFail?.(res.status)
         }
       })
     }

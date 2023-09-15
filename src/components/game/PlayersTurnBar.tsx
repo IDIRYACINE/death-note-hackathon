@@ -7,18 +7,22 @@ import { Card, Space, Image, Slider, Typography, CollapseProps, Avatar, Collapse
 import { SliderMarks } from "antd/es/slider"
 import { useTranslation } from "next-i18next"
 
-
-export default function PlayersTurnBar() {
+interface PlayersTurnBarProps {
+    onActionResult: (message: string, errorCode?: number) => void
+}
+export default function PlayersTurnBar({ onActionResult }: PlayersTurnBarProps) {
 
     const players = useReadStoreLobbyPlayers()
-    const {t} = useTranslation()
+    const { t } = useTranslation()
 
     const gadgetLabels = {
         protectLawlietLabel: t('protect_lawliet'),
         protectKiraLabel: t('protect_kira'),
         killLabel: t('kill'),
         investigateLabel: t('investigate'),
-        imprisonLabel: t('imprison')
+        imprisonLabel: t('imprison'),
+        actionSucessLabel: t('action_sucess'),
+        actionFailLabel: t('action_fail')
     }
 
     const items: CollapseProps['items'] = players.map((player) => {
@@ -37,8 +41,9 @@ export default function PlayersTurnBar() {
                         targetId={player._id}
                         kiraMeter={player.kiraMeter}
                         lawlietMeter={player.lawlietMeter}
+                        onActionResult={onActionResult}
                         {...gadgetLabels}
-                        />
+                    />
                 </Space>
 
         }
@@ -84,7 +89,7 @@ interface PlayerHeaderProps {
     avatar: string,
     trailing?: React.ReactNode
 }
-export function PlayerHeader({ name, avatar,trailing }: PlayerHeaderProps) {
+export function PlayerHeader({ name, avatar, trailing }: PlayerHeaderProps) {
     return (
         <Space>
             <Avatar src={avatar} />
@@ -136,24 +141,32 @@ interface ActionsGadgetProps {
     investigateLabel: string,
     imprisonLabel: string,
     killLabel: string,
+    actionSucessLabel: string,
+    actionFailLabel: string,
+    onActionResult: (message: string, errorCode?: number) => void
 }
 function ActionsGadget(props: ActionsGadgetProps) {
-    const { isKira, isNeutral, actionsCount,userId, } = useReadStoreAbillities()
+    const { isKira, isNeutral, actionsCount, userId, } = useReadStoreAbillities()
 
-    const { targetId,kiraMeter,lawlietMeter } = props
-    const {killLabel,investigateLabel,imprisonLabel,protectKiraLabel,protectLawlietLabel} = props
+    const { targetId, kiraMeter, lawlietMeter } = props
+    const { killLabel, investigateLabel, imprisonLabel, protectKiraLabel, protectLawlietLabel } = props
+    const {actionFailLabel,actionSucessLabel,onActionResult} = props
 
     const disabled = (actionsCount === 0) || (userId === targetId)
 
-    const actions = usePlayerAction()
-    
-    const investigate = () => actions.investigate({targetId,userId})
+    const actions = usePlayerAction({
+        sucessMessage:actionSucessLabel,
+        failMessage:actionFailLabel,
+        displayFeedback :onActionResult
+    })
+
+    const investigate = () => actions.investigate({ targetId, userId })
 
     const KiraActions = () => {
         const canIvestigateL = !disabled && lawlietMeter >= 70
         const canKillL = !disabled && lawlietMeter >= 90
 
-        const kill = () => actions.kill({targetId, userId})
+        const kill = () => actions.kill({ targetId, userId })
 
         return (
             <Space>
@@ -168,7 +181,7 @@ function ActionsGadget(props: ActionsGadgetProps) {
         const canIvestigateK = !disabled && kiraMeter >= 70
         const canImprisonK = !disabled && kiraMeter >= 90
 
-        const imprison = () => actions.jail({targetId, userId})
+        const imprison = () => actions.jail({ targetId, userId })
         return (
             <Space>
                 <Button onClick={investigate} disabled={!canIvestigateK} >{investigateLabel}</Button>
@@ -178,9 +191,9 @@ function ActionsGadget(props: ActionsGadgetProps) {
     }
 
     const NeutralActions = () => {
-        const protectL = () => actions.protect({targetId, userId,actionType:"protectLawliet"})
-        const protectK = () => actions.protect({targetId, userId,actionType:"protectKira"})
-        return  (
+        const protectL = () => actions.protect({ targetId, userId, actionType: "protectLawliet" })
+        const protectK = () => actions.protect({ targetId, userId, actionType: "protectKira" })
+        return (
             <Space>
                 <Button onClick={protectL} disabled={disabled} >{protectLawlietLabel}</Button>
                 <Button onClick={protectK} disabled={disabled}>{protectKiraLabel}</Button>

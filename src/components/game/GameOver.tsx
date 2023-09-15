@@ -23,7 +23,7 @@ export default function GameOver() {
         <Space direction="vertical">
             <MonumentsInjector gameId={gameId} />
             <Typography.Title level={2}>{t("winner_faction")} {t(kiraWon ? "kira" : "lawliet")}</Typography.Title>
-            <Space>
+            <div className="flex flex-row justify-between items-center">
                 <PlayerCard name={kira.player.name} avatar={kira.player.profilePicture}
                     kiraMeter={kira.kiraMeter} lawlietMeter={kira.lawlietMeter}
                     isLorKira={true} won={kiraWon} />
@@ -31,13 +31,13 @@ export default function GameOver() {
                 <PlayerCard name={lawliet.player.name} avatar={lawliet.player.profilePicture}
                     kiraMeter={lawliet.kiraMeter} lawlietMeter={lawliet.lawlietMeter}
                     isLorKira={true} won={lawlietWon} />
-            </Space>
+            </div>
             <Divider />
             <Row>
                 {
                     players.map((player) => {
                         return (
-                            <Col key={player._id}>
+                            <Col key={player._id} span={8} >
                                 <PlayerCard
                                     name={player.player.name} avatar={player.player.profilePicture}
                                     kiraMeter={player.kiraMeter} lawlietMeter={player.lawlietMeter}
@@ -47,6 +47,7 @@ export default function GameOver() {
                     })
                 }
             </Row>
+            <Divider/>
 
             <GameMonuments monuments={monuments} {...monumentsProps} />
         </Space>
@@ -67,7 +68,7 @@ function PlayerCard(props: PlayerCardProps) {
 
     const trailing = isLorKira ? won ? <CrownFilled /> : <CloseCircleFilled /> : undefined
     return (
-        <Card className="w-80" title={<PlayerHeader name={name} avatar={avatar} trailing={trailing} />}>
+        <Card  className="w-80" title={<PlayerHeader name={name} avatar={avatar} trailing={trailing} />}>
             <SuspicionStatus kiraMeter={kiraMeter} lawlietMeter={lawlietMeter} kiraLabel={"K"} lawlietLabel={"L"} />
         </Card>
     )

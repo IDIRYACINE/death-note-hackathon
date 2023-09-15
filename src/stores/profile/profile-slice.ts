@@ -6,7 +6,6 @@ import { Doc, Id } from '@convex/_generated/dataModel'
 
 export interface ProfileState {
     profile: Doc<"players">,
-    loaded: boolean,
 }
 
 const initialState: ProfileState = {
@@ -23,7 +22,6 @@ const initialState: ProfileState = {
         profilePicture: "",
         _creationTime: 0
     },
-    loaded: false,
 }
 
 export const profileSlice = createSlice({
@@ -32,7 +30,6 @@ export const profileSlice = createSlice({
     reducers: {
         loadProfile: (state, action: PayloadAction<Doc<"players">>) => {
             state.profile = action.payload
-            state.loaded = true
         },
     },
 })

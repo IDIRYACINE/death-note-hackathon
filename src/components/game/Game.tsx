@@ -7,11 +7,13 @@ import Secrets from "../secrets/Secrets";
 import Vote from "../vote/Vote";
 import PlayersTurnBar from "./PlayersTurnBar";
 import RoundTimer from "./RoundTImer";
+import { useFeedbackModal } from "@/hooks/useNavigate"
 
 
 export default function Game(){
     const {gameOver} = useReadStoreIsGameOver()
     const navigation = useNavigation()
+    const {contextHolder,display:displayFeedback} = useFeedbackModal()
 
     useEffect(() => {
         if(gameOver){
@@ -27,11 +29,12 @@ export default function Game(){
             <Layout.Content className="flex flex-row justify-between items-center w-full h-full p-2">
                     <Space direction="vertical" className="overflow-y-scroll h-112 w-96"  >
                         <Secrets/>
-                        <PlayersTurnBar/>
+                        <PlayersTurnBar onActionResult={displayFeedback}/>
                     </Space>
-                    <Vote/>
+                    <Vote onActionResult={displayFeedback}/>
                     <Chat/>
             </Layout.Content>
+            {contextHolder}
         </Layout>
     )
 }
