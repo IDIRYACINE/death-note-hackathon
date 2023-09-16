@@ -2,7 +2,7 @@ import { kiraAvatar, lawlietAvatar } from "@/domain/constants"
 import { useReadStoreIsKiraOrLawliet, useReadStoreRound } from "@/hooks/useGame"
 import { useReadStoreLobbyPlayers } from "@/hooks/useLobby"
 import { Avatar, Collapse, CollapseProps, Space, Typography } from "antd"
-import { useTranslation } from "next-i18next"
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -11,7 +11,7 @@ export default function Secrets() {
     const { isKira, isLawliet, kiraId, lawlietId } = useReadStoreIsKiraOrLawliet()
     const round = useReadStoreRound()
     const lobbyPlayers = useReadStoreLobbyPlayers()
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
 
     const renderSecrets = isKira || isLawliet
 

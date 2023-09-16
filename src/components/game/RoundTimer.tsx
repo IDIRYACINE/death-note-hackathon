@@ -1,6 +1,6 @@
 import { useReadStoreGame } from "@/hooks/useGame";
 import { Typography,Card } from "antd";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 import { useEffect, useMemo } from "react";
 import { useTimer } from "react-timer-hook";
 
@@ -11,7 +11,7 @@ interface RoundTimerProps{
     roundDurationInSeconds: number;
 }
 export default function RoundTimer(){
-    const {t} = useTranslation();
+    const {t} = useTranslation("common");
     const {roundStartTimestamp,round,roundTimerInSeconds:roundDurationInSeconds} = useReadStoreGame();
 
     const expiryTimestamp = useMemo(() => new Date(roundStartTimestamp+roundDurationInSeconds*1000),

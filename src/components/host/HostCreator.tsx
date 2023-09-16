@@ -1,5 +1,5 @@
 import { Space, Card, Descriptions, Button, Form, Input, Select, } from "antd";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 import type { DescriptionsProps } from "antd"
 import { useNavigation } from "@/hooks/useNavigate";
 import { useHostGame } from "@/lib/sdk";
@@ -17,7 +17,7 @@ const tailLayout = {
 };
 
 export default function HostCreator() {
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
     const profile = useReadStoreProfile()
     const navigation = useNavigation()
     const hostGame = useHostGame()

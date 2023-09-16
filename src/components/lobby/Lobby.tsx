@@ -4,7 +4,7 @@ import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import CopyOutlined from "@ant-design/icons/lib/icons/CopyOutlined";
 import { Button, Card, Descriptions, DescriptionsProps, Space, Typography } from "antd";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 import { useEffect } from "react";
 import LobbyPlayers from "./LobbyPlayers";
 
@@ -13,7 +13,7 @@ import LobbyPlayers from "./LobbyPlayers";
 
 
 export default function Lobby() {
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
 
     const players = useReadStoreLobbyPlayers()
     const lobby = useReadStoreLobby()

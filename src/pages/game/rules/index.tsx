@@ -9,4 +9,4 @@ export default function Page() {
 }
 
 
-export const getStaticProps = getStaticServerRulesLocales
+// export const getStaticProps = getStaticServerRulesLocales

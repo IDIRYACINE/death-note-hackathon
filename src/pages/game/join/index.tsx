@@ -1,5 +1,5 @@
 import JoinGame from "@/components/host/JoinGame";
-import { getServerSideLocales } from "@/lib/locales";
+import { makeServerSideRender } from "@/lib/locales";
 
 
 
@@ -9,4 +9,4 @@ export default function Page(){
     )
 }
 
-export const getServerSideProps = getServerSideLocales
+export const getServerSideProps = makeServerSideRender

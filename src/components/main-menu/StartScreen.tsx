@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import useTranslation from 'next-translate/useTranslation'
 import { Button, Space, Typography } from 'antd';
 import { useNavigation } from '@/hooks/useNavigate';
 
@@ -6,7 +6,7 @@ import Logo from '@/components/commons/Logo';
 
 export default function StartScreen() {
 
-    const { t } = useTranslation();
+    const { t } = useTranslation("common");
     const { Title } = Typography;
 
     const navigation = useNavigation()

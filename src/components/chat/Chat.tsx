@@ -1,13 +1,13 @@
 import { useReadStoreGame } from "@/hooks/useGame";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Layout, Card } from "antd";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 import ChatMessages from "./ChatMessages";
 import SendMessageButton from "./SendMessageButton";
 
 
 export default function Chat() {
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
 
     const game = useReadStoreGame()
     const profile = useReadStoreProfile()

@@ -64,9 +64,12 @@ export const useChangeLanguage = () => {
     const router = useRouter()
 
 
-    return (locale : "en" |"fr") => {
-        router.replace(router.pathname,undefined,{
-            locale
-        })
+    return {
+        changeLanguage : (locale : "en" |"fr") => {
+            router.replace(router.pathname,undefined,{
+                locale
+            })
+        },
+        locale : router.locale
     }
 }

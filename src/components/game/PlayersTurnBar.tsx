@@ -5,7 +5,7 @@ import { usePlayerAction } from "@/hooks/usePlayerActions"
 import { Doc, Id } from "@convex/_generated/dataModel"
 import { Card, Space, Image, Slider, Typography, CollapseProps, Avatar, Collapse, Row, Col, Button } from "antd"
 import { SliderMarks } from "antd/es/slider"
-import { useTranslation } from "next-i18next"
+import useTranslation from 'next-translate/useTranslation'
 
 interface PlayersTurnBarProps {
     onActionResult: (message: string, errorCode?: number) => void
@@ -13,7 +13,7 @@ interface PlayersTurnBarProps {
 export default function PlayersTurnBar({ onActionResult }: PlayersTurnBarProps) {
 
     const players = useReadStoreLobbyPlayers()
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
 
     const gadgetLabels = {
         protectLawlietLabel: t('protect_lawliet'),

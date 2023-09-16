@@ -10,9 +10,7 @@ const appTheme: ThemeConfig = {
     fontSize: 20,
     fontSizeHeading1: 24,
   },
-  algorithm: darkAlgorithm,
   components:{
-    
     Card:{
       headerFontSize : 24
     },
@@ -33,7 +31,7 @@ export default appTheme;
 export const getTheme = (darkTheme:boolean) :ThemeConfig => {
   return {
     ...appTheme,
-    algorithm: darkTheme ? darkAlgorithm : lightAlgorithm,
+    algorithm: darkTheme ? darkAlgorithm : lightAlgorithm   ,
 
   }
 }

@@ -3,7 +3,7 @@ import { useUpdateReadyStatus } from "@/lib/sdk";
 import { Doc } from "@convex/_generated/dataModel"
 import { Button, Checkbox, Descriptions, DescriptionsProps, Space } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 
 
 
@@ -12,7 +12,7 @@ interface LobbyPlayersProps {
 }
 export default function LobbyPlayers(props: LobbyPlayersProps) {
     const { players } = props
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
 
     const profile = useReadStoreProfile()
 

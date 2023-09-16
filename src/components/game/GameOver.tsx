@@ -5,13 +5,13 @@ import CloseCircleFilled from "@ant-design/icons/lib/icons/CloseCircleFilled"
 import CrownFilled from "@ant-design/icons/lib/icons/CrownFilled"
 import { Doc } from "@convex/_generated/dataModel"
 import { Button, Card, Col, Divider, Empty, Image, Row, Space, Typography } from "antd"
-import { useTranslation } from "next-i18next"
+import useTranslation from 'next-translate/useTranslation'
 import { PlayerHeader, SuspicionStatus } from "./PlayersTurnBar"
 
 
 export default function GameOver() {
     const { lawlietWon, kiraWon, kira, lawliet, players, monuments, gameId } = useReadStoreGameMonument()
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
     const navigate = useNavigation()
 
     const monumentsProps = {

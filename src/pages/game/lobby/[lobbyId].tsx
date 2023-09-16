@@ -1,5 +1,5 @@
 import Lobby from "@/components/lobby/Lobby";
-import { getServerSideLocales } from "@/lib/locales";
+import { makeServerSideRender } from "@/lib/locales";
 import LobbyInjector from "@/lib/stateLoaders/LobbyLoader";
 import StateLoader from "@/lib/stateLoaders/StateLoader";
 import { useRouter } from "next/router";
@@ -20,4 +20,4 @@ export default function Page(){
 
 
 
-export const getServerSideProps = getServerSideLocales
+export const getServerSideProps = makeServerSideRender

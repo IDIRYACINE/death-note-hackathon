@@ -1,10 +1,9 @@
-const { i18n } = require('./next-i18next.config.js');
 
+const nextTranslate = require('next-translate-plugin')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  i18n,
   modularizeImports: {
     "antd": {
       transform: "antd/es/{{loweCase member}}",
@@ -12,9 +11,10 @@ const nextConfig = {
     "@ant-design/icons": {
       transform: "@ant-design/icons/lib/icons/{{member}}",
     },
-  }
+  },
+  typescript: { ignoreBuildErrors: false }
 }
 
 
 
-module.exports = nextConfig
+module.exports = nextTranslate(nextConfig)

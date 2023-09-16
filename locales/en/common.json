@@ -58,5 +58,6 @@
     "arabic" : "Arabic",
     "english" : "English",
     "change_language" : "Change Language",
-    "french" : "French"
+    "french" : "French",
+    "save" : "Save"
 }

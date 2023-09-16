@@ -3,7 +3,9 @@ import  defaultTheme from 'tailwindcss/defaultTheme'
 
 const config: Config = {
   important: '#app',
-
+  corePlugins: {
+    preflight: false,
+  },
     content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',

@@ -5,7 +5,7 @@ import { useVote } from "@/hooks/useVote"
 import SmileOutlined from "@ant-design/icons/lib/icons/SmileOutlined"
 import { Doc } from "@convex/_generated/dataModel"
 import { Avatar, Button,Typography, Col, Row, Space } from "antd"
-import { useTranslation } from "next-i18next"
+import useTranslation from 'next-translate/useTranslation'
 import { useState } from "react"
 
 
@@ -15,7 +15,7 @@ interface VoteProps {
 export default function Vote({onActionResult}:VoteProps) {
     const { isVoting, gameId, } = useReadStoreIsVoting()
     const playerId = useReadStorePlayerId()
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
 
 
     const activePhaseProps = {

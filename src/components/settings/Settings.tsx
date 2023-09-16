@@ -3,13 +3,13 @@ import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 import { selectThemeMode } from "@/stores/settings/selectors";
 import { toggleTheme } from "@/stores/settings/settings-slice";
 import { Button, Card, Layout, Select, Space, Typography } from "antd";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 
 
 export default function Settings() {
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
     const navigation = useNavigation()
-    const changeLanguage = useChangeLanguage()
+    const {changeLanguage,locale} = useChangeLanguage()
 
     const dispatch = useAppDispatch()
     const isDarkTheme = useAppSelector(selectThemeMode)
@@ -26,6 +26,7 @@ export default function Settings() {
     const handleLanguageChange = (locale: string) => {
         changeLanguage(locale as "fr" | "en")
     }
+
     return (
         <Layout className="w-full h-screen">
             <Layout.Sider className="w-full ">
@@ -49,7 +50,7 @@ export default function Settings() {
                         <Space align="center">
                             <Typography.Title level={4}>{t("language")}: </Typography.Title>
                             <Select
-                                defaultValue="en"
+                                defaultValue={locale}
                                 style={{ width: 120 }}
                                 onChange={handleLanguageChange}
                                 options={supportedLanguages}

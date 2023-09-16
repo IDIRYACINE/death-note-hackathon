@@ -1,6 +1,5 @@
-import { GetServerSideProps, GetStaticProps, GetStaticPropsContext, PreviewData } from "next/types"
+import { GetServerSideProps, GetStaticProps} from "next/types"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { ParsedUrlQuery } from "querystring"
 
 interface LoadLocales {
   host: string,
@@ -31,40 +30,21 @@ export const getServerSideLocales: GetServerSideProps = async (context) => {
 };
 
 
-export function withGetServerSideLocale (fun:GetServerSideProps): GetServerSideProps  {
-
-  const localGetServerSideProps: GetServerSideProps = async (context) => {
-
-    const localeProps = await getServerSideLocales(context);
-    const props = await fun(context);
-    return {
-      props: {
-        ...localeProps,
-        ...props
-      }
-    }
-  }
-
-  return localGetServerSideProps
-}
-
-export async function serverFetchLocales (context:GetStaticPropsContext<ParsedUrlQuery, PreviewData>) {
-  
-    const locale = context.locale!;
-
-
-    return {
-      ...(await serverSideTranslations(locale, ['common'])),
-    };
-}
-
 export const getStaticServerRulesLocales:GetStaticProps = (async (context) => {
 
   const locale = context.locale!;
+  const rules =  await serverSideTranslations(locale, ['rules'])
 
+  console.log(rules)
   return {
       props: {
-        ...(await serverSideTranslations(locale, ['common','rules'])),
+        ...rules
       },
   };
 }) 
+
+export const makeServerSideRender : GetServerSideProps = async (context) => {
+  return {
+    props: {}
+  }
+}

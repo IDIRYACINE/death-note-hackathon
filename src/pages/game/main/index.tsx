@@ -1,5 +1,5 @@
 import MainMenu from "@/components/main-menu/MainMenu";
-import { getServerSideLocales } from "@/lib/locales";
+import { makeServerSideRender } from "@/lib/locales";
 import ProfileInjector from "@/lib/stateLoaders/ProfileLoader";
 import StateLoader from "@/lib/stateLoaders/StateLoader";
 
@@ -14,4 +14,4 @@ export default function Page() {
     )
 }
 
-export const getServerSideProps = getServerSideLocales
+export const getServerSideProps = makeServerSideRender

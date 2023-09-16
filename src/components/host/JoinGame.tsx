@@ -1,5 +1,5 @@
 import { Space, Card, Button, Form, Input, } from "antd";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useJoinGame } from "@/lib/sdk";
 
@@ -14,7 +14,7 @@ const tailLayout = {
 };
 
 export default function JoinGame() {
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
     const navigation = useNavigation()
     const joinGame = useJoinGame()
 

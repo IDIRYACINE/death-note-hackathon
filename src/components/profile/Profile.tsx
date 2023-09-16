@@ -3,7 +3,7 @@ import { useStoreUser } from "@/lib/sdk";
 import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
 import { Alert, Button, Card, Form, FormInstance, Input, Layout, Modal, Space, Typography } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "next-i18next";
+import useTranslation from 'next-translate/useTranslation'
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Profile } from "@/domain/profile";
 
@@ -22,7 +22,7 @@ const tailLayout = {
 export default function Profile() {
     const navigation = useNavigation()
     const createUser = useStoreUser()
-    const { t } = useTranslation()
+    const { t } = useTranslation("common")
     const [secretsForm] = Form.useForm();
     const [profileForm] = Form.useForm();
 

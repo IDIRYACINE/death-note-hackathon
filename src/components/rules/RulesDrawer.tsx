@@ -1,7 +1,7 @@
 
 import { useNavigation } from "@/hooks/useNavigate"
 import { Card, Space, Button } from "antd"
-import { useTranslation } from "next-i18next"
+import useTranslation from 'next-translate/useTranslation'
 
 interface RulesDrawerProps {
     onClick: (key: string) => void,
