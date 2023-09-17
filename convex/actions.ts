@@ -35,11 +35,11 @@ export const usePlayerAction = action(
             switch (args.actionType) {
                 case "kill":
                     executed = await ctx.runMutation(internal.actions.kill, { target: args.targetId, version: args.version });
-                    if(executed) {handleGameOver}
+                    if(executed) {await handleGameOver()}
                     break;
                 case "jail":
                     executed = await ctx.runMutation(internal.actions.jail, { target: args.targetId, version: args.version });
-                    if(executed) {handleGameOver}
+                    if(executed) {await handleGameOver()}
                     break;
                 case "investigate":
                     executed = await ctx.runMutation(internal.actions.investigate, { target: args.targetId, version: args.version, revealedSecretsInReverse: args.revealedSecretsInReverse ?? 5 });

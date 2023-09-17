@@ -10,7 +10,7 @@ export const chatGptSystemRoleEpic:ChatCompletionMessageParam = {
 export const chatGptSystemRoleEpicImage:ChatCompletionMessageParam = {
     role: "system",
     content:
-        "With a maximuim of 1000 characer You are a bot generating image prompt for dall-e the tale of kira case from death note.The main cast engaged in an epic battle of wits and deceptions.",
+        "With a maximuim of 1000 characer You are a bot generating image prompt for the tale of kira case from death note.The main cast engaged in an epic battle of wits and deceptions.",
 }
 
 export const chatGptModel = "gpt-3.5-turbo"

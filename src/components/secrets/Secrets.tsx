@@ -52,8 +52,8 @@ export default function Secrets() {
         }
 
         const secretsHeaderProps = {
-            name: t(isKira ? 'kira':'lawliet' ),
-            avatar: isKira? kiraAvatar : lawlietAvatar
+            name: t(isKira ? 'lawliet' : 'kira'),
+            avatar: isKira? lawlietAvatar:kiraAvatar 
         }
        
 

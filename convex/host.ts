@@ -229,7 +229,7 @@ export const joinGame = action({
       ()
 
     const isHostMaster = lobby?.hostId === playerId
-    if (canJoinLobby.status === 200 && !isHostMaster) {
+    if (canJoinLobby.status === joinedLobbyCode && !isHostMaster) {
       await ctx.runMutation(internal.host.addPlayerToLobby, {
         playerId: playerId,
         lobbyId: lobby!._id,
