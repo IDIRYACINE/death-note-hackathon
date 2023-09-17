@@ -59,7 +59,9 @@
     "english" : "الإنجليزية",
     "change_language" : "تغيير اللغة",
     "french" : "الفرنسية",
-    "save" : "حفظ"
+    "save" : "حفظ",
+    "no_player_selected" : "لم يتم تحديد أي لاعب"
+
 
 
 }

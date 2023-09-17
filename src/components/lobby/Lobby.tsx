@@ -1,9 +1,9 @@
 import { useStartGame, useTearDownGame } from "@/hooks/useGame";
-import { useReadStoreLobby, useReadStoreLobbyPlayers } from "@/hooks/useLobby";
-import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
+import { useReadStoreLobby } from "@/hooks/useLobby";
+import { useFeedbackModal } from "@/hooks/useNavigate";
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import CopyOutlined from "@ant-design/icons/lib/icons/CopyOutlined";
-import { Button, Card, Descriptions, DescriptionsProps, Space, Typography } from "antd";
+import { Button, Card, Descriptions, DescriptionsProps, Space } from "antd";
 import useTranslation from 'next-translate/useTranslation'
 import { useEffect } from "react";
 import LobbyPlayers from "./LobbyPlayers";
@@ -15,7 +15,6 @@ import LobbyPlayers from "./LobbyPlayers";
 export default function Lobby() {
     const { t } = useTranslation("common")
 
-    const players = useReadStoreLobbyPlayers()
     const lobby = useReadStoreLobby()
     const startGame = useStartGame()
     const cancelGame = useTearDownGame()
@@ -75,7 +74,7 @@ export default function Lobby() {
             <Space className="w-full" direction="vertical">
 
                 <Descriptions layout="vertical" items={items} bordered />
-                <LobbyPlayers players={players} />
+                <LobbyPlayers  />
                 <div className="flex flex-row justify-between w-full">
                     <Button htmlType="button" onClick={onCancel}>
                         {t('cancel')}

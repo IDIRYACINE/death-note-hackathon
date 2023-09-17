@@ -14,8 +14,8 @@ function AppContainer({ children }: { children: ReactNode }) {
     const theme = getTheme(themeMode)
     return (
         <ConfigProvider theme={theme}>
-            <Layout >
-                <Layout.Content className="h-screen w-screen flex  flex-col items-center justify-center overflow-y-scroll">
+            <Layout style={{padding:0}}>
+                <Layout.Content style={{padding:0}} className="h-screen w-screen flex  flex-col items-center justify-center overflow-y-scroll">
                     {children}
                 </Layout.Content>
             </Layout>

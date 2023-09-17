@@ -66,7 +66,7 @@ export const setupGame = internalMutation({
 
         let kiraIndex = randomIndex(playersCount)
         let lawlietIndex = randomIndex(playersCount)
-        while ((playersCount > 1) && (kiraIndex == lawlietIndex)) {
+        while ((playersCount > 1) && (kiraIndex === lawlietIndex)) {
             lawlietIndex = randomIndex(playersCount)
         }
 
@@ -126,9 +126,14 @@ export const loadGame = query({
 
 export const vote = action({
     args: {
-        voteImpact: v.number(), voteType: v.string(),
-        targetId: v.id("playersStatus"), playerId: v.string(), gameId: v.id("games"),
-        lawlietStatusId: v.id("playersStatus"), kiraStatusId: v.id("playersStatus")
+        voteImpact: v.number(),
+        voteType: v.string(),
+        targetId: v.id("playersStatus"),
+        playerId: v.string(),
+        gameId: v.id("games"),
+        lawlietStatusId: v.id("playersStatus"),
+        kiraStatusId: v.id("playersStatus"),
+        version: v.number()
     },
     handler: async (ctx, args): Promise<{ alreadyVoted: boolean }> => {
         const voted = await ctx.runQuery(internal.game.checkIfPlayerVoted, { gameId: args.gameId, playerId: args.playerId })
@@ -141,14 +146,13 @@ export const vote = action({
         }
         if (!voted.voted) {
             voted.game.roundVotes.push(vote)
-            await ctx.runMutation(internal.game.addVote, { gameId: args.gameId, vote, votes: voted.game.roundVotes, })
+            await ctx.runMutation(internal.game.addVote, { gameId: args.gameId, vote, votes: voted.game.roundVotes, version: args.version })
+            await ctx.runAction(internal.game.endVotingPhase, {
+                game: voted.game,
+                lawlietStatusId: args.lawlietStatusId,
+                kiraStatusId: args.kiraStatusId
+            })
         }
-
-        await ctx.runAction(internal.game.endVotingPhase, {
-            game: voted.game,
-            lawlietStatusId: args.lawlietStatusId,
-            kiraStatusId: args.kiraStatusId
-        })
 
         return {
             alreadyVoted: voted.voted
@@ -197,7 +201,7 @@ export const addVote = internalMutation({
         gameId: v.id("games"),
         vote: v.object(VoteSchema),
         votes: v.array(v.object(VoteSchema)),
-
+        version: v.number()
     },
     handler: async (ctx, args) => {
         const { vote, votes, } = args
@@ -210,7 +214,7 @@ export const addVote = internalMutation({
 
 
         const updatedStatus: Partial<Doc<"playersStatus">> = {
-
+            version: args.version + 1
         }
 
         if (vote.voteType == "kira") {
@@ -260,7 +264,7 @@ export const endVotingPhase = internalAction({
 
         const isFinalRound = IsFinalRound(game)
         const isVotingOver = IsVotingOver(game)
-        const { kiraWon, lawlietWon, gameOver } = await ctx.runQuery(internal.game.checkIfGameOver, {
+        const { gameOver } = await ctx.runQuery(internal.game.checkIfGameOver, {
             kiraStatusId: args.kiraStatusId,
             lawlietStatusId: args.lawlietStatusId,
         })
@@ -273,10 +277,7 @@ export const endVotingPhase = internalAction({
                 await ctx.runMutation(internal.game.startNextRound, { gameId: game._id, round: game.round })
                 await ctx.scheduler.runAfter(game.roundTimerInSeconds * 1000, internal.game.startVotingPhase, { gameId: game._id, roundTimerInSeconds: game.roundTimerInSeconds })
             }
-            else {
-                await ctx.runMutation(internal.game.endGame, { gameId: game._id, kiraWon, lawlietWon })
-                await ctx.runAction(internal.ai.generateGameMonuments,{gameId:game._id,rounds:game.round})
-            }
+            
         }
 
 
@@ -328,5 +329,17 @@ export const cleanupGame = action({
     args: { gameId: v.optional(v.id("games")), lobbyId: v.id("lobbies"), hostId: v.string() },
     handler: async (ctx, args) => {
 
+    }
+})
+
+
+export const loadPlayersStatus = query({
+    args : {lobbyId:v.id("lobbies")},
+    handler: async (ctx, args) => {
+        const players = await ctx.db.query("playersStatus").
+        filter((q) => q.eq(q.field("lobbyId"), args.lobbyId))
+        .collect()
+
+        return {players}
     }
 })

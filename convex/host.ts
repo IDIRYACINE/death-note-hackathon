@@ -4,6 +4,7 @@ import { internal } from "./_generated/api";
 import { Doc, Id } from "./_generated/dataModel";
 import { ReadLobbyResponse } from "./_types/host";
 import { playerAlreadyJoined } from "./_helpers/helpers";
+import { gameAlreadyStartedCode, joinedLobbyCode, lobbyFullCode, playerAlreadyInLobbyCode, wrongPasswordCode } from "./_helpers/statusCodes";
 
 const hostGameArgs = {
   hostId: v.string(),
@@ -156,6 +157,7 @@ export const addPlayerToLobby = internalMutation({
       alive: true,
       jailed: false,
       revealedSecretsInReverse: 6,
+      version: 0,
     })
 
     const playerIds = [...args.playerIds, args.playerId]
@@ -195,7 +197,7 @@ export const joinGame = action({
     const lobby = await ctx.runQuery(internal.host.readLobby, lobbyArgs);
 
     const canJoinLobby = (() => {
-      let status = 200
+      let status = joinedLobbyCode
       let message = "joined the lobby"
 
       status = !lobby ? 400 : status
@@ -203,18 +205,18 @@ export const joinGame = action({
 
       if (lobby) {
         const lobbyFull = lobby.playersCount === lobby.maxPlayers
-        status = lobbyFull ? 400 : status
+        status = lobbyFull ? lobbyFullCode : status
         message = lobbyFull ? "lobby full" : message
 
-        status = lobby.gameStarted ? 400 : status
+        status = lobby.gameStarted ? gameAlreadyStartedCode : status
         message = lobby.gameStarted ? "game already started" : message
 
-        const wrongPassword = lobby.password === args.password
-        status = wrongPassword ? 400 : status
+        const wrongPassword = lobby.password.toLowerCase() !== args.password.toLowerCase()
+        status = wrongPassword ? wrongPasswordCode : status
         message = wrongPassword ? "wrong passowrd" : message
 
         if(playerAlreadyJoined({playerId,playerIds:lobby.playerIds})){
-          status = 400
+          status = playerAlreadyInLobbyCode
           message = "player already joined"
         }
       }
@@ -227,9 +229,8 @@ export const joinGame = action({
       ()
 
     const isHostMaster = lobby?.hostId === playerId
-
     if (canJoinLobby.status === 200 && !isHostMaster) {
-      ctx.runMutation(internal.host.addPlayerToLobby, {
+      await ctx.runMutation(internal.host.addPlayerToLobby, {
         playerId: playerId,
         lobbyId: lobby!._id,
         playerIds: lobby!.playerIds

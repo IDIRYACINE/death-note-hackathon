@@ -40,9 +40,13 @@ export const lobbySlice = createSlice({
 
 
         },
+        loadLobbyPlayers: (state, action: PayloadAction<Doc<"playersStatus">[]>) => {
+            state.lobbyPlayers = action.payload
+
+        }
     },
 })
 
-export const { loadLobby } = lobbySlice.actions
+export const { loadLobby,loadLobbyPlayers } = lobbySlice.actions
 
 export default lobbySlice.reducer

@@ -8,19 +8,20 @@ export const playerAlreadyJoined = ({ playerId, playerIds }: PlayerJoinedOptions
 }
 
 export const randomIndex = (length: number) => {
-    return Math.floor(Math.random() * (length + 1));
+    return Math.floor(Math.random() * (length));
 }
 
 interface Vote {
     voteImpact: number, voteType: string, targetId: string, playerId: string
 }
 export const alreadyVoted = (playerId: string, roundVotes: Vote[]) => {
+    let voted = false
     roundVotes.forEach((vote) => {
         if (vote.playerId === playerId) {
-            return true
+            voted = true
         }
     })
-    return false
+    return voted
 }
 interface GameOverOptions {
     round: number,

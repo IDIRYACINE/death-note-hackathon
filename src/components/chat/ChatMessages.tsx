@@ -9,7 +9,7 @@ export default function ChatMessages({round,gameId}:{round: number,gameId:string
 
     return (
         <>
-        <StateLoader injector={<ChatInjector round={round} gameId={gameId}/>} />
+        {gameId !== "" ? <StateLoader injector={<ChatInjector round={round} gameId={gameId}/>} />: null }
         <List
             style={{height:"50vh",overflowY:"scroll"}}
             itemLayout="horizontal"

@@ -1,18 +1,22 @@
 import { fallbackImageUrl } from "@/domain/constants"
 import { useReadStoreAbillities } from "@/hooks/useGame"
-import { useReadStoreLobbyPlayers } from "@/hooks/useLobby"
+import { useReadStoreLobby, useReadStoreLobbyPlayers } from "@/hooks/useLobby"
 import { usePlayerAction } from "@/hooks/usePlayerActions"
+import PlayersInjector from "@/lib/stateLoaders/PlayersLoader"
+import StateLoader from "@/lib/stateLoaders/StateLoader"
 import { Doc, Id } from "@convex/_generated/dataModel"
 import { Card, Space, Image, Slider, Typography, CollapseProps, Avatar, Collapse, Row, Col, Button } from "antd"
 import { SliderMarks } from "antd/es/slider"
 import useTranslation from 'next-translate/useTranslation'
 
 interface PlayersTurnBarProps {
-    onActionResult: (message: string, errorCode?: number) => void
+    onActionResult: (message: string, errorCode?: number) => void,
 }
 export default function PlayersTurnBar({ onActionResult }: PlayersTurnBarProps) {
 
     const players = useReadStoreLobbyPlayers()
+    const { _id:lobbyId } = useReadStoreLobby()
+
     const { t } = useTranslation("common")
 
     const gadgetLabels = {
@@ -28,7 +32,7 @@ export default function PlayersTurnBar({ onActionResult }: PlayersTurnBarProps) 
     const items: CollapseProps['items'] = players.map((player) => {
 
         return {
-            key: `status-${player._id}`,
+            key: `status-${player._id}-${player.version}`,
             label: <PlayerHeader name={player.player.name} avatar={player.player.profilePicture} />,
             children:
                 <Space className="w-full" direction="vertical">
@@ -41,6 +45,7 @@ export default function PlayersTurnBar({ onActionResult }: PlayersTurnBarProps) 
                         targetId={player._id}
                         kiraMeter={player.kiraMeter}
                         lawlietMeter={player.lawlietMeter}
+                        version={player.version}
                         onActionResult={onActionResult}
                         {...gadgetLabels}
                     />
@@ -51,6 +56,7 @@ export default function PlayersTurnBar({ onActionResult }: PlayersTurnBarProps) 
 
     return (
         <Space className="w-full" direction="vertical">
+            <StateLoader injector={<PlayersInjector lobbyId={lobbyId}/>} />
             <Collapse items={items} expandIconPosition="end" />
         </Space>
     )
@@ -143,12 +149,13 @@ interface ActionsGadgetProps {
     killLabel: string,
     actionSucessLabel: string,
     actionFailLabel: string,
+    version: number,
     onActionResult: (message: string, errorCode?: number) => void
 }
 function ActionsGadget(props: ActionsGadgetProps) {
     const { isKira, isNeutral, actionsCount, userId, } = useReadStoreAbillities()
 
-    const { targetId, kiraMeter, lawlietMeter } = props
+    const { targetId, kiraMeter, lawlietMeter,version } = props
     const { killLabel, investigateLabel, imprisonLabel, protectKiraLabel, protectLawlietLabel } = props
     const {actionFailLabel,actionSucessLabel,onActionResult} = props
 
@@ -160,13 +167,13 @@ function ActionsGadget(props: ActionsGadgetProps) {
         displayFeedback :onActionResult
     })
 
-    const investigate = () => actions.investigate({ targetId, userId })
+    const investigate = () => actions.investigate({ targetId, userId,version })
 
     const KiraActions = () => {
         const canIvestigateL = !disabled && lawlietMeter >= 70
         const canKillL = !disabled && lawlietMeter >= 90
 
-        const kill = () => actions.kill({ targetId, userId })
+        const kill = () => actions.kill({ targetId, userId,version })
 
         return (
             <Space>
@@ -181,7 +188,7 @@ function ActionsGadget(props: ActionsGadgetProps) {
         const canIvestigateK = !disabled && kiraMeter >= 70
         const canImprisonK = !disabled && kiraMeter >= 90
 
-        const imprison = () => actions.jail({ targetId, userId })
+        const imprison = () => actions.jail({ targetId, userId,version })
         return (
             <Space>
                 <Button onClick={investigate} disabled={!canIvestigateK} >{investigateLabel}</Button>
@@ -191,8 +198,8 @@ function ActionsGadget(props: ActionsGadgetProps) {
     }
 
     const NeutralActions = () => {
-        const protectL = () => actions.protect({ targetId, userId, actionType: "protectLawliet" })
-        const protectK = () => actions.protect({ targetId, userId, actionType: "protectKira" })
+        const protectL = () => actions.protect({ targetId, userId,version, actionType: "protectLawliet" })
+        const protectK = () => actions.protect({ targetId, userId,version, actionType: "protectKira" })
         return (
             <Space>
                 <Button onClick={protectL} disabled={disabled} >{protectLawlietLabel}</Button>

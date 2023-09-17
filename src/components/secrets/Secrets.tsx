@@ -1,10 +1,8 @@
 import { kiraAvatar, lawlietAvatar } from "@/domain/constants"
-import { useReadStoreIsKiraOrLawliet, useReadStoreRound } from "@/hooks/useGame"
+import { useReadStoreIsKiraOrLawliet, useReadStorePlayersWithRevealedSecrets, useReadStoreRound } from "@/hooks/useGame"
 import { useReadStoreLobbyPlayers } from "@/hooks/useLobby"
 import { Avatar, Collapse, CollapseProps, Space, Typography } from "antd"
 import useTranslation from 'next-translate/useTranslation'
-
-
 
 
 export default function Secrets() {
@@ -12,19 +10,42 @@ export default function Secrets() {
     const round = useReadStoreRound()
     const lobbyPlayers = useReadStoreLobbyPlayers()
     const { t } = useTranslation("common")
+    const playersWithRevealedSecrets = useReadStorePlayersWithRevealedSecrets()
 
     const renderSecrets = isKira || isLawliet
 
-    const secrets: CollapseProps['items'] = []
-    const items: CollapseProps['items'] = []
+    const kiraOrLawlietsecrets: CollapseProps['items'] = []
+    const players: CollapseProps['items'] = playersWithRevealedSecrets.map((player) => {
+        const playerSecrets: CollapseProps['items'] = []
+
+        for(let i = 5; i > player.revealedSecretsInReverse; i--) {
+            playerSecrets.push({
+                key: `secret-${player._id}-${i}`,
+                label: <Typography.Title level={4}>{`${t('secret')} ${i}`}</Typography.Title>,
+                children: <Typography.Paragraph>{player.player[`secret${i}` as keyof typeof player.player] as string}</Typography.Paragraph>,
+            })
+        }
+
+        const secretsHeaderProps = {
+            name: player.player.name,
+            avatar: player.player.profilePicture
+        }
+
+        return {
+            key: `secrets-${player._id}-${player.version}`,
+            label: <SecretsHeader {...secretsHeaderProps}/>,
+            children: <Collapse items={playerSecrets} expandIconPosition="end" />
+        }
+    })
 
     const targetPlayerId = isKira ? lawlietId : isLawliet ? kiraId : null
 
     if (targetPlayerId) {
         const targetPlayer = lobbyPlayers.find((player) => player.player.tokenIdentifier === targetPlayerId)!
+        const key = isKira ? 'lawliet' : 'kira'
         for (let i = 1; i < round + 1; i++) {
-            secrets.push({
-                key: `secret-${i}`,
+            kiraOrLawlietsecrets.push({
+                key: `secret-${key}-${i}`,
                 label: <Typography.Title level={4}>{`${t('secret')} ${i}`}</Typography.Title>,
                 children: <Typography.Paragraph>{targetPlayer.player[`secret${i}` as keyof typeof targetPlayer.player] as string}</Typography.Paragraph>,
             })
@@ -36,15 +57,23 @@ export default function Secrets() {
         }
        
 
-        items.push({
-            key: `secretsWidget`,
+        players.push({
+            key: `secretsWidget-${key}`,
             label: <SecretsHeader {...secretsHeaderProps}/>,
-            children: <Collapse items={secrets} expandIconPosition="end" />
+            children: <Collapse items={kiraOrLawlietsecrets} expandIconPosition="end" />
         })
     }
 
+    const secretItems: CollapseProps['items'] = [
+        {
+            key: `secretsWidget`,
+            label: <Typography.Title level={3}>{t('secrets')}</Typography.Title>,
+            children: <Collapse items={players} expandIconPosition="end" />
+        }
+    ]
+
     return (
-        renderSecrets ? <Collapse items={items} expandIconPosition="end"/> : null
+        renderSecrets ? <Collapse items={secretItems} expandIconPosition="end"/> : null
     )
     
 }

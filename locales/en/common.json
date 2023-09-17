@@ -59,5 +59,6 @@
     "english" : "English",
     "change_language" : "Change Language",
     "french" : "French",
-    "save" : "Save"
+    "save" : "Save",
+    "no_player_selected" : "No player selected"
 }

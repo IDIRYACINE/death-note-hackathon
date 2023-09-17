@@ -59,6 +59,8 @@
     "english" : "Anglais",
     "change_language" : "Changer de langue",
     "arabic" : "Arabic",
-    "save" : "Sauvegarder"
+    "save" : "Sauvegarder",
+    "no_player_selected" : "Aucun joueur selectionne"
+
 
 }

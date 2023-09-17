@@ -4,6 +4,7 @@ import { selectProfile } from "@/stores/profile/selectors";
 import {  useQuery } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@convex/_generated/api";
+import { selectPlayerVoteStatus } from "@/stores/game/selectors";
 
 export const useLoadProfile = () => {
 
@@ -27,4 +28,9 @@ export const useReadStoreProfile = () => {
 export const useReadStorePlayerId = () => {
     const profile = useAppSelector(selectProfile)
     return profile.tokenIdentifier
+}
+
+export const useReadStorePlayerVoteStatus = () => {
+    const status = useAppSelector(selectPlayerVoteStatus)
+    return status
 }

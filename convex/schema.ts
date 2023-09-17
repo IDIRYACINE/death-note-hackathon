@@ -36,7 +36,7 @@ export const PlayerStatusScehma = {
     alive: v.boolean(),
     jailed: v.boolean(),
     revealedSecretsInReverse: v.number(), 
-
+    version: v.number(),
 }
 export const VoteSchema = {
     playerId: v.string(),

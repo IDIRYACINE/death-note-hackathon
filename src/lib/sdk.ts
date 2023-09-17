@@ -4,6 +4,7 @@ import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Id } from "@convex/_generated/dataModel";
 import { useNavigation } from "@/hooks/useNavigate";
+import { joinedLobbyCode, playerAlreadyInLobbyCode } from "@convex/_helpers/statusCodes";
 
 
 
@@ -32,8 +33,8 @@ export function useJoinGame() {
     execute: (props: JoinGameProps) => {
       joinGame({ password: props.password, lobbyId: props.lobbyId as GenericId<"lobbies"> }).then((res) => {
 
-        if (res.lobby) {
-          navigate.navigateLobby(res.lobby._id)
+        if ((res.status === playerAlreadyInLobbyCode) || (res.status === joinedLobbyCode) ) {
+          navigate.navigateLobby(res.lobby!._id)
         }
         else{
           props.onFail?.(res.status)

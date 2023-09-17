@@ -10,32 +10,52 @@ export const usePlayerAction = action(
             userId: v.id("playersStatus"),
             actionType: v.string(),
             revealedSecretsInReverse: v.optional(v.number()),
+            version: v.number(),
+            gameId: v.id("games"),
+            kiraStatusId : v.id("playersStatus"),
+            lawlietStatusId : v.id("playersStatus"),
+            round:v.number()
         },
-        handler: async (ctx, args) : Promise<{executed:boolean}> => {
+        handler: async (ctx, args): Promise<{ executed: boolean }> => {
+            
+            const handleGameOver = async () => {
+                const { gameOver, kiraWon, lawlietWon } = await ctx.runQuery(internal.game.checkIfGameOver, {
+                    kiraStatusId: args.kiraStatusId,
+                    lawlietStatusId: args.lawlietStatusId,
+                })
+
+                if (gameOver) {
+                    const { gameId,round } = args
+                    await ctx.runMutation(internal.game.endGame, { gameId, kiraWon, lawlietWon })
+                    await ctx.runAction(internal.ai.generateGameMonuments, { gameId, rounds: round})
+                }
+            }
+
             let executed = false
             switch (args.actionType) {
                 case "kill":
-                    executed = await ctx.runMutation(internal.actions.kill, { target: args.targetId });
+                    executed = await ctx.runMutation(internal.actions.kill, { target: args.targetId, version: args.version });
+                    if(executed) {handleGameOver}
                     break;
                 case "jail":
-                    executed = await ctx.runMutation(internal.actions.jail, { target: args.targetId });
+                    executed = await ctx.runMutation(internal.actions.jail, { target: args.targetId, version: args.version });
+                    if(executed) {handleGameOver}
                     break;
                 case "investigate":
-                    executed = await ctx.runMutation(internal.actions.investigate, { target: args.targetId, revealedSecretsInReverse: args.revealedSecretsInReverse ?? 5 });
+                    executed = await ctx.runMutation(internal.actions.investigate, { target: args.targetId, version: args.version, revealedSecretsInReverse: args.revealedSecretsInReverse ?? 5 });
                     break;
                 case "protectKira":
-                    executed = await ctx.runMutation(internal.actions.protect, { target: args.targetId, userId: args.userId, meterType: "k" });
+                    executed = await ctx.runMutation(internal.actions.protect, { target: args.targetId, version: args.version, userId: args.userId, meterType: "k" });
                     break;
 
                 default:
-                    executed = await ctx.runMutation(internal.actions.protect, { target: args.targetId, userId: args.userId, meterType: "l" });
-
+                    executed = await ctx.runMutation(internal.actions.protect, { target: args.targetId, version: args.version, userId: args.userId, meterType: "l" });
                     break;
             }
 
             await ctx.runMutation(internal.actions.updateRemainingActions, {
                 userId: args.userId,
-                remainingActions: 0
+                remainingActions: 0,
             })
 
             return {
@@ -46,7 +66,12 @@ export const usePlayerAction = action(
 )
 
 export const protect = internalMutation({
-    args: { target: v.id("playersStatus"), meterType: v.string(), userId: v.id("playersStatus") },
+    args: {
+        target: v.id("playersStatus"),
+        meterType: v.string(),
+        userId: v.id("playersStatus"),
+        version: v.number()
+    },
     handler: async (ctx, args) => {
 
         const upadtedFields: {
@@ -70,47 +95,56 @@ export const protect = internalMutation({
         return ctx.db.patch(args.target, upadtedFields).then(() => {
             return true
         })
-        .catch(()=>{
-            return false
-        })
+            .catch(() => {
+                return false
+            })
 
     }
 })
 
 export const kill = internalMutation({
-    args: { target: v.id("playersStatus") },
+    args: {
+        target: v.id("playersStatus"),
+        version: v.number()
+    },
     handler: async (ctx, args) => {
         return ctx.db.patch(args.target, { alive: false })
-        .then(() => {
-            return true
-        })
-        .catch(()=>{
-            return false
-        })
+            .then(() => {
+                return true
+            })
+            .catch(() => {
+                return false
+            })
     }
 })
 
 export const jail = internalMutation({
-    args: { target: v.id("playersStatus") },
+    args: {
+        target: v.id("playersStatus"),
+        version: v.number()
+    },
     handler: async (ctx, args) => {
         return ctx.db.patch(args.target, { jailed: true }).then(() => {
             return true
         })
-        .catch(()=>{
-            return false
-        })
+            .catch(() => {
+                return false
+            })
     }
 })
 
 export const investigate = internalMutation({
-    args: { target: v.id("playersStatus"), revealedSecretsInReverse: v.number() },
+    args: {
+        target: v.id("playersStatus"), revealedSecretsInReverse: v.number(),
+        version: v.number()
+    },
     handler: async (ctx, args) => {
         return ctx.db.patch(args.target, { revealedSecretsInReverse: args.revealedSecretsInReverse - 1 }).then(() => {
             return true
         })
-        .catch(()=>{
-            return false
-        })
+            .catch(() => {
+                return false
+            })
     }
 })
 
@@ -120,9 +154,9 @@ export const updateRemainingActions = internalMutation({
         ctx.db.patch(args.userId, { remainingActions: args.remainingActions }).then(() => {
             return true
         })
-        .catch(()=>{
-            return false
-        })
+            .catch(() => {
+                return false
+            })
     }
 })
 
