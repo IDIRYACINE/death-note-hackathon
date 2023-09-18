@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "live" : "next build && next start"
+    "live": "next build && next start"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.17.0",
@@ -32,6 +32,7 @@
     "tailwindcss": "3.3.3"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^13.4.19",
     "@types/howler": "^2.2.8",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",

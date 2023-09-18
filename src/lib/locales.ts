@@ -1,5 +1,4 @@
 import { GetServerSideProps, GetStaticProps} from "next/types"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 interface LoadLocales {
   host: string,
@@ -18,30 +17,8 @@ export async function loadRulesLocales({ host, locale }: LoadLocales): Promise<J
   return data
 }
 
-export const getServerSideLocales: GetServerSideProps = async (context) => {
-
-  const locale = context.locale!;
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
-};
 
 
-export const getStaticServerRulesLocales:GetStaticProps = (async (context) => {
-
-  const locale = context.locale!;
-  const rules =  await serverSideTranslations(locale, ['rules'])
-
-  console.log(rules)
-  return {
-      props: {
-        ...rules
-      },
-  };
-}) 
 
 export const makeServerSideRender : GetServerSideProps = async (context) => {
   return {

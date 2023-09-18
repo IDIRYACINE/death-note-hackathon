@@ -1,38 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Start Screen](https://github.com/IDIRYACINE/death-note-hackathon/blob/main/preview/StartScreen.png?raw=true)
 
-## Getting Started
+## The Project
+This is a death note inspired game . built for webdevCody hacakthon . sponsored by convex .
+The project aim for all the elligiable categories since it have both creative AI usage and multiplayer collaboration.
 
-First, run the development server:
+- Subbmision Video on [Youtube](https://www.youtube.com/watch?v=qlThmgU4lx4)  Or  [Rumble](https://rumble.com/v3in4f5-death-note-inspired-game-webdevcody-hackathon.html)
+- [Hacakthon anouncement video](https://www.youtube.com/watch?v=E5Kt_E8m4t8)
+- [Convex youtube channel](https://www.youtube.com/@convex-dev)
+## Running The Project
+- Set up the enivorment file from .env.template.local and change it's name to .env.local
+- yarn dev or npm run dev 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## The rules
+For those curious about the rules and don't want to read them while pausing the video
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### General Rules
+ - Death note is a battle of wits and psychological wellfare.Your intelligence and imagination are the only limits.
+ - The game is played in rounds.Each round has 2 phases: Discussion and Voting.Kira and L have a dedicated channels to brodcast their messages.
+ - The game is over if the rounds exceed 10.Kira is imprisoned or L is killed.
+ - By it's nature role playing is encouraged but not mandatory.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Kira Rules
+ -You can kill one person each round by writing his name in the death note. This applies only if you know his name and face. You may only kill those in suspicion of being L.
+ -Each turn a secret is revealed from L list of secrets.
+ -When a player L meter reaches 70% you can ivestigate him.Thus revealing one of his secrets
+ -When a player L meter reaches 90% you can kill him.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Lawliet Rules
+ -You can imprison one person each round. This applies only if the person is in suspicion of being Kira.
+ -Each turn a secret is revealed from Kira list of secrets.
+ -When a player Kira meter reaches 70% you can ivestigate him.Thus revealing one of his secrets
+ -When a player Kira meter reaches 90% you can imprison him.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Neutral Rules
+ -As a main member of the investigation team you can influence the investigation to aid Kira or L.
+ -You can vouch for a persone once per round and reduce his K or L meters.You may do so if you feel he is innocent or to mislead the investigation.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

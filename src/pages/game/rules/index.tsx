@@ -1,5 +1,4 @@
 import Rules from '@/components/rules/Rules';
-import { getStaticServerRulesLocales } from '@/lib/locales';
 
 
 export default function Page() {
@@ -8,5 +7,3 @@ export default function Page() {
     )
 }
 
-
-// export const getStaticProps = getStaticServerRulesLocales
