@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleProvider, createCache, extractStyle } from '@ant-design/cssinjs';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import type { DocumentContext } from 'next/document';
+import { createCache, StyleProvider } from '@ant-design/cssinjs/lib/StyleContext';
+import { extractStyle } from '@ant-design/cssinjs/lib/hooks/useStyleRegister';
 
 const MyDocument = () => (
   <Html lang="en">

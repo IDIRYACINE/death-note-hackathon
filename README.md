@@ -21,19 +21,17 @@ For those curious about the rules and don't want to read them while pausing the 
  - By it's nature role playing is encouraged but not mandatory.
 
 ### Kira Rules
- -You can kill one person each round by writing his name in the death note. This applies only if you know his name and face. You may only kill those in suspicion of being L.
- -Each turn a secret is revealed from L list of secrets.
- -When a player L meter reaches 70% you can ivestigate him.Thus revealing one of his secrets
- -When a player L meter reaches 90% you can kill him.
+ - You can kill one person each round by writing his name in the death note. This applies only if you know his name and face. You may only kill those in suspicion of being L.
+ - Each turn a secret is revealed from L list of secrets.
+ - When a player L meter reaches 70% you can ivestigate him.Thus revealing one of his secrets
+ - When a player L meter reaches 90% you can kill him.
 
 ### Lawliet Rules
- -You can imprison one person each round. This applies only if the person is in suspicion of being Kira.
- -Each turn a secret is revealed from Kira list of secrets.
- -When a player Kira meter reaches 70% you can ivestigate him.Thus revealing one of his secrets
- -When a player Kira meter reaches 90% you can imprison him.
+ - You can imprison one person each round. This applies only if the person is in suspicion of being Kira.
+ - Each turn a secret is revealed from Kira list of secrets.
+ - When a player Kira meter reaches 70% you can ivestigate him.Thus revealing one of his secrets
+ - When a player Kira meter reaches 90% you can imprison him.
 
 ### Neutral Rules
- -As a main member of the investigation team you can influence the investigation to aid Kira or L.
- -You can vouch for a persone once per round and reduce his K or L meters.You may do so if you feel he is innocent or to mislead the investigation.
-
-
+ - As a main member of the investigation team you can influence the investigation to aid Kira or L.
+ - You can vouch for a persone once per round and reduce his K or L meters.You may do so if you feel he is innocent or to mislead the investigation.

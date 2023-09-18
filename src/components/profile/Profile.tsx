@@ -1,8 +1,6 @@
 import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useStoreUser } from "@/lib/sdk";
-import CheckCircleOutlined from "@ant-design/icons/lib/icons/CheckCircleOutlined";
-import { Alert, Button, Card, Form, FormInstance, Input, Layout, Modal, Space, Typography } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { Alert, Button, Card, Form, FormInstance, Input, Layout, Modal, Space } from "antd";
 import useTranslation from 'next-translate/useTranslation'
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Profile } from "@/domain/profile";
