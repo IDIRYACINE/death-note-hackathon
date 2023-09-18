@@ -9,14 +9,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config) => {
-    
-    if(process.env.ANALYZE_BUNDLE){
+
+    if(process.env.ANALYZE_BUNDLE === true){
       config.plugins.push(
         new BundleAnalyzerPlugin()
       )
     }
 
-    if(process.env.ANALYZE_STATS)
+    if(process.env.ANALYZE_STATS === true){
       config.plugins.push(
         new StatsWriterPlugin({
           filename: '../analyze/webpack-stats.json',
@@ -32,6 +32,7 @@ const nextConfig = {
             filename: path.join('../analyze', 'stats', 'statistics.html'),
           }),
       )
+    }
 
     return config;
   },
