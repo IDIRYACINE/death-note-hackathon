@@ -4,7 +4,7 @@
 This is a death note inspired game . built for webdevCody hacakthon . sponsored by convex .
 The project aim for all the elligiable categories since it have both creative AI usage and multiplayer collaboration.
 
-- Subbmision Video on [Youtube](https://www.youtube.com/watch?v=qlThmgU4lx4)  Or  [Rumble](https://rumble.com/v3in4f5-death-note-inspired-game-webdevcody-hackathon.html)
+- Subbmision Video on [Youtube](https://www.youtube.com/watch?v=EkG2Jg3igHs)  Or  [Rumble](https://rumble.com/v3in4f5-death-note-inspired-game-webdevcody-hackathon.html)
 - [Hacakthon anouncement video](https://www.youtube.com/watch?v=E5Kt_E8m4t8)
 - [Convex youtube channel](https://www.youtube.com/@convex-dev)
 ## Running The Project
