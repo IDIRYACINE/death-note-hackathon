@@ -10,7 +10,6 @@
     "live": "next build && next start"
   },
   "dependencies": {
-    "@ant-design/cssinjs": "^1.17.0",
     "@ant-design/icons": "^5.2.6",
     "@clerk/nextjs": "^4.23.5",
     "@reduxjs/toolkit": "^1.9.5",
@@ -20,6 +19,7 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "i18next": "^23.5.0",
+    "@ant-design/cssinjs": "^1.17.0",
     "next": "13.4.19",
     "next-translate": "^2.5.3",
     "openai": "^4.6.0",
@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.19",
-    "@types/howler": "^2.2.8",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",

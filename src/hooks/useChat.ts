@@ -1,5 +1,5 @@
 import { loadChat } from "@/stores/game/game-slice"
-import { selectChat } from "@/stores/game/selectors"
+import { selectChat, selectPlayerChatStatus } from "@/stores/game/selectors"
 import { useAppDispatch, useAppSelector } from "@/stores/hooks"
 import { api } from "@convex/_generated/api"
 import { Id } from "@convex/_generated/dataModel"
@@ -41,4 +41,9 @@ export const useSendMessage = () => {
 export const useReadStoreChat = (round: number) => {
     const chat = useAppSelector((state) => selectChat({ ...state, round }))
     return chat
+}
+
+export const useReadStorePlayerChatStatus = () => {
+    const status = useAppSelector(selectPlayerChatStatus)
+    return status
 }

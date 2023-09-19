@@ -1,6 +1,6 @@
 import { useFeedbackModal, useNavigation } from "@/hooks/useNavigate";
 import { useStoreUser } from "@/lib/sdk";
-import { Alert, Button, Card, Form, FormInstance, Input, Layout, Modal, Space } from "antd";
+import { Alert, Button, Card, Form, FormInstance, Input,  Modal, Space } from "antd";
 import useTranslation from 'next-translate/useTranslation'
 import { useReadStoreProfile } from "@/hooks/useProfile";
 import { Profile } from "@/domain/profile";
@@ -11,10 +11,6 @@ const numberOfScrects = [1, 2, 3, 4, 5]
 
 const layout = {
     labelCol: { span: 8 },
-};
-
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
 };
 
 export default function Profile() {
@@ -76,33 +72,29 @@ export default function Profile() {
     }
 
     return (
-        <Layout className="w-full h-full">
-            <Layout.Sider>
-                <Card className="h-full flex flex-col items-center justify-center">
-                    <Space className="h-full w-full" direction="vertical">
-                        <Button className="w-full" type="primary" onClick={onSave}>
-                            {t("save")}
-                        </Button>
+        <div className="w-full h-full flex flex-row">
+            <Card className="h-full w-40 flex flex-col items-center justify-center">
+                <Space className="h-full w-full" direction="vertical">
+                    <Button className="w-full" type="primary" onClick={onSave}>
+                        {t("save")}
+                    </Button>
 
-                        <Button className="w-full" htmlType="button" onClick={onCancel}>
-                            {t("mainMenu")}
-                        </Button>
+                    <Button className="w-full" htmlType="button" onClick={onCancel}>
+                        {t("mainMenu")}
+                    </Button>
 
-                    </Space>
-                </Card>
-            </Layout.Sider>
-            <Layout.Content className="p-4">
-                <div className="flex flex-row justify-evenly items-center">
+                </Space>
+            </Card>
+            <div className="flex flex-row justify-evenly w-full items-center p-4">
 
-                    <ProfileCard {...profileProps} />
-                    <SecretsCard {...secretsProps} />
+                <ProfileCard {...profileProps} />
+                <SecretsCard {...secretsProps} />
 
 
-                </div>
-            </Layout.Content>
+            </div>
             {contextHolder}
 
-        </Layout>
+        </div>
     )
 }
 

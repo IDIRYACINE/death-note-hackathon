@@ -13,13 +13,11 @@ export default function Rules() {
     const [selectedKey, setSelectedKey] = useState<string>("generalRulesArray")
     const rules = Array<Array<{ rule: string, id: number }>>(t(selectedKey,{}, { returnObjects: true }))
     return (
-        <Layout className="w-full h-full">
-            <Layout.Sider>
+        <div className="w-full h-full flex flex-row">
                 <RulesDrawer selectedKey={selectedKey} onClick={setSelectedKey} />
-            </Layout.Sider>
-            <Layout.Content className="flex flex-col justify-center p-4">
+            <div className="flex flex-col justify-center p-4">
                 <RulesContent rules={rules}/>
-            </Layout.Content>
-        </Layout>
+            </div>
+        </div>
     )
 }

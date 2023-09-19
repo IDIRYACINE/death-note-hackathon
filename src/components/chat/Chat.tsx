@@ -1,5 +1,5 @@
 import { useReadStoreGame } from "@/hooks/useGame";
-import { useReadStoreProfile } from "@/hooks/useProfile";
+import { useReadStorePlayerChatStatus } from "@/hooks/useChat";
 import { Layout, Card } from "antd";
 import useTranslation from 'next-translate/useTranslation'
 import ChatMessages from "./ChatMessages";
@@ -10,19 +10,20 @@ export default function Chat() {
     const { t } = useTranslation("common")
 
     const game = useReadStoreGame()
-    const profile = useReadStoreProfile()
+    const {playerId,incapicated,avatar,name} = useReadStorePlayerChatStatus()
 
     const sendMessageProps = {
         kiraId: game.kiraId,
         lawlietId: game.lawlietId,
-        playerId: profile.tokenIdentifier,
+        playerId,
         round: game.round,
+        incapicated,
         sendLabel: t("send"),
         sendKiraLabel: t("sendKira"),
         sendLawlietLabel: t("sendLawliet"),
         gameId: game._id,
-        avatar: profile.profilePicture,
-        name: profile.name,
+        avatar,
+        name,
     }
 
     return (

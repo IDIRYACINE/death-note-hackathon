@@ -1,6 +1,6 @@
 import { useReadStoreIsGameOver } from "@/hooks/useGame";
 import { useNavigation } from "@/hooks/useNavigate";
-import { Layout, Space, theme } from "antd";
+import {  Space, theme } from "antd";
 import { useEffect } from "react";
 import Chat from "../chat/Chat";
 import Secrets from "../secrets/Secrets";
@@ -25,28 +25,28 @@ export default function Game() {
     }, [gameOver, navigation])
 
     return (
-        <Layout className="w-screen">
-            <Layout.Header className="flex flex-row justify-center items-center p-0">
+        <div className="w-full h-screen">
+            <div className="flex flex-row justify-center items-center h-16">
                 <RoundTimer />
-            </Layout.Header>
+            </div>
 
-            <Layout.Content >
-                <Layout>
-                    <Layout.Sider className="pt-2" width="fit-content" style={{ background: colorBgContainer }} >
+            <div >
+                <div className="flex flex-row">
+                    <div className="pt-2"  style={{ background: colorBgContainer }} >
                         <Space direction="vertical"  className="overflow-y-scroll h-112 w-96"   >
                             <Secrets />
                             <PlayersTurnBar onActionResult={displayFeedback} />
                         </Space>
 
-                    </Layout.Sider>
-                    <Layout.Content className="flex flex-row justify-evenly items-center w-full h-full p-2">
+                    </div>
+                    <div className="flex flex-row justify-evenly items-center w-full h-full p-2">
                         <Vote onActionResult={displayFeedback} />
                         <Chat />
-                    </Layout.Content>
-                </Layout>
+                    </div>
+                </div>
 
-            </Layout.Content>
+            </div>
             {contextHolder}
-        </Layout>
+        </div>
     )
 }

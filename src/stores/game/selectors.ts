@@ -72,16 +72,16 @@ export const selectKiraAndLalwietIds = createSelector(
         const kiraId = game.kiraId
         const lawlietId = game.lawlietId
 
-        const kiraStatusId = playersStatus.find(player => player.playerId === kiraId)!._id 
-        const lawlietStatusId = playersStatus.find(player => player.playerId === lawlietId)!._id 
+        const kiraStatusId = playersStatus.find(player => player.playerId === kiraId)!._id
+        const lawlietStatusId = playersStatus.find(player => player.playerId === lawlietId)!._id
 
         return {
             kiraId,
             lawlietId,
             kiraStatusId,
             lawlietStatusId,
-            gameId:game._id,
-            round:game.round
+            gameId: game._id,
+            round: game.round
         }
     }
 )
@@ -98,8 +98,8 @@ export const selectGameWinner = createSelector(
 )
 
 export const selectGameMonument = createSelector(
-    [selectLobbyPlayers,selectGame,selectMonuments],(lobbyPlayers,game,monuments) => {
-        
+    [selectLobbyPlayers, selectGame, selectMonuments], (lobbyPlayers, game, monuments) => {
+
         const kira = lobbyPlayers.find(player => player.playerId === game.kiraId)!
         const lawliet = lobbyPlayers.find(player => player.playerId === game.lawlietId)!
 
@@ -114,10 +114,10 @@ export const selectGameMonument = createSelector(
             kiraWon: game.kiraWon,
             lawlietWon: game.lawlietWon,
             monuments,
-            gameId:game._id
+            gameId: game._id
         }
     }
-    
+
 )
 
 export const selectPlayerVoteStatus = createSelector(
@@ -135,12 +135,28 @@ export const selectPlayerVoteStatus = createSelector(
 )
 
 export const selectPlayersWithRevealedSecrets = createSelector(
-    [selectLobbyPlayers], (players) =>{
-        
+    [selectLobbyPlayers], (players) => {
+
         const playersWithRevealedSecrets = players.filter(player => player.revealedSecretsInReverse < 6)
 
 
 
         return playersWithRevealedSecrets.length > 0 ? playersWithRevealedSecrets : []
+    }
+)
+
+export const selectPlayerChatStatus = createSelector(
+    [selectProfile, selectLobbyPlayers], (profile, players) => {
+        const playerId = profile.tokenIdentifier
+
+        const player = players.find(player => player.playerId === playerId)!
+
+        return {
+            avatar: profile.profilePicture,
+            name: profile.name,
+            playerId,
+            incapicated: player.alive === false || player.jailed === true, 
+        }
+
     }
 )

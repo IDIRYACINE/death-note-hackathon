@@ -18,7 +18,7 @@ export default function RulesDrawer({onClick,selectedKey}: RulesDrawerProps) {
     }
 
     return (
-        <Card className="h-full flex flex-col items-center justify-center">
+        <Card className="h-full w-40 flex flex-col items-center justify-center">
             <Space className="h-full w-full" direction="vertical">
                 {
                     sections.map((section) => {

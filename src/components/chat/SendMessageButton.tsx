@@ -8,6 +8,7 @@ interface SendMessageButtonProps {
     lawlietId?: string
     playerId : string,
     sendLabel: string,
+    incapicated:boolean,
     name: string,
     avatar: string,
     round: number,
@@ -17,7 +18,7 @@ interface SendMessageButtonProps {
 }
 export default function SendMessageButton(props:SendMessageButtonProps){
     const {kiraId, lawlietId, playerId, round,sendLabel, sendKiraLabel, sendLawlietLabel} = props
-    const {avatar, name,gameId} = props
+    const {avatar, name,gameId,incapicated} = props
     const [message,setMessage] = useState("")
     const sendMessage = useSendMessage()
 
@@ -53,13 +54,13 @@ export default function SendMessageButton(props:SendMessageButtonProps){
 
     let kOrLbutton = null
     const btnClassName = "w-full"
-    kOrLbutton = kiraId === playerId ? <Button className={btnClassName} onClick={sendKorLMessage}>{sendKiraLabel}</Button> : kOrLbutton
-    kOrLbutton = lawlietId === playerId ? <Button className={btnClassName} onClick={sendKorLMessage}>{sendLawlietLabel}</Button>: kOrLbutton
+    kOrLbutton = kiraId === playerId ? <Button className={btnClassName} onClick={sendKorLMessage} disabled={incapicated}>{sendKiraLabel}</Button> : kOrLbutton
+    kOrLbutton = lawlietId === playerId ? <Button className={btnClassName} onClick={sendKorLMessage} disabled={incapicated}>{sendLawlietLabel}</Button>: kOrLbutton
 
     return (
         <Space size="large" className="w-full" direction="vertical">
             <Input.TextArea value={message} autoSize={{ minRows: 4, maxRows: 4 }} maxLength={180} showCount onChange={handleMessage}/>
-            <Button className={btnClassName} onClick={sendPlayerMessage}>{sendLabel}</Button>
+            <Button className={btnClassName} onClick={sendPlayerMessage} disabled={incapicated}>{sendLabel}</Button>
             {kOrLbutton}
         </Space>
     )
